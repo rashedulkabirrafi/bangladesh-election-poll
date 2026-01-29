@@ -72,7 +72,7 @@ const Stepper = ({ current }) => (
 );
 
 const ElectionPoll = () => {
-  const [step, setStep] = useState('select');
+  const [step, setStep] = useState('home');
   const [selectedDivision, setSelectedDivision] = useState('');
   const [selectedDistrict, setSelectedDistrict] = useState('');
   const [selectedConstituency, setSelectedConstituency] = useState(null);
@@ -210,6 +210,122 @@ const ElectionPoll = () => {
     return lookup ? candidatesData[lookup] || [] : [];
   }, [selectedConstituency, candidateKeyLookup]);
 
+  const getTotalVotesAllConstituencies = () => {
+    return Object.values(votes).reduce((total, constituencies) => {
+      return total + Object.values(constituencies).reduce((a, b) => a + b, 0);
+    }, 0);
+  };
+
+  const getWinnerByConstituency = (constituencyKey) => {
+    const constituencyVotes = votes[constituencyKey] || {};
+    if (Object.keys(constituencyVotes).length === 0) return null;
+    let winner = null;
+    let maxVotes = 0;
+    Object.entries(constituencyVotes).forEach(([candidate, voteCount]) => {
+      if (voteCount > maxVotes) {
+        maxVotes = voteCount;
+        winner = { name: candidate, votes: voteCount };
+      }
+    });
+    return winner;
+  };
+
+  const getTopConstituencies = () => {
+    const sorted = Object.entries(votes)
+      .map(([key, constituencies]) => {
+        const totalVotes = Object.values(constituencies).reduce((a, b) => a + b, 0);
+        const winner = getWinnerByConstituency(key);
+        return { key, totalVotes, winner };
+      })
+      .sort((a, b) => b.totalVotes - a.totalVotes)
+      .slice(0, 5);
+    return sorted;
+  };
+
+  const getAllConstituenciesWithResults = () => {
+    return constituencyRows.map((row) => {
+      const key = makeKey(row.division, row.district, row.constituency);
+      const winner = getWinnerByConstituency(key);
+      const totalVotes = votes[key]
+        ? Object.values(votes[key]).reduce((a, b) => a + b, 0)
+        : 0;
+      return {
+        name: row.constituency,
+        division: row.division,
+        district: row.district,
+        winner,
+        totalVotes
+      };
+    });
+  };
+
+  if (step === 'home') {
+    const totalVotes = getTotalVotesAllConstituencies();
+    const constituenciesWithVotes = Object.keys(votes).length;
+    const topConstituencies = getTopConstituencies();
+
+    return (
+      <div className="page">
+        <div className="container">
+          <div className="card homepage-hero">
+            <div className="header centered">
+              <h1 className="headline">বাংলাদেশ নির্বাচন জরিপ ২০২৬</h1>
+              <p className="subtitle-large">একটি ডিজিটাল ভোট কেন্দ্র</p>
+            </div>
+          </div>
+
+          <div className="stats-grid">
+            <div className="stat-card">
+              <div className="stat-number">{totalVotes}</div>
+              <div className="stat-label">মোট ভোট</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-number">{constituenciesWithVotes}</div>
+              <div className="stat-label">আসনে ভোট</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-number">{constituencyRows.length}</div>
+              <div className="stat-label">মোট আসন</div>
+            </div>
+          </div>
+
+          <div className="card cta-card">
+            <div className="cta-content">
+              <h2 className="cta-title">আপনার মতামত আমাদের কাছে গুরুত্বপূর্ণ!</h2>
+              <p className="cta-subtitle">এই জরিপে অংশগ্রহণ করুন এবং আপনার পছন্দের প্রার্থীকে ভোট দিন</p>
+              <button onClick={() => setStep('select')} className="btn btn-large">
+                আপনার আসনে ভোট দিন
+              </button>
+            </div>
+          </div>
+
+          <div className="card">
+            <h2 className="section-title section-title-center">সকল আসনের ফলাফল</h2>
+            <div className="constituencies-grid">
+              {getAllConstituenciesWithResults().map((const_data) => (
+                <div
+                  key={const_data.name}
+                  className={`constituency-box ${const_data.winner ? 'has-winner' : ''}`}
+                >
+                  <div className="constituency-box-name">{const_data.name}</div>
+                  {const_data.winner ? (
+                    <div className="constituency-box-winner">
+                      <div className="winner-label">বিজয়ী</div>
+                      <div className="winner-name">{const_data.winner.name}</div>
+                      <div className="winner-votes">{const_data.winner.votes} ভোট</div>
+                    </div>
+                  ) : (
+                    <div className="constituency-box-empty">ভোট পেন্ডিং</div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (step === 'select') {
     const hasData = divisions.length > 0;
     return (
@@ -313,6 +429,9 @@ const ElectionPoll = () => {
             )}
 
             <div className="actions">
+              <button onClick={() => setStep('home')} className="btn btn-secondary">
+                হোম
+              </button>
               <button
                 onClick={selectConstituency}
                 disabled={!selectedDivision || !selectedDistrict || !selectedConstituency}
@@ -379,7 +498,7 @@ const ElectionPoll = () => {
                         <td>{candidate.symbol || '-'}</td>
                         <td>
                           {candidate.affidavit ? (
-                            <a href={candidate.affidavit} target="_blank" rel="noreferrer">
+                            <a href={candidate.affidavit} target="_blank" rel="noreferrer" className="btn-download">
                               ডাউনলোড
                             </a>
                           ) : (
@@ -388,7 +507,7 @@ const ElectionPoll = () => {
                         </td>
                         <td>
                           {candidate.expense ? (
-                            <a href={candidate.expense} target="_blank" rel="noreferrer">
+                            <a href={candidate.expense} target="_blank" rel="noreferrer" className="btn-download">
                               ডাউনলোড
                             </a>
                           ) : (
@@ -397,7 +516,7 @@ const ElectionPoll = () => {
                         </td>
                         <td>
                           {candidate.tax ? (
-                            <a href={candidate.tax} target="_blank" rel="noreferrer">
+                            <a href={candidate.tax} target="_blank" rel="noreferrer" className="btn-download">
                               ডাউনলোড
                             </a>
                           ) : (
@@ -406,8 +525,8 @@ const ElectionPoll = () => {
                         </td>
                         <td>
                           <button
-                            className={`btn btn-small ${
-                              selectedCandidate === candidate ? 'btn-primary' : 'btn-secondary'
+                            className={`btn btn-small btn-vote ${
+                              selectedCandidate === candidate ? 'btn-vote-selected' : ''
                             }`}
                             onClick={() => setSelectedCandidate(candidate)}
                           >
