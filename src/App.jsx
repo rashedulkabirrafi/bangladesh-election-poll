@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Check, AlertCircle } from 'lucide-react';
+import './App.css';
 
 const constituencies = [
   { id: 'dhaka-8', name: 'ঢাকা-৮', nameEn: 'Dhaka-8' },
@@ -51,6 +52,13 @@ const verificationQuestions = [
   }
 ];
 
+const stepOrder = [
+  { key: 'select', label: 'এলাকা নির্বাচন' },
+  { key: 'verify', label: 'যাচাইকরণ' },
+  { key: 'vote', label: 'ভোট দিন' },
+  { key: 'results', label: 'ফলাফল' }
+];
+
 // Simple browser fingerprinting
 const generateFingerprint = () => {
   const canvas = document.createElement('canvas');
@@ -59,7 +67,7 @@ const generateFingerprint = () => {
   ctx.font = '14px Arial';
   ctx.fillText('fingerprint', 2, 2);
   const canvasData = canvas.toDataURL();
-  
+
   const fingerprint = {
     userAgent: navigator.userAgent,
     language: navigator.language,
@@ -68,9 +76,27 @@ const generateFingerprint = () => {
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     canvas: canvasData.slice(-50)
   };
-  
+
   return btoa(JSON.stringify(fingerprint));
 };
+
+const Stepper = ({ current }) => (
+  <div className="stepper" aria-label="প্রক্রিয়া অগ্রগতি">
+    {stepOrder.map((step, index) => {
+      const isActive = step.key === current;
+      const isDone = stepOrder.findIndex(s => s.key === current) > index;
+      return (
+        <div
+          key={step.key}
+          className={`step ${isActive ? 'step-active' : ''} ${isDone ? 'step-done' : ''}`}
+        >
+          <div className="step-dot">{index + 1}</div>
+          <span className="step-label">{step.label}</span>
+        </div>
+      );
+    })}
+  </div>
+);
 
 const ElectionPoll = () => {
   const [step, setStep] = useState('select'); // select, verify, vote, results, blocked
@@ -83,17 +109,14 @@ const ElectionPoll = () => {
   const [fingerprint, setFingerprint] = useState('');
 
   useEffect(() => {
-    // Load votes from localStorage
     const savedVotes = localStorage.getItem('pollVotes');
     if (savedVotes) {
       setVotes(JSON.parse(savedVotes));
     }
-    
-    // Generate fingerprint
+
     const fp = generateFingerprint();
     setFingerprint(fp);
-    
-    // Check if already voted
+
     const voted = localStorage.getItem(`voted_${fp}`);
     if (voted) {
       setStep('blocked');
@@ -104,8 +127,10 @@ const ElectionPoll = () => {
     setSelectedConstituency(constituency);
     const randomQ = verificationQuestions[Math.floor(Math.random() * verificationQuestions.length)];
     setVerificationQ(randomQ);
-    setStep('verify');
+    setSelectedAnswer(null);
+    setSelectedCandidate(null);
     setError('');
+    setStep('verify');
   };
 
   const verifyAnswer = () => {
@@ -124,18 +149,17 @@ const ElectionPoll = () => {
       return;
     }
 
-    // Update votes
     const newVotes = { ...votes };
     if (!newVotes[selectedConstituency.id]) {
       newVotes[selectedConstituency.id] = {};
     }
-    newVotes[selectedConstituency.id][selectedCandidate] = 
+    newVotes[selectedConstituency.id][selectedCandidate] =
       (newVotes[selectedConstituency.id][selectedCandidate] || 0) + 1;
-    
+
     setVotes(newVotes);
     localStorage.setItem('pollVotes', JSON.stringify(newVotes));
     localStorage.setItem(`voted_${fingerprint}`, Date.now().toString());
-    
+
     setStep('results');
   };
 
@@ -150,19 +174,31 @@ const ElectionPoll = () => {
     return ((votes[constituencyId]?.[candidate] || 0) / total * 100).toFixed(1);
   };
 
+  const resetToSelect = () => {
+    setSelectedConstituency(null);
+    setSelectedCandidate(null);
+    setSelectedAnswer(null);
+    setError('');
+    setStep('select');
+  };
+
   if (step === 'blocked') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-red-50 p-4 flex items-center justify-center">
-        <div className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full text-center">
-          <AlertCircle className="w-16 h-16 text-yellow-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">আপনি ইতিমধ্যে ভোট দিয়েছেন</h2>
-          <p className="text-gray-600 mb-6">প্রতি ডিভাইস থেকে একবার মাত্র ভোট দেওয়া যাবে।</p>
-          <button
-            onClick={() => setStep('results')}
-            className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition"
-          >
-            ফলাফল দেখুন
-          </button>
+      <div className="page">
+        <div className="container">
+          <div className="card centered">
+            <AlertCircle className="icon-warning" />
+            <h2 className="title">আপনি ইতিমধ্যে ভোট দিয়েছেন</h2>
+            <p className="subtitle">প্রতি ডিভাইস থেকে একবার মাত্র ভোট দেওয়া যাবে।</p>
+            <div className="actions">
+              <button
+                onClick={() => setStep('results')}
+                className="btn btn-primary"
+              >
+                ফলাফল দেখুন
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -170,50 +206,54 @@ const ElectionPoll = () => {
 
   if (step === 'select') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-red-50 p-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-lg shadow-xl p-8 mb-8">
-            <h1 className="text-4xl font-bold text-center text-gray-800 mb-2">
-              বাংলাদেশ নির্বাচন জরিপ ২০২৬
-            </h1>
-            <p className="text-center text-gray-600 mb-8">আপনার মতামত জানান</p>
-            
-            <div className="grid md:grid-cols-3 gap-4">
+      <div className="page">
+        <div className="container">
+          <div className="card">
+            <div className="header">
+              <h1 className="headline">বাংলাদেশ নির্বাচন জরিপ ২০২৬</h1>
+              <p className="subtitle">আপনার এলাকার জন্য ভোট দিন এবং ফলাফল দেখুন</p>
+            </div>
+
+            <Stepper current={step} />
+
+            <div className="grid">
               {constituencies.map(constituency => (
                 <button
                   key={constituency.id}
                   onClick={() => selectConstituency(constituency)}
-                  className="bg-gradient-to-br from-green-500 to-red-500 text-white p-6 rounded-lg hover:shadow-lg transition transform hover:scale-105"
+                  className="select-card"
                 >
-                  <h3 className="text-2xl font-bold mb-2">{constituency.name}</h3>
-                  <p className="text-sm opacity-90">{constituency.nameEn}</p>
-                  <div className="mt-4 text-sm">
+                  <div>
+                    <h3 className="card-title">{constituency.name}</h3>
+                    <p className="card-meta">{constituency.nameEn}</p>
+                  </div>
+                  <div className="badge">
                     মোট ভোট: {getTotalVotes(constituency.id)}
                   </div>
                 </button>
               ))}
             </div>
           </div>
-          
-          <div className="bg-white rounded-lg shadow-xl p-6">
-            <h3 className="text-xl font-bold text-gray-800 mb-4">সব এলাকার ফলাফল</h3>
+
+          <div className="card">
+            <div className="section-title">সব এলাকার ফলাফল</div>
             {constituencies.map(constituency => (
-              <div key={constituency.id} className="mb-6 last:mb-0">
-                <h4 className="font-bold text-gray-700 mb-2">{constituency.name}</h4>
+              <div key={constituency.id} className="result-block">
+                <h4 className="result-title">{constituency.name}</h4>
                 {getTotalVotes(constituency.id) === 0 ? (
-                  <p className="text-gray-500 text-sm">এখনো কোনো ভোট পড়েনি</p>
+                  <p className="muted">এখনো কোনো ভোট পড়েনি</p>
                 ) : (
                   candidates[constituency.id].map(candidate => (
-                    <div key={candidate} className="mb-2">
-                      <div className="flex justify-between text-sm mb-1">
+                    <div key={candidate} className="result-row">
+                      <div className="result-label">
                         <span>{candidate}</span>
-                        <span className="font-bold">
+                        <span className="result-value">
                           {getPercentage(constituency.id, candidate)}%
                         </span>
                       </div>
-                      <div className="bg-gray-200 rounded-full h-2">
+                      <div className="bar">
                         <div
-                          className="bg-green-600 h-2 rounded-full transition-all"
+                          className="bar-fill"
                           style={{ width: `${getPercentage(constituency.id, candidate)}%` }}
                         />
                       </div>
@@ -230,48 +270,52 @@ const ElectionPoll = () => {
 
   if (step === 'verify') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-red-50 p-4 flex items-center justify-center">
-        <div className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">যাচাইকরণ</h2>
-          <p className="text-gray-600 mb-6">{selectedConstituency.name}</p>
-          
-          <div className="mb-6">
-            <p className="text-lg font-medium text-gray-700 mb-4">{verificationQ.question}</p>
-            {verificationQ.options.map((option, index) => (
-              <button
-                key={index}
-                onClick={() => setSelectedAnswer(index)}
-                className={`w-full p-3 mb-2 rounded-lg border-2 transition ${
-                  selectedAnswer === index
-                    ? 'border-green-600 bg-green-50'
-                    : 'border-gray-300 hover:border-green-400'
-                }`}
-              >
-                {option}
-              </button>
-            ))}
-          </div>
-
-          {error && (
-            <div className="bg-red-50 border border-red-300 text-red-700 px-4 py-3 rounded mb-4">
-              {error}
+      <div className="page">
+        <div className="container narrow">
+          <div className="card">
+            <div className="header">
+              <h2 className="title">যাচাইকরণ</h2>
+              <p className="subtitle">{selectedConstituency.name}</p>
             </div>
-          )}
 
-          <div className="flex gap-4">
-            <button
-              onClick={() => setStep('select')}
-              className="flex-1 bg-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-400 transition"
-            >
-              বাতিল
-            </button>
-            <button
-              onClick={verifyAnswer}
-              disabled={selectedAnswer === null}
-              className="flex-1 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              এগিয়ে যান
-            </button>
+            <Stepper current={step} />
+
+            <div className="question">
+              <p className="question-text">{verificationQ.question}</p>
+              <div className="stack">
+                {verificationQ.options.map((option, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setSelectedAnswer(index)}
+                    className={`option ${selectedAnswer === index ? 'option-selected' : ''}`}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {error && (
+              <div className="alert" role="alert">
+                {error}
+              </div>
+            )}
+
+            <div className="actions">
+              <button
+                onClick={resetToSelect}
+                className="btn btn-secondary"
+              >
+                বাতিল
+              </button>
+              <button
+                onClick={verifyAnswer}
+                disabled={selectedAnswer === null}
+                className="btn btn-primary"
+              >
+                এগিয়ে যান
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -280,47 +324,49 @@ const ElectionPoll = () => {
 
   if (step === 'vote') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-red-50 p-4 flex items-center justify-center">
-        <div className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">আপনার পছন্দ নির্বাচন করুন</h2>
-          <p className="text-gray-600 mb-6">{selectedConstituency.name}</p>
-          
-          <div className="mb-6">
-            {candidates[selectedConstituency.id].map((candidate, index) => (
-              <button
-                key={index}
-                onClick={() => setSelectedCandidate(candidate)}
-                className={`w-full p-4 mb-3 rounded-lg border-2 transition flex items-center justify-between ${
-                  selectedCandidate === candidate
-                    ? 'border-green-600 bg-green-50'
-                    : 'border-gray-300 hover:border-green-400'
-                }`}
-              >
-                <span className="text-lg">{candidate}</span>
-                {selectedCandidate === candidate && <Check className="text-green-600" />}
-              </button>
-            ))}
-          </div>
-
-          {error && (
-            <div className="bg-red-50 border border-red-300 text-red-700 px-4 py-3 rounded mb-4">
-              {error}
+      <div className="page">
+        <div className="container narrow">
+          <div className="card">
+            <div className="header">
+              <h2 className="title">আপনার পছন্দ নির্বাচন করুন</h2>
+              <p className="subtitle">{selectedConstituency.name}</p>
             </div>
-          )}
 
-          <div className="flex gap-4">
-            <button
-              onClick={() => setStep('verify')}
-              className="flex-1 bg-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-400 transition"
-            >
-              পিছনে
-            </button>
-            <button
-              onClick={submitVote}
-              className="flex-1 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition"
-            >
-              ভোট জমা দিন
-            </button>
+            <Stepper current={step} />
+
+            <div className="stack">
+              {candidates[selectedConstituency.id].map((candidate, index) => (
+                <button
+                  key={index}
+                  onClick={() => setSelectedCandidate(candidate)}
+                  className={`option option-wide ${selectedCandidate === candidate ? 'option-selected' : ''}`}
+                >
+                  <span>{candidate}</span>
+                  {selectedCandidate === candidate && <Check className="icon-check" />}
+                </button>
+              ))}
+            </div>
+
+            {error && (
+              <div className="alert" role="alert">
+                {error}
+              </div>
+            )}
+
+            <div className="actions">
+              <button
+                onClick={() => setStep('verify')}
+                className="btn btn-secondary"
+              >
+                পিছনে
+              </button>
+              <button
+                onClick={submitVote}
+                className="btn btn-primary"
+              >
+                ভোট জমা দিন
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -328,51 +374,106 @@ const ElectionPoll = () => {
   }
 
   if (step === 'results') {
+    const showAll = !selectedConstituency;
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-red-50 p-4 flex items-center justify-center">
-        <div className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full">
-          <div className="text-center mb-6">
-            <div className="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-              <Check className="text-green-600 w-8 h-8" />
+      <div className="page">
+        <div className="container narrow">
+          <div className="card">
+            <div className="header centered">
+              {!showAll && (
+                <div className="success-icon">
+                  <Check className="icon-check" />
+                </div>
+              )}
+              <h2 className="title">{showAll ? 'সব এলাকার ফলাফল' : 'ধন্যবাদ!'}</h2>
+              <p className="subtitle">
+                {showAll ? 'সর্বশেষ ভোটের সারাংশ' : 'আপনার ভোট সফলভাবে জমা হয়েছে'}
+              </p>
             </div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">ধন্যবাদ!</h2>
-            <p className="text-gray-600">আপনার ভোট সফলভাবে জমা হয়েছে</p>
-          </div>
 
-          <div className="bg-gray-50 rounded-lg p-4 mb-6">
-            <h3 className="font-bold text-gray-700 mb-3">{selectedConstituency.name} - বর্তমান ফলাফল</h3>
-            {candidates[selectedConstituency.id].map(candidate => (
-              <div key={candidate} className="mb-3 last:mb-0">
-                <div className="flex justify-between text-sm mb-1">
-                  <span>{candidate}</span>
-                  <span className="font-bold">
-                    {getPercentage(selectedConstituency.id, candidate)}% 
-                    ({votes[selectedConstituency.id]?.[candidate] || 0})
-                  </span>
-                </div>
-                <div className="bg-gray-200 rounded-full h-2">
-                  <div
-                    className="bg-green-600 h-2 rounded-full transition-all"
-                    style={{ width: `${getPercentage(selectedConstituency.id, candidate)}%` }}
-                  />
-                </div>
+            <Stepper current={step} />
+
+            {showAll ? (
+              <div className="stack">
+                {constituencies.map(constituency => (
+                  <div key={constituency.id} className="result-block">
+                    <h4 className="result-title">{constituency.name}</h4>
+                    {getTotalVotes(constituency.id) === 0 ? (
+                      <p className="muted">এখনো কোনো ভোট পড়েনি</p>
+                    ) : (
+                      candidates[constituency.id].map(candidate => (
+                        <div key={candidate} className="result-row">
+                          <div className="result-label">
+                            <span>{candidate}</span>
+                            <span className="result-value">
+                              {getPercentage(constituency.id, candidate)}%
+                              <span className="result-count">
+                                ({votes[constituency.id]?.[candidate] || 0})
+                              </span>
+                            </span>
+                          </div>
+                          <div className="bar">
+                            <div
+                              className="bar-fill"
+                              style={{ width: `${getPercentage(constituency.id, candidate)}%` }}
+                            />
+                          </div>
+                        </div>
+                      ))
+                    )}
+                    <p className="muted">মোট ভোট: {getTotalVotes(constituency.id)}</p>
+                  </div>
+                ))}
               </div>
-            ))}
-            <p className="text-xs text-gray-500 mt-3">
-              মোট ভোট: {getTotalVotes(selectedConstituency.id)}
-            </p>
-          </div>
+            ) : (
+              <div className="result-summary">
+                <h3 className="section-title">{selectedConstituency.name} - বর্তমান ফলাফল</h3>
+                {candidates[selectedConstituency.id].map(candidate => (
+                  <div key={candidate} className="result-row">
+                    <div className="result-label">
+                      <span>{candidate}</span>
+                      <span className="result-value">
+                        {getPercentage(selectedConstituency.id, candidate)}%
+                        <span className="result-count">
+                          ({votes[selectedConstituency.id]?.[candidate] || 0})
+                        </span>
+                      </span>
+                    </div>
+                    <div className="bar">
+                      <div
+                        className="bar-fill"
+                        style={{ width: `${getPercentage(selectedConstituency.id, candidate)}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
+                <p className="muted">মোট ভোট: {getTotalVotes(selectedConstituency.id)}</p>
+              </div>
+            )}
 
-          <button
-            onClick={() => window.location.reload()}
-            className="w-full bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition"
-          >
-            সব ফলাফল দেখুন
-          </button>
+            <div className="actions">
+              {!showAll && (
+                <button
+                  onClick={() => setSelectedConstituency(null)}
+                  className="btn btn-secondary"
+                >
+                  সব এলাকার ফলাফল
+                </button>
+              )}
+              <button
+                onClick={resetToSelect}
+                className="btn btn-primary"
+              >
+                শুরুর পৃষ্ঠা
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );
   }
+
+  return null;
 };
 
 export default ElectionPoll;
