@@ -1,36 +1,29 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import { Check, AlertCircle } from 'lucide-react';
+import { Check } from 'lucide-react';
 import './App.css';
 import constituencyData from './assets/constituencies.json';
 import candidatesData from './assets/candidates.json';
 
-const verificationQuestions = [
-  {
-    question: 'বাংলাদেশের জাতীয় ফুল কী?',
-    options: ['শাপলা', 'গোলাপ', 'বেলি', 'জবা'],
-    correct: 0
-  },
-  {
-    question: 'বাংলাদেশের রাজধানী কোথায়?',
-    options: ['চট্টগ্রাম', 'ঢাকা', 'সিলেট', 'রাজশাহী'],
-    correct: 1
-  },
-  {
-    question: 'বাংলাদেশের স্বাধীনতা দিবস কবে?',
-    options: ['২১শে ফেব্রুয়ারি', '১৬ই ডিসেম্বর', '২৬শে মার্চ', '৭ই মার্চ'],
-    correct: 2
-  }
-];
-
 const stepOrder = [
-  { key: 'select', label: 'এলাকা নির্বাচন' },
-  { key: 'verify', label: 'যাচাইকরণ' },
-  { key: 'vote', label: 'ভোট দিন' },
-  { key: 'results', label: 'ফলাফল' }
+  { key: 'division', label: 'বিভাগ' },
+  { key: 'district', label: 'জেলা' },
+  { key: 'constituency', label: 'আসন' },
+  { key: 'candidates', label: 'প্রার্থী' }
 ];
 
 const makeKey = (division, district, constituency) =>
   `${division}||${district}||${constituency}`;
+
+const normalizeConstituencyName = (value = '') =>
+  value
+    .trim()
+    .replace(/\s+/g, '')
+    .replace(/[–—]/g, '-')
+    .replace(/ড়/g, 'ড়')
+    .replace(/ঢ়/g, 'ঢ়')
+    .replace(/য়/g, 'য়')
+    .replace(/য়া/g, 'য়া')
+    .replace(/চট্রগ্রাম/g, 'চট্টগ্রাম');
 
 const generateFingerprint = () => {
   const canvas = document.createElement('canvas');
@@ -76,8 +69,6 @@ const ElectionPoll = () => {
   const [selectedDivision, setSelectedDivision] = useState('');
   const [selectedDistrict, setSelectedDistrict] = useState('');
   const [selectedConstituency, setSelectedConstituency] = useState(null);
-  const [verificationQ, setVerificationQ] = useState(null);
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [error, setError] = useState('');
   const [selectedCandidate, setSelectedCandidate] = useState(null);
   const [votes, setVotes] = useState({});
@@ -85,6 +76,15 @@ const ElectionPoll = () => {
   const [blocked, setBlocked] = useState(false);
 
   const constituencyRows = useMemo(() => constituencyData || [], []);
+
+  const candidateKeyLookup = useMemo(() => {
+    const map = new Map();
+    Object.keys(candidatesData || {}).forEach((key) => {
+      map.set(key, key);
+      map.set(normalizeConstituencyName(key), key);
+    });
+    return map;
+  }, []);
 
   const divisions = useMemo(
     () => [...new Set(constituencyRows.map((row) => row.division))],
@@ -141,23 +141,9 @@ const ElectionPoll = () => {
 
   const selectConstituency = () => {
     if (!selectedDivision || !selectedDistrict || !selectedConstituency) return;
-    const randomQ =
-      verificationQuestions[Math.floor(Math.random() * verificationQuestions.length)];
-    setVerificationQ(randomQ);
-    setSelectedAnswer(null);
     setSelectedCandidate(null);
     setError('');
-    setStep('verify');
-  };
-
-  const verifyAnswer = () => {
-    if (selectedAnswer === verificationQ.correct) {
-      setStep('vote');
-      setError('');
-    } else {
-      setError('ভুল উত্তর। অনুগ্রহ করে আবার চেষ্টা করুন।');
-      setSelectedAnswer(null);
-    }
+    setStep('vote');
   };
 
   const submitVote = () => {
@@ -196,14 +182,26 @@ const ElectionPoll = () => {
   const resetToSelect = () => {
     setSelectedConstituency(null);
     setSelectedCandidate(null);
-    setSelectedAnswer(null);
     setError('');
     setStep('select');
   };
 
-  const candidatesForConstituency = selectedConstituency
-    ? candidatesData[selectedConstituency.name] || []
-    : [];
+  const getStepperKey = () => {
+    if (step === 'vote' || step === 'results') return 'candidates';
+    if (selectedConstituency) return 'constituency';
+    if (selectedDistrict) return 'district';
+    if (selectedDivision) return 'division';
+    return 'division';
+  };
+
+  const candidatesForConstituency = useMemo(() => {
+    if (!selectedConstituency) return [];
+    const exact = candidatesData[selectedConstituency.name];
+    if (exact) return exact;
+    const normalizedKey = normalizeConstituencyName(selectedConstituency.name);
+    const lookup = candidateKeyLookup.get(normalizedKey);
+    return lookup ? candidatesData[lookup] || [] : [];
+  }, [selectedConstituency, candidateKeyLookup]);
 
   if (step === 'select') {
     const hasData = divisions.length > 0;
@@ -216,7 +214,7 @@ const ElectionPoll = () => {
               <p className="subtitle">প্রথমে বিভাগ, এরপর জেলা ও আসন নির্বাচন করুন</p>
             </div>
 
-            <Stepper current={step} />
+            <Stepper current={getStepperKey()} />
 
             {!hasData && (
               <div className="alert" role="alert">
@@ -313,58 +311,7 @@ const ElectionPoll = () => {
                 disabled={!selectedDivision || !selectedDistrict || !selectedConstituency}
                 className="btn btn-primary"
               >
-                যাচাইকরণ শুরু করুন
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (step === 'verify') {
-    return (
-      <div className="page">
-        <div className="container narrow">
-          <div className="card">
-            <div className="header">
-              <h2 className="title">যাচাইকরণ</h2>
-              <p className="subtitle">{selectedConstituency.name}</p>
-            </div>
-
-            <Stepper current={step} />
-
-            <div className="question">
-              <p className="question-text">{verificationQ.question}</p>
-              <div className="stack">
-                {verificationQ.options.map((option, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedAnswer(index)}
-                    className={`option ${selectedAnswer === index ? 'option-selected' : ''}`}
-                  >
-                    {option}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {error && (
-              <div className="alert" role="alert">
-                {error}
-              </div>
-            )}
-
-            <div className="actions">
-              <button onClick={resetToSelect} className="btn btn-secondary">
-                বাতিল
-              </button>
-              <button
-                onClick={verifyAnswer}
-                disabled={selectedAnswer === null}
-                className="btn btn-primary"
-              >
-                এগিয়ে যান
+                প্রার্থী দেখুন
               </button>
             </div>
           </div>
@@ -383,7 +330,7 @@ const ElectionPoll = () => {
               <p className="subtitle">{selectedConstituency.name}</p>
             </div>
 
-            <Stepper current={step} />
+            <Stepper current={getStepperKey()} />
 
             {candidatesForConstituency.length === 0 ? (
               <div className="alert" role="alert">
@@ -474,7 +421,7 @@ const ElectionPoll = () => {
             )}
 
             <div className="actions">
-              <button onClick={() => setStep('verify')} className="btn btn-secondary">
+              <button onClick={resetToSelect} className="btn btn-secondary">
                 পিছনে
               </button>
               <button onClick={submitVote} className="btn btn-primary" disabled={!selectedCandidate}>
@@ -505,7 +452,7 @@ const ElectionPoll = () => {
               </p>
             </div>
 
-            <Stepper current={step} />
+            <Stepper current={getStepperKey()} />
 
             {resultKey && (
               <div className="result-summary">
