@@ -3,7 +3,6 @@
   "private": true,
   "workspaces": [
     "frontend",
-    "backend",
     "shared"
   ],
   "scripts": {
@@ -12,6 +11,6 @@
     "preview": "npm run preview -w frontend",
     "lint": "npm run lint -w frontend",
     "constituencies:build": "npm run constituencies:build -w frontend",
-    "backend:dev": "npm run dev -w backend"
+    "candidates:build": "npm run candidates:build -w frontend"
   }
 }

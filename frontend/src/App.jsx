@@ -2,33 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { Check, AlertCircle } from 'lucide-react';
 import './App.css';
 import constituencyData from './assets/constituencies.json';
-
-const API_BASE = '/api';
-
-const candidatesByName = {
-  'ঢাকা-৮': [
-    'মির্জা আব্বাস (বিএনপি)',
-    'নাসিরউদ্দিন পাটোয়ারী (এনসিপি)',
-    'কেফায়েত উল্লাহ (ইসলামী আন্দোলন)',
-    'মেঘনা আলম (গণ অধিকার পরিষদ)'
-  ],
-  'ঢাকা-৯': [
-    'হাবিবুর রশিদ হাবিব (বিএনপি)',
-    'কবির আহমেদ (জামায়াত)',
-    'জাবেদ রাসিন (এনসিপি)',
-    'তাসনিম জারা (স্বতন্ত্র)',
-    'কাজী আবুল খায়ের (জাতীয় পার্টি)',
-    'শাহ ইফতেখার আহসান (ইসলামী আন্দোলন)'
-  ],
-  'ঢাকা-১৫': [
-    'ড. শফিকুর রহমান (জামায়াত আমীর)',
-    'শফিকুল ইসলাম খান (বিএনপি)',
-    'শামসুল হক (জাতীয় পার্টি)',
-    'এ কে এম শফিকুল ইসলাম (গণফোরাম)',
-    'আশফাকুর রহমান (জাসদ)',
-    'খান শোয়েব আমান উল্লাহ (জনতার দল)'
-  ]
-};
+import candidatesData from './assets/candidates.json';
 
 const verificationQuestions = [
   {
@@ -58,6 +32,26 @@ const stepOrder = [
 const makeKey = (division, district, constituency) =>
   `${division}||${district}||${constituency}`;
 
+const generateFingerprint = () => {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  ctx.textBaseline = 'top';
+  ctx.font = '14px Arial';
+  ctx.fillText('fingerprint', 2, 2);
+  const canvasData = canvas.toDataURL();
+
+  const fingerprint = {
+    userAgent: navigator.userAgent,
+    language: navigator.language,
+    platform: navigator.platform,
+    screenResolution: `${screen.width}x${screen.height}`,
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    canvas: canvasData.slice(-50)
+  };
+
+  return btoa(JSON.stringify(fingerprint));
+};
+
 const Stepper = ({ current }) => (
   <div className="stepper" aria-label="প্রক্রিয়া অগ্রগতি">
     {stepOrder.map((step, index) => {
@@ -86,10 +80,9 @@ const ElectionPoll = () => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [error, setError] = useState('');
   const [selectedCandidate, setSelectedCandidate] = useState(null);
-  const [customCandidate, setCustomCandidate] = useState('');
   const [votes, setVotes] = useState({});
-  const [resultsDivision, setResultsDivision] = useState('');
-  const [resultsDistrict, setResultsDistrict] = useState('');
+  const [fingerprint, setFingerprint] = useState('');
+  const [blocked, setBlocked] = useState(false);
 
   const constituencyRows = useMemo(() => constituencyData || [], []);
 
@@ -130,75 +123,21 @@ const ElectionPoll = () => {
         ]
       : [];
 
-  const mergeVotes = (items) => {
-    setVotes((prev) => {
-      const next = { ...prev };
-      items.forEach((item) => {
-        const key = makeKey(item.division, item.district, item.constituency);
-        next[key] = item.votes || {};
-      });
-      return next;
-    });
-  };
-
-  const loadVotesForDistrict = async (division, district) => {
-    if (!division || !district) return;
-    try {
-      const res = await fetch(
-        `${API_BASE}/results?division=${encodeURIComponent(division)}&district=${encodeURIComponent(district)}`
-      );
-      if (!res.ok) return;
-      const data = await res.json();
-      if (data.items) {
-        mergeVotes(data.items);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   useEffect(() => {
-    const checkStatus = async () => {
-      try {
-        const res = await fetch(`${API_BASE}/status`);
-        if (!res.ok) return;
-        const data = await res.json();
-        if (data.voted) {
-          setStep('blocked');
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    };
+    const savedVotes = localStorage.getItem('pollVotes');
+    if (savedVotes) {
+      setVotes(JSON.parse(savedVotes));
+    }
 
-    checkStatus();
+    const fp = generateFingerprint();
+    setFingerprint(fp);
+
+    const voted = localStorage.getItem(`voted_${fp}`);
+    if (voted) {
+      setBlocked(true);
+      setStep('results');
+    }
   }, []);
-
-  useEffect(() => {
-    if (selectedDivision && selectedDistrict) {
-      loadVotesForDistrict(selectedDivision, selectedDistrict);
-    }
-  }, [selectedDivision, selectedDistrict]);
-
-  useEffect(() => {
-    if (!resultsDivision && divisions.length) {
-      setResultsDivision(divisions[0]);
-    }
-  }, [divisions, resultsDivision]);
-
-  useEffect(() => {
-    if (!resultsDivision) return;
-    const districtList = [...(districtsByDivision.get(resultsDivision) || [])];
-    if (districtList.length && !districtList.includes(resultsDistrict)) {
-      setResultsDistrict(districtList[0]);
-    }
-  }, [resultsDivision, resultsDistrict, districtsByDivision]);
-
-  useEffect(() => {
-    if (resultsDivision && resultsDistrict) {
-      loadVotesForDistrict(resultsDivision, resultsDistrict);
-    }
-  }, [resultsDivision, resultsDistrict]);
 
   const selectConstituency = () => {
     if (!selectedDivision || !selectedDistrict || !selectedConstituency) return;
@@ -207,7 +146,6 @@ const ElectionPoll = () => {
     setVerificationQ(randomQ);
     setSelectedAnswer(null);
     setSelectedCandidate(null);
-    setCustomCandidate('');
     setError('');
     setStep('verify');
   };
@@ -222,41 +160,26 @@ const ElectionPoll = () => {
     }
   };
 
-  const submitVote = async () => {
-    const candidate = selectedCandidate || customCandidate.trim();
-    if (!candidate) {
+  const submitVote = () => {
+    if (!selectedCandidate || !selectedConstituency) {
       setError('অনুগ্রহ করে একজন প্রার্থী নির্বাচন করুন');
       return;
     }
 
-    try {
-      const res = await fetch(`${API_BASE}/vote`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          division: selectedConstituency.division,
-          district: selectedConstituency.district,
-          constituency: selectedConstituency.name,
-          candidate
-        })
-      });
-
-      if (res.status === 409) {
-        setStep('blocked');
-        return;
-      }
-
-      if (!res.ok) {
-        setError('ভোট জমা দিতে সমস্যা হয়েছে। পরে চেষ্টা করুন।');
-        return;
-      }
-
-      await loadVotesForDistrict(selectedConstituency.division, selectedConstituency.district);
-      setStep('results');
-    } catch (err) {
-      console.error(err);
-      setError('সার্ভার সংযোগ ব্যর্থ হয়েছে।');
+    const key = selectedConstituency.key;
+    const newVotes = { ...votes };
+    if (!newVotes[key]) {
+      newVotes[key] = {};
     }
+
+    const label = `${selectedCandidate.name} (${selectedCandidate.party || 'স্বতন্ত্র'})`;
+    newVotes[key][label] = (newVotes[key][label] || 0) + 1;
+
+    setVotes(newVotes);
+    localStorage.setItem('pollVotes', JSON.stringify(newVotes));
+    localStorage.setItem(`voted_${fingerprint}`, Date.now().toString());
+
+    setStep('results');
   };
 
   const getTotalVotes = (key) => {
@@ -273,50 +196,14 @@ const ElectionPoll = () => {
   const resetToSelect = () => {
     setSelectedConstituency(null);
     setSelectedCandidate(null);
-    setCustomCandidate('');
     setSelectedAnswer(null);
     setError('');
     setStep('select');
   };
 
-  const selectedCandidates = selectedConstituency
-    ? candidatesByName[selectedConstituency.name] || []
+  const candidatesForConstituency = selectedConstituency
+    ? candidatesData[selectedConstituency.name] || []
     : [];
-
-  const resultsDistricts = resultsDivision
-    ? [...(districtsByDivision.get(resultsDivision) || [])]
-    : [];
-
-  const resultsConstituencies =
-    resultsDivision && resultsDistrict
-      ? [
-          ...(constituenciesByDistrict.get(
-            `${resultsDivision}||${resultsDistrict}`
-          ) || [])
-        ]
-      : [];
-
-  if (step === 'blocked') {
-    return (
-      <div className="page">
-        <div className="container">
-          <div className="card centered">
-            <AlertCircle className="icon-warning" />
-            <h2 className="title">আপনি ইতিমধ্যে ভোট দিয়েছেন</h2>
-            <p className="subtitle">প্রতি আইপি ঠিকানা থেকে একবার মাত্র ভোট দেওয়া যাবে।</p>
-            <div className="actions">
-              <button onClick={() => setStep('results')} className="btn btn-primary">
-                ফলাফল দেখুন
-              </button>
-              <button onClick={resetToSelect} className="btn btn-secondary">
-                এলাকা দেখুন
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   if (step === 'select') {
     const hasData = divisions.length > 0;
@@ -489,41 +376,94 @@ const ElectionPoll = () => {
   if (step === 'vote') {
     return (
       <div className="page">
-        <div className="container narrow">
+        <div className="container">
           <div className="card">
             <div className="header">
-              <h2 className="title">আপনার পছন্দ নির্বাচন করুন</h2>
+              <h2 className="title">প্রার্থী তালিকা</h2>
               <p className="subtitle">{selectedConstituency.name}</p>
             </div>
 
             <Stepper current={step} />
 
-            {selectedCandidates.length > 0 ? (
-              <div className="stack">
-                {selectedCandidates.map((candidate, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedCandidate(candidate)}
-                    className={`option option-wide ${
-                      selectedCandidate === candidate ? 'option-selected' : ''
-                    }`}
-                  >
-                    <span>{candidate}</span>
-                    {selectedCandidate === candidate && <Check className="icon-check" />}
-                  </button>
-                ))}
+            {candidatesForConstituency.length === 0 ? (
+              <div className="alert" role="alert">
+                এই আসনের জন্য প্রার্থী তালিকা পাওয়া যায়নি।
               </div>
             ) : (
-              <div className="stack">
-                <div className="muted">
-                  এই আসনের জন্য প্রার্থী তালিকা নেই। আপনার পছন্দ লিখুন।
-                </div>
-                <input
-                  className="text-input"
-                  placeholder="প্রার্থীর নাম লিখুন"
-                  value={customCandidate}
-                  onChange={(e) => setCustomCandidate(e.target.value)}
-                />
+              <div className="table-wrap">
+                <table className="candidate-table">
+                  <thead>
+                    <tr>
+                      <th>ক্রম</th>
+                      <th>প্রার্থী</th>
+                      <th>ছবি</th>
+                      <th>দল/স্বতন্ত্র</th>
+                      <th>প্রতীক</th>
+                      <th>হলফনামা</th>
+                      <th>ব্যয় বিবরণী</th>
+                      <th>কর রিটার্ন</th>
+                      <th>ভোট</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {candidatesForConstituency.map((candidate, index) => (
+                      <tr key={`${candidate.name}-${index}`}>
+                        <td>{index + 1}</td>
+                        <td>{candidate.name}</td>
+                        <td>
+                          {candidate.photo ? (
+                            <img
+                              src={candidate.photo}
+                              alt={candidate.name}
+                              className="candidate-photo"
+                            />
+                          ) : (
+                            '-'
+                          )}
+                        </td>
+                        <td>{candidate.party || '-'}</td>
+                        <td>{candidate.symbol || '-'}</td>
+                        <td>
+                          {candidate.affidavit ? (
+                            <a href={candidate.affidavit} target="_blank" rel="noreferrer">
+                              ডাউনলোড
+                            </a>
+                          ) : (
+                            '-'
+                          )}
+                        </td>
+                        <td>
+                          {candidate.expense ? (
+                            <a href={candidate.expense} target="_blank" rel="noreferrer">
+                              ডাউনলোড
+                            </a>
+                          ) : (
+                            '-'
+                          )}
+                        </td>
+                        <td>
+                          {candidate.tax ? (
+                            <a href={candidate.tax} target="_blank" rel="noreferrer">
+                              ডাউনলোড
+                            </a>
+                          ) : (
+                            '-'
+                          )}
+                        </td>
+                        <td>
+                          <button
+                            className={`btn btn-small ${
+                              selectedCandidate === candidate ? 'btn-primary' : 'btn-secondary'
+                            }`}
+                            onClick={() => setSelectedCandidate(candidate)}
+                          >
+                            {selectedCandidate === candidate ? 'নির্বাচিত' : 'ভোট দিন'}
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             )}
 
@@ -537,7 +477,7 @@ const ElectionPoll = () => {
               <button onClick={() => setStep('verify')} className="btn btn-secondary">
                 পিছনে
               </button>
-              <button onClick={submitVote} className="btn btn-primary">
+              <button onClick={submitVote} className="btn btn-primary" disabled={!selectedCandidate}>
                 ভোট জমা দিন
               </button>
             </div>
@@ -557,8 +497,12 @@ const ElectionPoll = () => {
               <div className="success-icon">
                 <Check className="icon-check" />
               </div>
-              <h2 className="title">ধন্যবাদ!</h2>
-              <p className="subtitle">আপনার ভোট সফলভাবে জমা হয়েছে</p>
+              <h2 className="title">{blocked ? 'আপনি ইতিমধ্যে ভোট দিয়েছেন' : 'ধন্যবাদ!'}</h2>
+              <p className="subtitle">
+                {blocked
+                  ? 'প্রতি ডিভাইস থেকে একবার মাত্র ভোট দেওয়া যাবে।'
+                  : 'আপনার ভোট সফলভাবে জমা হয়েছে'}
+              </p>
             </div>
 
             <Stepper current={step} />
@@ -591,75 +535,9 @@ const ElectionPoll = () => {
               </div>
             )}
 
-            <div className="filter">
-              <div className="section-title">অন্যান্য এলাকার ফলাফল দেখুন</div>
-              <div className="form-grid">
-                <label className="field">
-                  <span>বিভাগ</span>
-                  <select
-                    value={resultsDivision}
-                    onChange={(e) => setResultsDivision(e.target.value)}
-                  >
-                    {divisions.map((division) => (
-                      <option key={division} value={division}>
-                        {division}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <label className="field">
-                  <span>জেলা</span>
-                  <select
-                    value={resultsDistrict}
-                    onChange={(e) => setResultsDistrict(e.target.value)}
-                    disabled={!resultsDivision}
-                  >
-                    {resultsDistricts.map((district) => (
-                      <option key={district} value={district}>
-                        {district}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              </div>
-
-              <div className="stack">
-                {resultsConstituencies.map((constituency) => {
-                  const key = makeKey(resultsDivision, resultsDistrict, constituency);
-                  return (
-                    <div key={key} className="result-block">
-                      <h4 className="result-title">{constituency}</h4>
-                      {Object.keys(votes[key] || {}).length === 0 ? (
-                        <p className="muted">এখনো কোনো ভোট পড়েনি</p>
-                      ) : (
-                        Object.keys(votes[key] || {}).map((candidate) => (
-                          <div key={candidate} className="result-row">
-                            <div className="result-label">
-                              <span>{candidate}</span>
-                              <span className="result-value">
-                                {getPercentage(key, candidate)}%
-                                <span className="result-count">({votes[key]?.[candidate] || 0})</span>
-                              </span>
-                            </div>
-                            <div className="bar">
-                              <div
-                                className="bar-fill"
-                                style={{ width: `${getPercentage(key, candidate)}%` }}
-                              />
-                            </div>
-                          </div>
-                        ))
-                      )}
-                      <p className="muted">মোট ভোট: {getTotalVotes(key)}</p>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
             <div className="actions">
               <button onClick={resetToSelect} className="btn btn-primary">
-                আবার ভোট দিন
+                শুরুর পৃষ্ঠা
               </button>
             </div>
           </div>

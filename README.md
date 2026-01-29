@@ -1,11 +1,10 @@
 # Bangladesh Election Poll
 
-A structured monorepo with a React (Vite) frontend and a Node.js backend to run an online mock election poll.
+A structured repo with a React (Vite) frontend to run an online mock election poll.
 
 ## Structure
 
 ```
-backend/   # Express API (IP-based vote blocking + PostgreSQL)
 frontend/  # Vite + React UI
 shared/    # Shared files (future)
 ```
@@ -18,27 +17,20 @@ npm install
 
 > If you prefer installing per workspace:
 > - `npm install -w frontend`
-> - `npm install -w backend`
 
-## Postgres setup
+Python deps for data scripts:
 
-1. Create a database (example: `bd_election_poll`).
-2. Copy `backend/.env.example` to `backend/.env` and set `DATABASE_URL`.
-3. The backend auto-creates tables on startup.
+```bash
+pip install -r frontend/scripts/requirements.txt
+```
 
 ## Run (dev)
 
-Terminal 1:
-```bash
-npm run backend:dev
-```
-
-Terminal 2:
 ```bash
 npm run dev
 ```
 
-Frontend runs on `http://localhost:5173` and proxies `/api` to `http://localhost:5000`.
+Frontend runs on `http://localhost:5173`.
 
 ## Constituency list (XLSX)
 
@@ -51,6 +43,25 @@ To regenerate manually:
 npm run constituencies:build
 ```
 
+## Candidate list (public source)
+
+The candidate list is generated from `http://103.183.38.66/` and saved to
+`frontend/src/assets/candidates.json`.
+
+Generate manually:
+
+```bash
+npm run candidates:build
+```
+
+Optional environment variables:
+
+- `ELECTION_ID` (defaults to the latest national election in the source)
+- `ELECTION_TYPE_ID` (default 1)
+- `CANDIDATE_TYPE_ID` (default 1)
+- `STATUS_ID` (default 11, which is "চূড়ান্ত")
+- `CANDIDATE_SOURCE_BASE` (default `http://103.183.38.66`)
+
 ## Build
 
 ```bash
@@ -59,6 +70,5 @@ npm run build
 
 ## Notes
 
-- IP-based vote blocking happens in the backend (`backend/src/index.js`).
-- Votes are stored in PostgreSQL (`votes` and `voted_ips` tables).
-- To deploy, run the backend as a service and host the frontend `dist` folder on your static host.
+- Voting is stored locally in the browser (localStorage) for now.
+- Candidate data is fetched from the public source and embedded into the frontend.

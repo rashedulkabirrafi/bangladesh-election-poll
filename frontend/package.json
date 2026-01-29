@@ -11,7 +11,8 @@
     "lint": "eslint .",
     "prepreview": "npm run constituencies:build",
     "preview": "vite preview",
-    "constituencies:build": "python scripts/generate_constituencies.py"
+    "constituencies:build": "python scripts/generate_constituencies.py",
+    "candidates:build": "python scripts/fetch_candidates.py"
   },
   "dependencies": {
     "lucide-react": "^0.563.0",

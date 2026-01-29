@@ -183,6 +183,51 @@
   gap: 16px;
 }
 
+.table-wrap {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid #e0e6eb;
+}
+
+.candidate-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 760px;
+  background: #ffffff;
+}
+
+.candidate-table th,
+.candidate-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #eef1f4;
+  text-align: center;
+  font-size: 14px;
+}
+
+.candidate-table th {
+  background: #f6f8fb;
+  color: #1d2b36;
+  font-weight: 600;
+}
+
+.candidate-table td {
+  color: #2b3a43;
+}
+
+.candidate-photo {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid #e3e8ed;
+}
+
+.btn-small {
+  padding: 8px 10px;
+  font-size: 13px;
+  border-radius: 10px;
+}
+
 .select-card {
   border: none;
   text-align: left;
