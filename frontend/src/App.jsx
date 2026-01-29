@@ -23,7 +23,14 @@ const normalizeConstituencyName = (value = '') =>
     .replace(/ঢ়/g, 'ঢ়')
     .replace(/য়/g, 'য়')
     .replace(/য়া/g, 'য়া')
-    .replace(/চট্রগ্রাম/g, 'চট্টগ্রাম');
+    .replace(/চট্রগ্রাম/g, 'চট্টগ্রাম')
+    .replace(/টাংগাইল/g, 'টাঙ্গাইল')
+    .replace(/নেত্রকোণা/g, 'নেত্রকোনা')
+    .replace(/লক্ষীপুর/g, 'লক্ষ্মীপুর')
+    .replace(/নোয়াখালী/g, 'নোয়াখালী')
+    .replace(/মাদারিপুর/g, 'মাদারীপুর')
+    .replace(/রাঙ্গামাটি/g, 'রাঙামাটি')
+    .replace(/ব্রাক্ষণ/g, 'ব্রাহ্মণ');
 
 const generateFingerprint = () => {
   const canvas = document.createElement('canvas');
