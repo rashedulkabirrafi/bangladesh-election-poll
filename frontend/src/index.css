@@ -1,0 +1,98 @@
+@font-face {
+  font-family: "Noto Serif Bengali";
+  src: url("/Noto_Serif_Bengali/static/NotoSerifBengali-Thin.ttf") format("truetype");
+  font-weight: 100;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Serif Bengali";
+  src: url("/Noto_Serif_Bengali/static/NotoSerifBengali-ExtraLight.ttf") format("truetype");
+  font-weight: 200;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Serif Bengali";
+  src: url("/Noto_Serif_Bengali/static/NotoSerifBengali-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Serif Bengali";
+  src: url("/Noto_Serif_Bengali/static/NotoSerifBengali-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Serif Bengali";
+  src: url("/Noto_Serif_Bengali/static/NotoSerifBengali-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Serif Bengali";
+  src: url("/Noto_Serif_Bengali/static/NotoSerifBengali-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Serif Bengali";
+  src: url("/Noto_Serif_Bengali/static/NotoSerifBengali-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Serif Bengali";
+  src: url("/Noto_Serif_Bengali/static/NotoSerifBengali-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Serif Bengali";
+  src: url("/Noto_Serif_Bengali/static/NotoSerifBengali-Black.ttf") format("truetype");
+  font-weight: 900;
+  font-display: swap;
+}
+
+:root {
+  font-family: "Noto Serif Bengali", "Hind Siliguri", "SolaimanLipi", system-ui, -apple-system, serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #1d2b36;
+  background-color: #f3f6f9;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: #f3f6f9;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+}
+
+#root {
+  min-height: 100vh;
+}

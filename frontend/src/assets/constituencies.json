@@ -1,0 +1,1502 @@
+[
+  {
+    "division": "রংপুর",
+    "district": "পঞ্চগড়",
+    "constituency": "পঞ্চগড়-১"
+  },
+  {
+    "division": "রংপুর",
+    "district": "পঞ্চগড়",
+    "constituency": "পঞ্চগড়-২"
+  },
+  {
+    "division": "রংপুর",
+    "district": "ঠাকুরগাঁও",
+    "constituency": "ঠাকুরগাঁও-১"
+  },
+  {
+    "division": "রংপুর",
+    "district": "ঠাকুরগাঁও",
+    "constituency": "ঠাকুরগাঁও-২"
+  },
+  {
+    "division": "রংপুর",
+    "district": "ঠাকুরগাঁও",
+    "constituency": "ঠাকুরগাঁও-৩"
+  },
+  {
+    "division": "রংপুর",
+    "district": "দিনাজপুর",
+    "constituency": "দিনাজপুর-১"
+  },
+  {
+    "division": "রংপুর",
+    "district": "দিনাজপুর",
+    "constituency": "দিনাজপুর-২"
+  },
+  {
+    "division": "রংপুর",
+    "district": "দিনাজপুর",
+    "constituency": "দিনাজপুর-৩"
+  },
+  {
+    "division": "রংপুর",
+    "district": "দিনাজপুর",
+    "constituency": "দিনাজপুর-৪"
+  },
+  {
+    "division": "রংপুর",
+    "district": "দিনাজপুর",
+    "constituency": "দিনাজপুর-৫"
+  },
+  {
+    "division": "রংপুর",
+    "district": "দিনাজপুর",
+    "constituency": "দিনাজপুর-৬"
+  },
+  {
+    "division": "রংপুর",
+    "district": "নীলফামারী",
+    "constituency": "নীলফামারী-১"
+  },
+  {
+    "division": "রংপুর",
+    "district": "নীলফামারী",
+    "constituency": "নীলফামারী-২"
+  },
+  {
+    "division": "রংপুর",
+    "district": "নীলফামারী",
+    "constituency": "নীলফামারী-৩"
+  },
+  {
+    "division": "রংপুর",
+    "district": "নীলফামারী",
+    "constituency": "নীলফামারী-৪"
+  },
+  {
+    "division": "রংপুর",
+    "district": "লালমনিরহাট",
+    "constituency": "লালমনিরহাট-১"
+  },
+  {
+    "division": "রংপুর",
+    "district": "লালমনিরহাট",
+    "constituency": "লালমনিরহাট-২"
+  },
+  {
+    "division": "রংপুর",
+    "district": "লালমনিরহাট",
+    "constituency": "লালমনিরহাট-৩"
+  },
+  {
+    "division": "রংপুর",
+    "district": "রংপুর",
+    "constituency": "রংপুর-১"
+  },
+  {
+    "division": "রংপুর",
+    "district": "রংপুর",
+    "constituency": "রংপুর-২"
+  },
+  {
+    "division": "রংপুর",
+    "district": "রংপুর",
+    "constituency": "রংপুর-৩"
+  },
+  {
+    "division": "রংপুর",
+    "district": "রংপুর",
+    "constituency": "রংপুর-৪"
+  },
+  {
+    "division": "রংপুর",
+    "district": "রংপুর",
+    "constituency": "রংপুর-৫"
+  },
+  {
+    "division": "রংপুর",
+    "district": "রংপুর",
+    "constituency": "রংপুর-৬"
+  },
+  {
+    "division": "রংপুর",
+    "district": "কুড়িগ্রাম",
+    "constituency": "কুড়িগ্রাম-১"
+  },
+  {
+    "division": "রংপুর",
+    "district": "কুড়িগ্রাম",
+    "constituency": "কুড়িগ্রাম-২"
+  },
+  {
+    "division": "রংপুর",
+    "district": "কুড়িগ্রাম",
+    "constituency": "কুড়িগ্রাম-৩"
+  },
+  {
+    "division": "রংপুর",
+    "district": "কুড়িগ্রাম",
+    "constituency": "কুড়িগ্রাম-৪"
+  },
+  {
+    "division": "রংপুর",
+    "district": "গাইবান্ধা",
+    "constituency": "গাইবান্ধা-১"
+  },
+  {
+    "division": "রংপুর",
+    "district": "গাইবান্ধা",
+    "constituency": "গাইবান্ধা-২"
+  },
+  {
+    "division": "রংপুর",
+    "district": "গাইবান্ধা",
+    "constituency": "গাইবান্ধা-৩"
+  },
+  {
+    "division": "রংপুর",
+    "district": "গাইবান্ধা",
+    "constituency": "গাইবান্ধা-৪"
+  },
+  {
+    "division": "রংপুর",
+    "district": "গাইবান্ধা",
+    "constituency": "গাইবান্ধা-৫"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "জয়পুরহাট",
+    "constituency": "জয়পুরহাট-১"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "জয়পুরহাট",
+    "constituency": "জয়পুরহাট-২"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "বগুড়া",
+    "constituency": "বগুড়া-১"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "বগুড়া",
+    "constituency": "বগুড়া-২"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "বগুড়া",
+    "constituency": "বগুড়া-৩"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "বগুড়া",
+    "constituency": "বগুড়া-৪"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "বগুড়া",
+    "constituency": "বগুড়া-৫"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "বগুড়া",
+    "constituency": "বগুড়া-৬"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "বগুড়া",
+    "constituency": "বগুড়া-৭"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "চাঁপাইনবাবগঞ্জ",
+    "constituency": "চাঁপাইনবাবগঞ্জ-১"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "চাঁপাইনবাবগঞ্জ",
+    "constituency": "চাঁপাইনবাবগঞ্জ-২"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "চাঁপাইনবাবগঞ্জ",
+    "constituency": "চাঁপাইনবাবগঞ্জ-৩"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "নওগাঁ",
+    "constituency": "নওগাঁ-১"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "নওগাঁ",
+    "constituency": "নওগাঁ-২"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "নওগাঁ",
+    "constituency": "নওগাঁ-৩"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "নওগাঁ",
+    "constituency": "নওগাঁ-৪"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "নওগাঁ",
+    "constituency": "নওগাঁ-৫"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "নওগাঁ",
+    "constituency": "নওগাঁ-৬"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "রাজশাহী",
+    "constituency": "রাজশাহী-১"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "রাজশাহী",
+    "constituency": "রাজশাহী-২"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "রাজশাহী",
+    "constituency": "রাজশাহী-৩"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "রাজশাহী",
+    "constituency": "রাজশাহী-৪"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "রাজশাহী",
+    "constituency": "রাজশাহী-৫"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "রাজশাহী",
+    "constituency": "রাজশাহী-৬"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "নাটোর",
+    "constituency": "নাটোর-১"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "নাটোর",
+    "constituency": "নাটোর-২"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "নাটোর",
+    "constituency": "নাটোর-৩"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "নাটোর",
+    "constituency": "নাটোর-৪"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "সিরাজগঞ্জ",
+    "constituency": "সিরাজগঞ্জ-১"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "সিরাজগঞ্জ",
+    "constituency": "সিরাজগঞ্জ-২"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "সিরাজগঞ্জ",
+    "constituency": "সিরাজগঞ্জ-৩"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "সিরাজগঞ্জ",
+    "constituency": "সিরাজগঞ্জ-৪"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "সিরাজগঞ্জ",
+    "constituency": "সিরাজগঞ্জ-৫"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "সিরাজগঞ্জ",
+    "constituency": "সিরাজগঞ্জ-৬"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "পাবনা",
+    "constituency": "পাবনা-১"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "পাবনা",
+    "constituency": "পাবনা-২"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "পাবনা",
+    "constituency": "পাবনা-৩"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "পাবনা",
+    "constituency": "পাবনা-৪"
+  },
+  {
+    "division": "রাজশাহী",
+    "district": "পাবনা",
+    "constituency": "পাবনা-৫"
+  },
+  {
+    "division": "খুলনা",
+    "district": "মেহেরপুর",
+    "constituency": "মেহেরপুর-১"
+  },
+  {
+    "division": "খুলনা",
+    "district": "মেহেরপুর",
+    "constituency": "মেহেরপুর-২"
+  },
+  {
+    "division": "খুলনা",
+    "district": "কুষ্টিয়া",
+    "constituency": "কুষ্টিয়া-১"
+  },
+  {
+    "division": "খুলনা",
+    "district": "কুষ্টিয়া",
+    "constituency": "কুষ্টিয়া-২"
+  },
+  {
+    "division": "খুলনা",
+    "district": "কুষ্টিয়া",
+    "constituency": "কুষ্টিয়া-৩"
+  },
+  {
+    "division": "খুলনা",
+    "district": "কুষ্টিয়া",
+    "constituency": "কুষ্টিয়া-৪"
+  },
+  {
+    "division": "খুলনা",
+    "district": "চুয়াডাঙ্গা",
+    "constituency": "চুয়াডাঙ্গা-১"
+  },
+  {
+    "division": "খুলনা",
+    "district": "চুয়াডাঙ্গা",
+    "constituency": "চুয়াডাঙ্গা-২"
+  },
+  {
+    "division": "খুলনা",
+    "district": "ঝিনাইদহ",
+    "constituency": "ঝিনাইদহ-১"
+  },
+  {
+    "division": "খুলনা",
+    "district": "ঝিনাইদহ",
+    "constituency": "ঝিনাইদহ-২"
+  },
+  {
+    "division": "খুলনা",
+    "district": "ঝিনাইদহ",
+    "constituency": "ঝিনাইদহ-৩"
+  },
+  {
+    "division": "খুলনা",
+    "district": "ঝিনাইদহ",
+    "constituency": "ঝিনাইদহ-৪"
+  },
+  {
+    "division": "খুলনা",
+    "district": "যশোর",
+    "constituency": "যশোর-১"
+  },
+  {
+    "division": "খুলনা",
+    "district": "যশোর",
+    "constituency": "যশোর-২"
+  },
+  {
+    "division": "খুলনা",
+    "district": "যশোর",
+    "constituency": "যশোর-৩"
+  },
+  {
+    "division": "খুলনা",
+    "district": "যশোর",
+    "constituency": "যশোর-৪"
+  },
+  {
+    "division": "খুলনা",
+    "district": "যশোর",
+    "constituency": "যশোর-৫"
+  },
+  {
+    "division": "খুলনা",
+    "district": "যশোর",
+    "constituency": "যশোর-৬"
+  },
+  {
+    "division": "খুলনা",
+    "district": "মাগুরা",
+    "constituency": "মাগুরা-১"
+  },
+  {
+    "division": "খুলনা",
+    "district": "মাগুরা",
+    "constituency": "মাগুরা-২"
+  },
+  {
+    "division": "খুলনা",
+    "district": "নড়াইল",
+    "constituency": "নড়াইল-১"
+  },
+  {
+    "division": "খুলনা",
+    "district": "নড়াইল",
+    "constituency": "নড়াইল-২"
+  },
+  {
+    "division": "খুলনা",
+    "district": "বাগেরহাট",
+    "constituency": "বাগেরহাট-১"
+  },
+  {
+    "division": "খুলনা",
+    "district": "বাগেরহাট",
+    "constituency": "বাগেরহাট-২"
+  },
+  {
+    "division": "খুলনা",
+    "district": "বাগেরহাট",
+    "constituency": "বাগেরহাট-৩"
+  },
+  {
+    "division": "খুলনা",
+    "district": "বাগেরহাট",
+    "constituency": "বাগেরহাট-৪"
+  },
+  {
+    "division": "খুলনা",
+    "district": "খুলনা",
+    "constituency": "খুলনা-১"
+  },
+  {
+    "division": "খুলনা",
+    "district": "খুলনা",
+    "constituency": "খুলনা-২"
+  },
+  {
+    "division": "খুলনা",
+    "district": "খুলনা",
+    "constituency": "খুলনা-৩"
+  },
+  {
+    "division": "খুলনা",
+    "district": "খুলনা",
+    "constituency": "খুলনা-৪"
+  },
+  {
+    "division": "খুলনা",
+    "district": "খুলনা",
+    "constituency": "খুলনা-৫"
+  },
+  {
+    "division": "খুলনা",
+    "district": "খুলনা",
+    "constituency": "খুলনা-৬"
+  },
+  {
+    "division": "খুলনা",
+    "district": "সাতক্ষীরা",
+    "constituency": "সাতক্ষীরা-১"
+  },
+  {
+    "division": "খুলনা",
+    "district": "সাতক্ষীরা",
+    "constituency": "সাতক্ষীরা-২"
+  },
+  {
+    "division": "খুলনা",
+    "district": "সাতক্ষীরা",
+    "constituency": "সাতক্ষীরা-৩"
+  },
+  {
+    "division": "খুলনা",
+    "district": "সাতক্ষীরা",
+    "constituency": "সাতক্ষীরা-৪"
+  },
+  {
+    "division": "বরিশাল",
+    "district": "বরগুনা",
+    "constituency": "বরগুনা-১"
+  },
+  {
+    "division": "বরিশাল",
+    "district": "বরগুনা",
+    "constituency": "বরগুনা-২"
+  },
+  {
+    "division": "বরিশাল",
+    "district": "পটুয়াখালী",
+    "constituency": "পটুয়াখালী-১"
+  },
+  {
+    "division": "বরিশাল",
+    "district": "পটুয়াখালী",
+    "constituency": "পটুয়াখালী-২"
+  },
+  {
+    "division": "বরিশাল",
+    "district": "পটুয়াখালী",
+    "constituency": "পটুয়াখালী-৩"
+  },
+  {
+    "division": "বরিশাল",
+    "district": "পটুয়াখালী",
+    "constituency": "পটুয়াখালী-৪"
+  },
+  {
+    "division": "বরিশাল",
+    "district": "ভোলা",
+    "constituency": "ভোলা-১"
+  },
+  {
+    "division": "বরিশাল",
+    "district": "ভোলা",
+    "constituency": "ভোলা-২"
+  },
+  {
+    "division": "বরিশাল",
+    "district": "ভোলা",
+    "constituency": "ভোলা-৩"
+  },
+  {
+    "division": "বরিশাল",
+    "district": "ভোলা",
+    "constituency": "ভোলা-৪"
+  },
+  {
+    "division": "বরিশাল",
+    "district": "বরিশাল",
+    "constituency": "বরিশাল-১"
+  },
+  {
+    "division": "বরিশাল",
+    "district": "বরিশাল",
+    "constituency": "বরিশাল-২"
+  },
+  {
+    "division": "বরিশাল",
+    "district": "বরিশাল",
+    "constituency": "বরিশাল-৩"
+  },
+  {
+    "division": "বরিশাল",
+    "district": "বরিশাল",
+    "constituency": "বরিশাল-৪"
+  },
+  {
+    "division": "বরিশাল",
+    "district": "বরিশাল",
+    "constituency": "বরিশাল-৫"
+  },
+  {
+    "division": "বরিশাল",
+    "district": "বরিশাল",
+    "constituency": "বরিশাল-৬"
+  },
+  {
+    "division": "বরিশাল",
+    "district": "ঝালকাঠি",
+    "constituency": "ঝালকাঠি-১"
+  },
+  {
+    "division": "বরিশাল",
+    "district": "ঝালকাঠি",
+    "constituency": "ঝালকাঠি-২"
+  },
+  {
+    "division": "বরিশাল",
+    "district": "পিরোজপুর",
+    "constituency": "পিরোজপুর-১"
+  },
+  {
+    "division": "বরিশাল",
+    "district": "পিরোজপুর",
+    "constituency": "পিরোজপুর-২"
+  },
+  {
+    "division": "বরিশাল",
+    "district": "পিরোজপুর",
+    "constituency": "পিরোজপুর-৩"
+  },
+  {
+    "division": "ময়মনসিংহ",
+    "district": "জামালপুর",
+    "constituency": "জামালপুর-১"
+  },
+  {
+    "division": "ময়মনসিংহ",
+    "district": "জামালপুর",
+    "constituency": "জামালপুর-২"
+  },
+  {
+    "division": "ময়মনসিংহ",
+    "district": "জামালপুর",
+    "constituency": "জামালপুর-৩"
+  },
+  {
+    "division": "ময়মনসিংহ",
+    "district": "জামালপুর",
+    "constituency": "জামালপুর-৪"
+  },
+  {
+    "division": "ময়মনসিংহ",
+    "district": "জামালপুর",
+    "constituency": "জামালপুর-৫"
+  },
+  {
+    "division": "ময়মনসিংহ",
+    "district": "শেরপুর",
+    "constituency": "শেরপুর-১"
+  },
+  {
+    "division": "ময়মনসিংহ",
+    "district": "শেরপুর",
+    "constituency": "শেরপুর-২"
+  },
+  {
+    "division": "ময়মনসিংহ",
+    "district": "শেরপুর",
+    "constituency": "শেরপুর-৩"
+  },
+  {
+    "division": "ময়মনসিংহ",
+    "district": "ময়মনসিংহ",
+    "constituency": "ময়মনসিংহ-১"
+  },
+  {
+    "division": "ময়মনসিংহ",
+    "district": "ময়মনসিংহ",
+    "constituency": "ময়মনসিংহ-২"
+  },
+  {
+    "division": "ময়মনসিংহ",
+    "district": "ময়মনসিংহ",
+    "constituency": "ময়মনসিংহ-৩"
+  },
+  {
+    "division": "ময়মনসিংহ",
+    "district": "ময়মনসিংহ",
+    "constituency": "ময়মনসিংহ-৪"
+  },
+  {
+    "division": "ময়মনসিংহ",
+    "district": "ময়মনসিংহ",
+    "constituency": "ময়মনসিংহ-৫"
+  },
+  {
+    "division": "ময়মনসিংহ",
+    "district": "ময়মনসিংহ",
+    "constituency": "ময়মনসিংহ-৬"
+  },
+  {
+    "division": "ময়মনসিংহ",
+    "district": "ময়মনসিংহ",
+    "constituency": "ময়মনসিংহ-৭"
+  },
+  {
+    "division": "ময়মনসিংহ",
+    "district": "ময়মনসিংহ",
+    "constituency": "ময়মনসিংহ-৮"
+  },
+  {
+    "division": "ময়মনসিংহ",
+    "district": "ময়মনসিংহ",
+    "constituency": "ময়মনসিংহ-৯"
+  },
+  {
+    "division": "ময়মনসিংহ",
+    "district": "ময়মনসিংহ",
+    "constituency": "ময়মনসিংহ-১০"
+  },
+  {
+    "division": "ময়মনসিংহ",
+    "district": "ময়মনসিংহ",
+    "constituency": "ময়মনসিংহ-১১"
+  },
+  {
+    "division": "ময়মনসিংহ",
+    "district": "নেত্রকোনা",
+    "constituency": "নেত্রকোনা-১"
+  },
+  {
+    "division": "ময়মনসিংহ",
+    "district": "নেত্রকোনা",
+    "constituency": "নেত্রকোনা-২"
+  },
+  {
+    "division": "ময়মনসিংহ",
+    "district": "নেত্রকোনা",
+    "constituency": "নেত্রকোনা-৩"
+  },
+  {
+    "division": "ময়মনসিংহ",
+    "district": "নেত্রকোনা",
+    "constituency": "নেত্রকোনা-৪"
+  },
+  {
+    "division": "ময়মনসিংহ",
+    "district": "নেত্রকোনা",
+    "constituency": "নেত্রকোনা-৫"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "টাঙ্গাইল",
+    "constituency": "টাঙ্গাইল-১"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "টাঙ্গাইল",
+    "constituency": "টাঙ্গাইল-২"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "টাঙ্গাইল",
+    "constituency": "টাঙ্গাইল-৩"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "টাঙ্গাইল",
+    "constituency": "টাঙ্গাইল-৪"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "টাঙ্গাইল",
+    "constituency": "টাঙ্গাইল-৫"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "টাঙ্গাইল",
+    "constituency": "টাঙ্গাইল-৬"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "টাঙ্গাইল",
+    "constituency": "টাঙ্গাইল-৭"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "টাঙ্গাইল",
+    "constituency": "টাঙ্গাইল-৮"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "কিশোরগঞ্জ",
+    "constituency": "কিশোরগঞ্জ-১"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "কিশোরগঞ্জ",
+    "constituency": "কিশোরগঞ্জ-২"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "কিশোরগঞ্জ",
+    "constituency": "কিশোরগঞ্জ-৩"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "কিশোরগঞ্জ",
+    "constituency": "কিশোরগঞ্জ-৪"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "কিশোরগঞ্জ",
+    "constituency": "কিশোরগঞ্জ-৫"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "কিশোরগঞ্জ",
+    "constituency": "কিশোরগঞ্জ-৬"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "মানিকগঞ্জ",
+    "constituency": "মানিকগঞ্জ-১"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "মানিকগঞ্জ",
+    "constituency": "মানিকগঞ্জ-২"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "মানিকগঞ্জ",
+    "constituency": "মানিকগঞ্জ-৩"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "মুন্সিগঞ্জ",
+    "constituency": "মুন্সিগঞ্জ-১"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "মুন্সিগঞ্জ",
+    "constituency": "মুন্সিগঞ্জ-২"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "মুন্সিগঞ্জ",
+    "constituency": "মুন্সিগঞ্জ-৩"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "ঢাকা",
+    "constituency": "ঢাকা-১"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "ঢাকা",
+    "constituency": "ঢাকা-২"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "ঢাকা",
+    "constituency": "ঢাকা-৩"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "ঢাকা",
+    "constituency": "ঢাকা-৪"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "ঢাকা",
+    "constituency": "ঢাকা-৫"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "ঢাকা",
+    "constituency": "ঢাকা-৬"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "ঢাকা",
+    "constituency": "ঢাকা-৭"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "ঢাকা",
+    "constituency": "ঢাকা-৮"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "ঢাকা",
+    "constituency": "ঢাকা-৯"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "ঢাকা",
+    "constituency": "ঢাকা-১০"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "ঢাকা",
+    "constituency": "ঢাকা-১১"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "ঢাকা",
+    "constituency": "ঢাকা-১২"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "ঢাকা",
+    "constituency": "ঢাকা-১৩"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "ঢাকা",
+    "constituency": "ঢাকা-১৪"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "ঢাকা",
+    "constituency": "ঢাকা-১৫"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "ঢাকা",
+    "constituency": "ঢাকা-১৬"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "ঢাকা",
+    "constituency": "ঢাকা-১৭"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "ঢাকা",
+    "constituency": "ঢাকা-১৮"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "ঢাকা",
+    "constituency": "ঢাকা-১৯"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "ঢাকা",
+    "constituency": "ঢাকা-২০"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "গাজীপুর",
+    "constituency": "গাজীপুর-১"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "গাজীপুর",
+    "constituency": "গাজীপুর-২"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "গাজীপুর",
+    "constituency": "গাজীপুর-৩"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "গাজীপুর",
+    "constituency": "গাজীপুর-৪"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "গাজীপুর",
+    "constituency": "গাজীপুর-৫"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "নরসিংদী",
+    "constituency": "নরসিংদী-১"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "নরসিংদী",
+    "constituency": "নরসিংদী-২"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "নরসিংদী",
+    "constituency": "নরসিংদী-৩"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "নরসিংদী",
+    "constituency": "নরসিংদী-৪"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "নরসিংদী",
+    "constituency": "নরসিংদী-৫"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "নারায়ণগঞ্জ",
+    "constituency": "নারায়ণগঞ্জ-১"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "নারায়ণগঞ্জ",
+    "constituency": "নারায়ণগঞ্জ-২"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "নারায়ণগঞ্জ",
+    "constituency": "নারায়ণগঞ্জ-৩"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "নারায়ণগঞ্জ",
+    "constituency": "নারায়ণগঞ্জ-৪"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "নারায়ণগঞ্জ",
+    "constituency": "নারায়ণগঞ্জ-৫"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "রাজবাড়ী",
+    "constituency": "রাজবাড়ী-১"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "রাজবাড়ী",
+    "constituency": "রাজবাড়ী-২"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "ফরিদপুর",
+    "constituency": "ফরিদপুর-১"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "ফরিদপুর",
+    "constituency": "ফরিদপুর-২"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "ফরিদপুর",
+    "constituency": "ফরিদপুর-৩"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "ফরিদপুর",
+    "constituency": "ফরিদপুর-৪"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "গোপালগঞ্জ",
+    "constituency": "গোপালগঞ্জ-১"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "গোপালগঞ্জ",
+    "constituency": "গোপালগঞ্জ-২"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "গোপালগঞ্জ",
+    "constituency": "গোপালগঞ্জ-৩"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "মাদারীপুর",
+    "constituency": "মাদারীপুর-১"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "মাদারীপুর",
+    "constituency": "মাদারীপুর-২"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "মাদারীপুর",
+    "constituency": "মাদারীপুর-৩"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "শরীয়তপুর",
+    "constituency": "শরীয়তপুর-১"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "শরীয়তপুর",
+    "constituency": "শরীয়তপুর-২"
+  },
+  {
+    "division": "ঢাকা",
+    "district": "শরীয়তপুর",
+    "constituency": "শরীয়তপুর-৩"
+  },
+  {
+    "division": "সিলেট",
+    "district": "সুনামগঞ্জ",
+    "constituency": "সুনামগঞ্জ-১"
+  },
+  {
+    "division": "সিলেট",
+    "district": "সুনামগঞ্জ",
+    "constituency": "সুনামগঞ্জ-২"
+  },
+  {
+    "division": "সিলেট",
+    "district": "সুনামগঞ্জ",
+    "constituency": "সুনামগঞ্জ-৩"
+  },
+  {
+    "division": "সিলেট",
+    "district": "সুনামগঞ্জ",
+    "constituency": "সুনামগঞ্জ-৪"
+  },
+  {
+    "division": "সিলেট",
+    "district": "সুনামগঞ্জ",
+    "constituency": "সুনামগঞ্জ-৫"
+  },
+  {
+    "division": "সিলেট",
+    "district": "সিলেট",
+    "constituency": "সিলেট-১"
+  },
+  {
+    "division": "সিলেট",
+    "district": "সিলেট",
+    "constituency": "সিলেট-২"
+  },
+  {
+    "division": "সিলেট",
+    "district": "সিলেট",
+    "constituency": "সিলেট-৩"
+  },
+  {
+    "division": "সিলেট",
+    "district": "সিলেট",
+    "constituency": "সিলেট-৪"
+  },
+  {
+    "division": "সিলেট",
+    "district": "সিলেট",
+    "constituency": "সিলেট-৫"
+  },
+  {
+    "division": "সিলেট",
+    "district": "সিলেট",
+    "constituency": "সিলেট-৬"
+  },
+  {
+    "division": "সিলেট",
+    "district": "মৌলভীবাজার",
+    "constituency": "মৌলভীবাজার-১"
+  },
+  {
+    "division": "সিলেট",
+    "district": "মৌলভীবাজার",
+    "constituency": "মৌলভীবাজার-২"
+  },
+  {
+    "division": "সিলেট",
+    "district": "মৌলভীবাজার",
+    "constituency": "মৌলভীবাজার-৩"
+  },
+  {
+    "division": "সিলেট",
+    "district": "মৌলভীবাজার",
+    "constituency": "মৌলভীবাজার-৪"
+  },
+  {
+    "division": "সিলেট",
+    "district": "হবিগঞ্জ",
+    "constituency": "হবিগঞ্জ-১"
+  },
+  {
+    "division": "সিলেট",
+    "district": "হবিগঞ্জ",
+    "constituency": "হবিগঞ্জ-২"
+  },
+  {
+    "division": "সিলেট",
+    "district": "হবিগঞ্জ",
+    "constituency": "হবিগঞ্জ-৩"
+  },
+  {
+    "division": "সিলেট",
+    "district": "হবিগঞ্জ",
+    "constituency": "হবিগঞ্জ-৪"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "ব্রাহ্মণবাড়িয়া",
+    "constituency": "ব্রাহ্মণবাড়িয়া-১"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "ব্রাহ্মণবাড়িয়া",
+    "constituency": "ব্রাহ্মণবাড়িয়া-২"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "ব্রাহ্মণবাড়িয়া",
+    "constituency": "ব্রাহ্মণবাড়িয়া-৩"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "ব্রাহ্মণবাড়িয়া",
+    "constituency": "ব্রাহ্মণবাড়িয়া-৪"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "ব্রাহ্মণবাড়িয়া",
+    "constituency": "ব্রাহ্মণবাড়িয়া-৫"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "ব্রাহ্মণবাড়িয়া",
+    "constituency": "ব্রাহ্মণবাড়িয়া-৬"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "কুমিল্লা",
+    "constituency": "কুমিল্লা-১"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "কুমিল্লা",
+    "constituency": "কুমিল্লা-২"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "কুমিল্লা",
+    "constituency": "কুমিল্লা-৩"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "কুমিল্লা",
+    "constituency": "কুমিল্লা-৪"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "কুমিল্লা",
+    "constituency": "কুমিল্লা-৫"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "কুমিল্লা",
+    "constituency": "কুমিল্লা-৬"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "কুমিল্লা",
+    "constituency": "কুমিল্লা-৭"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "কুমিল্লা",
+    "constituency": "কুমিল্লা-৮"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "কুমিল্লা",
+    "constituency": "কুমিল্লা-৯"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "কুমিল্লা",
+    "constituency": "কুমিল্লা-১০"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "কুমিল্লা",
+    "constituency": "কুমিল্লা-১১"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "চাঁদপুর",
+    "constituency": "চাঁদপুর-১"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "চাঁদপুর",
+    "constituency": "চাঁদপুর-২"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "চাঁদপুর",
+    "constituency": "চাঁদপুর-৩"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "চাঁদপুর",
+    "constituency": "চাঁদপুর-৪"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "চাঁদপুর",
+    "constituency": "চাঁদপুর-৫"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "ফেনী",
+    "constituency": "ফেনী-১"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "ফেনী",
+    "constituency": "ফেনী-২"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "ফেনী",
+    "constituency": "ফেনী-৩"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "নোয়াখালী",
+    "constituency": "নোয়াখালী-১"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "নোয়াখালী",
+    "constituency": "নোয়াখালী-২"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "নোয়াখালী",
+    "constituency": "নোয়াখালী-৩"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "নোয়াখালী",
+    "constituency": "নোয়াখালী-৪"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "নোয়াখালী",
+    "constituency": "নোয়াখালী-৫"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "নোয়াখালী",
+    "constituency": "নোয়াখালী-৬"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "লক্ষ্মীপুর",
+    "constituency": "লক্ষ্মীপুর-১"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "লক্ষ্মীপুর",
+    "constituency": "লক্ষ্মীপুর-২"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "লক্ষ্মীপুর",
+    "constituency": "লক্ষ্মীপুর-৩"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "লক্ষ্মীপুর",
+    "constituency": "লক্ষ্মীপুর-৪"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "চট্টগ্রাম",
+    "constituency": "চট্টগ্রাম-১"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "চট্টগ্রাম",
+    "constituency": "চট্টগ্রাম-২"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "চট্টগ্রাম",
+    "constituency": "চট্টগ্রাম-৩"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "চট্টগ্রাম",
+    "constituency": "চট্টগ্রাম-৪"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "চট্টগ্রাম",
+    "constituency": "চট্টগ্রাম-৫"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "চট্টগ্রাম",
+    "constituency": "চট্টগ্রাম-৬"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "চট্টগ্রাম",
+    "constituency": "চট্টগ্রাম-৭"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "চট্টগ্রাম",
+    "constituency": "চট্টগ্রাম-৮"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "চট্টগ্রাম",
+    "constituency": "চট্টগ্রাম-৯"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "চট্টগ্রাম",
+    "constituency": "চট্টগ্রাম-১০"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "চট্টগ্রাম",
+    "constituency": "চট্টগ্রাম-১১"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "চট্টগ্রাম",
+    "constituency": "চট্টগ্রাম-১২"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "চট্টগ্রাম",
+    "constituency": "চট্টগ্রাম-১৩"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "চট্টগ্রাম",
+    "constituency": "চট্টগ্রাম-১৪"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "চট্টগ্রাম",
+    "constituency": "চট্টগ্রাম-১৫"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "চট্টগ্রাম",
+    "constituency": "চট্টগ্রাম-১৬"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "কক্সবাজার",
+    "constituency": "কক্সবাজার-১"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "কক্সবাজার",
+    "constituency": "কক্সবাজার-২"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "কক্সবাজার",
+    "constituency": "কক্সবাজার-৩"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "কক্সবাজার",
+    "constituency": "কক্সবাজার-৪"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "খাগড়াছড়ি",
+    "constituency": "খাগড়াছড়ি"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "রাঙামাটি",
+    "constituency": "রাঙামাটি"
+  },
+  {
+    "division": "চট্টগ্রাম",
+    "district": "বান্দরবান",
+    "constituency": "বান্দরবান"
+  }
+]
