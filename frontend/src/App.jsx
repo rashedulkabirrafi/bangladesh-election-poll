@@ -32,6 +32,118 @@ const normalizeConstituencyName = (value = '') =>
     .replace(/রাঙ্গামাটি/g, 'রাঙামাটি')
     .replace(/ব্রাক্ষণ/g, 'ব্রাহ্মণ');
 
+const normalizePartyName = (value = '') =>
+  value
+    .trim()
+    .replace(/[().\-–—]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .replace(/জাতীয়/g, 'জাতীয়')
+    .replace(/ইসলামী/g, 'ইসলামী')
+    .replace(/জামায়াতে/g, 'জামায়াতে')
+    .replace(/বি\.?এন\.?পি/g, 'বিএনপি')
+    .replace(/এল\.?ডি\.?পি/g, 'এলডিপি')
+    .replace(/এবি পার্টি/g, 'এবি পার্টি')
+    .replace(/এনসিপি/g, 'এনসিপি')
+    .trim();
+
+const partyGroups = {
+  bnpAlliance: {
+    label: 'বিএনপি জোট',
+    color: '#1f8f4f',
+    parties: [
+      'বাংলাদেশ জাতীয়তাবাদী দল',
+      'বিএনপি',
+      'বাংলাদেশ জাতীয় পার্টি',
+      'জাতীয়তাবাদী গণতান্ত্রিক আন্দোলন',
+      'এনডিএম',
+      'জমিয়তে উলামায়ে ইসলাম বাংলাদেশ',
+      'গণঅধিকার পরিষদ',
+      'গণসংহতি আন্দোলন',
+      'বাংলাদেশের বিপ্লবী ওয়ার্কার্স পার্টি',
+      'নাগরিক ঐক্য',
+      'ন্যাশনাল পিপলস পার্টি',
+      'ইসলামী ঐক্যজোট'
+    ]
+  },
+  elevenParty: {
+    label: 'এগারো দলীয় জোট',
+    color: '#d14b3f',
+    parties: [
+      'বাংলাদেশ জামায়াতে ইসলামী',
+      'জাতীয় নাগরিক পার্টি',
+      'এনসিপি',
+      'বাংলাদেশ খেলাফত মজলিস',
+      'বাংলাদেশ খেলাফত আন্দোলন',
+      'খেলাফত মজলিস',
+      'বাংলাদেশ নেজামে ইসলাম পার্টি',
+      'বাংলাদেশ ডেভেলপমেন্ট পার্টি',
+      'জাতীয় গণতান্ত্রিক পার্টি',
+      'জাগপা',
+      'লিবারেল ডেমোক্রেটিক পার্টি',
+      'এলডিপি',
+      'আমার বাংলাদেশ পার্টি',
+      'এবি পার্টি',
+      'বাংলাদেশ লেবার পার্টি'
+    ]
+  },
+  sunniAlliance: {
+    label: 'বৃহত্তর সুন্নী জোট',
+    color: '#f2b705',
+    parties: [
+      'বাংলাদেশ ইসলামী ফ্রন্ট',
+      'ইসলামিক ফ্রন্ট বাংলাদেশ',
+      'বাংলাদেশ সুপ্রিম পার্টি'
+    ]
+  },
+  democraticLeft: {
+    label: 'গণতান্ত্রিক যুক্তফ্রন্ট',
+    color: '#6b5bd2',
+    parties: [
+      'বাংলাদেশের কমিউনিস্ট পার্টি',
+      'বাংলাদেশের সমাজতান্ত্রিক দল–বাসদ',
+      'বাংলাদেশের সমাজতান্ত্রিক দল-বাসদ',
+      'বাংলাদেশের সমাজতান্ত্রিক দল (মার্কসবাদী)',
+      'বাংলাদেশ জাতীয় সমাজতান্ত্রিক দল'
+    ]
+  },
+  nationalDemocratic: {
+    label: 'জাতীয় গণতান্ত্রিক ফ্রন্ট',
+    color: '#2d9cdb',
+    parties: [
+      'জাতীয় পার্টি (এরশাদ) একাংশ',
+      'জাতীয় পার্টি একাংশ',
+      'বাংলাদেশ সাংস্কৃতিক মুক্তিজোট',
+      'জাতীয় পার্টি–জেপি',
+      'জাতীয় পার্টি জেপি',
+      'বাংলাদেশ মুসলিম লীগ-বিএমএল'
+    ]
+  }
+};
+
+const otherPartyColor = '#9aa5b1';
+
+const buildPartyIndex = () => {
+  const index = new Map();
+  Object.entries(partyGroups).forEach(([key, group]) => {
+    group.parties.forEach((name) => {
+      index.set(normalizePartyName(name), key);
+    });
+  });
+  return index;
+};
+
+const partyIndex = buildPartyIndex();
+
+const getPartyGroup = (partyName) => {
+  const normalized = normalizePartyName(partyName);
+  return partyIndex.get(normalized) || null;
+};
+
+const extractPartyFromLabel = (label = '') => {
+  const match = label.match(/\(([^)]+)\)\s*$/);
+  return match ? match[1].trim() : '';
+};
+
 const buildSeatLayout = (totalSeats = 300, rows = 10) => {
   const width = 560;
   const height = 320;
@@ -374,6 +486,13 @@ const ElectionPoll = () => {
                   : null;
                 const winner = constituencyKey ? getWinnerByConstituency(constituencyKey) : null;
                 const totalVotes = constituencyKey ? getTotalVotes(constituencyKey) : 0;
+                const partyName = winner ? extractPartyFromLabel(winner.name) : '';
+                const groupKey = partyName ? getPartyGroup(partyName) : null;
+                const seatColor = winner
+                  ? groupKey
+                    ? partyGroups[groupKey].color
+                    : otherPartyColor
+                  : '#ffffff';
                 const label = constituency
                   ? `${constituency.constituency} · ${constituency.district}`
                   : `Seat ${index + 1}`;
@@ -383,9 +502,11 @@ const ElectionPoll = () => {
                     cx={seat.cx}
                     cy={seat.cy}
                     r={seat.r}
-                    className="seat-dot"
+                    className={`seat-dot ${winner ? 'seat-dot-winner' : ''}`}
                     data-seat={seat.index}
                     data-constituency={constituency?.constituency || ''}
+                    data-party={partyName}
+                    style={{ fill: seatColor }}
                     onMouseEnter={(event) => {
                       const svgRect =
                         event.currentTarget.ownerSVGElement?.getBoundingClientRect();
@@ -458,6 +579,26 @@ const ElectionPoll = () => {
               </div>
             )}
             <div className="seat-count">৩০০ আসন</div>
+          </div>
+          <div className="seat-legend" aria-label="দলভিত্তিক রঙ নির্দেশিকা">
+            {Object.values(partyGroups).map((group) => (
+              <div className="seat-legend-item" key={group.label}>
+                <span
+                  className="seat-legend-swatch"
+                  style={{ background: group.color }}
+                  aria-hidden="true"
+                />
+                <span className="seat-legend-label">{group.label}</span>
+              </div>
+            ))}
+            <div className="seat-legend-item">
+              <span
+                className="seat-legend-swatch"
+                style={{ background: otherPartyColor }}
+                aria-hidden="true"
+              />
+              <span className="seat-legend-label">অন্যান্য / স্বতন্ত্র</span>
+            </div>
           </div>
         </div>
 
