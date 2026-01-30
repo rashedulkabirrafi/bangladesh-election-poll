@@ -32,6 +32,61 @@ const normalizeConstituencyName = (value = '') =>
     .replace(/রাঙ্গামাটি/g, 'রাঙামাটি')
     .replace(/ব্রাক্ষণ/g, 'ব্রাহ্মণ');
 
+const buildSeatLayout = (totalSeats = 300, rows = 10) => {
+  const width = 560;
+  const height = 320;
+  const centerX = width / 2;
+  const centerY = height - 24;
+  const innerRadius = 64;
+  const rowGap = 16;
+  const seatRadius = 4.6;
+  const seatSpacing = seatRadius * 2 + 5;
+
+  const radii = Array.from({ length: rows }, (_, index) => innerRadius + index * rowGap);
+  const weights = radii.map((radius) => Math.max(1, Math.floor((Math.PI * radius) / seatSpacing)));
+  const weightSum = weights.reduce((sum, value) => sum + value, 0);
+  const seatsPerRow = weights.map((weight) =>
+    Math.max(1, Math.round((weight / weightSum) * totalSeats))
+  );
+
+  let diff = totalSeats - seatsPerRow.reduce((sum, count) => sum + count, 0);
+  while (diff !== 0) {
+    if (diff > 0) {
+      for (let i = rows - 1; i >= 0 && diff > 0; i -= 1) {
+        seatsPerRow[i] += 1;
+        diff -= 1;
+      }
+    } else {
+      for (let i = 0; i < rows && diff < 0; i += 1) {
+        if (seatsPerRow[i] > 2) {
+          seatsPerRow[i] -= 1;
+          diff += 1;
+        }
+      }
+    }
+  }
+
+  const seats = [];
+  seatsPerRow.forEach((count, rowIndex) => {
+    const radius = radii[rowIndex];
+    for (let i = 0; i < count; i += 1) {
+      const angle =
+        count === 1 ? Math.PI / 2 : Math.PI - (Math.PI * i) / (count - 1);
+      const x = centerX + Math.cos(angle) * radius;
+      const y = centerY - Math.sin(angle) * radius;
+      seats.push({
+        cx: x,
+        cy: y,
+        r: seatRadius,
+        row: rowIndex,
+        index: seats.length + 1
+      });
+    }
+  });
+
+  return { seats, width, height };
+};
+
 const generateFingerprint = () => {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
@@ -81,7 +136,9 @@ const ElectionPoll = () => {
   const [votes, setVotes] = useState({});
   const [fingerprint, setFingerprint] = useState('');
   const [blocked, setBlocked] = useState(false);
+  const [hoverSeat, setHoverSeat] = useState(null);
 
+  const seatLayout = useMemo(() => buildSeatLayout(300, 10), []);
   const constituencyRows = useMemo(() => constituencyData || [], []);
 
   const candidateKeyLookup = useMemo(() => {
@@ -298,6 +355,83 @@ const ElectionPoll = () => {
               </button>
             </div>
           </div>
+
+          <div className="card seats-card">
+            <div className="header centered">
+              <h2 className="section-title section-title-center">জাতীয় সংসদের আসন বিন্যাস</h2>
+              <p className="subtitle">৩০০টি আসনের ভিজ্যুয়াল ম্যাপ</p>
+            </div>
+            <div className="seats-chart" role="img" aria-label="৩০০ আসনের সেমি-সার্কুলার লেআউট">
+              <svg
+                viewBox={`0 0 ${seatLayout.width} ${seatLayout.height}`}
+                className="seats-svg"
+              >
+              {seatLayout.seats.map((seat, index) => {
+                const constituency = constituencyRows[index];
+                const constituencyKey = constituency
+                  ? makeKey(constituency.division, constituency.district, constituency.constituency)
+                  : null;
+                const winner = constituencyKey ? getWinnerByConstituency(constituencyKey) : null;
+                const totalVotes = constituencyKey ? getTotalVotes(constituencyKey) : 0;
+                const label = constituency
+                  ? `${constituency.constituency} · ${constituency.district}`
+                  : `Seat ${index + 1}`;
+                return (
+                  <circle
+                    key={`seat-${seat.index}`}
+                    cx={seat.cx}
+                    cy={seat.cy}
+                    r={seat.r}
+                    className="seat-dot"
+                    data-seat={seat.index}
+                    data-constituency={constituency?.constituency || ''}
+                    onMouseEnter={(event) => {
+                      setHoverSeat({
+                        label,
+                        winner,
+                        totalVotes,
+                        x: event.clientX + 14,
+                        y: event.clientY + 14
+                      });
+                    }}
+                    onMouseMove={(event) => {
+                      setHoverSeat((current) =>
+                        current
+                          ? { ...current, x: event.clientX + 14, y: event.clientY + 14 }
+                          : current
+                      );
+                    }}
+                    onMouseLeave={() => setHoverSeat(null)}
+                  >
+                    <title>{label}</title>
+                  </circle>
+                );
+              })}
+            </svg>
+            {hoverSeat && (
+              <div
+                className="seat-tooltip"
+                style={{ left: hoverSeat.x, top: hoverSeat.y }}
+              >
+                <div className="seat-tooltip-title">{hoverSeat.label}</div>
+                {hoverSeat.winner ? (
+                  <>
+                    <div className="seat-tooltip-row">
+                      বিজয়ী: {hoverSeat.winner.name}
+                    </div>
+                    <div className="seat-tooltip-row">
+                      ভোট: {hoverSeat.winner.votes}
+                    </div>
+                  </>
+                ) : (
+                  <div className="seat-tooltip-row">ভোট নেই</div>
+                )}
+                <div className="seat-tooltip-meta">মোট ভোট: {hoverSeat.totalVotes}</div>
+              </div>
+            )}
+            <div className="seat-count">৩০০ আসন</div>
+          </div>
+        </div>
 
           <div className="card">
             <h2 className="section-title section-title-center">সকল আসনের ফলাফল</h2>

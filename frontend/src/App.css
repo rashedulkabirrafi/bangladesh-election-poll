@@ -1029,3 +1029,73 @@
   background: #f1f4f6;
   border-radius: 6px;
 }
+
+/* Seats Layout */
+.seats-card {
+  padding: 28px 24px 20px;
+}
+
+.seats-chart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.seats-svg {
+  width: min(100%, 680px);
+  height: auto;
+  display: block;
+}
+
+.seat-dot {
+  fill: #ffffff;
+  stroke: #d9e2ea;
+  stroke-width: 0.9;
+  transition: transform 0.2s ease, stroke 0.2s ease, fill 0.2s ease;
+}
+
+.seat-dot:hover {
+  transform: scale(1.15);
+  stroke: #1f8f4f;
+  fill: #f9fffe;
+}
+
+.seat-count {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1d2b36;
+  letter-spacing: 0.6px;
+}
+
+.seat-tooltip {
+  position: fixed;
+  z-index: 20;
+  background: #ffffff;
+  border: 1px solid #d9e2ea;
+  border-radius: 10px;
+  padding: 8px 10px;
+  min-width: 160px;
+  box-shadow: 0 12px 24px rgba(24, 42, 62, 0.12);
+  pointer-events: none;
+  transform: translateY(-4px);
+}
+
+.seat-tooltip-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #1d2b36;
+  margin-bottom: 4px;
+}
+
+.seat-tooltip-row {
+  font-size: 11px;
+  color: #2f3f49;
+  margin-bottom: 2px;
+}
+
+.seat-tooltip-meta {
+  font-size: 10px;
+  color: #6b7a86;
+  margin-top: 4px;
+}
