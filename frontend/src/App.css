@@ -956,6 +956,30 @@
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
 }
 
+.info-card {
+  padding: 20px 24px;
+}
+
+.info-card-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.info-title {
+  font-size: 20px;
+  margin: 0 0 4px;
+  color: #1d2b36;
+}
+
+.info-subtitle {
+  margin: 0;
+  color: #6b7a86;
+  font-size: 14px;
+}
+
 /* Constituencies Grid */
 .constituencies-grid {
   display: grid;
@@ -1147,6 +1171,71 @@
 
 .seat-legend-label {
   font-weight: 600;
+}
+
+.party-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.party-group-card {
+  border: 1px solid #e0e6eb;
+  border-radius: 14px;
+  padding: 16px;
+  background: #ffffff;
+  box-shadow: 0 6px 20px rgba(24, 42, 62, 0.08);
+}
+
+.party-group-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.party-group-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1d2b36;
+}
+
+.party-group-count {
+  font-size: 12px;
+  color: #6b7a86;
+}
+
+.party-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.party-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 10px;
+  background: #f7fafc;
+  border-radius: 10px;
+  border: 1px solid #e2e8ef;
+  font-size: 13px;
+}
+
+.party-name {
+  font-weight: 600;
+  color: #1d2b36;
+}
+
+.party-symbol {
+  font-size: 12px;
+  color: #4b5b65;
+  background: #ffffff;
+  border: 1px solid #d7e0e7;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-weight: 700;
 }
 
 .seat-tooltip {

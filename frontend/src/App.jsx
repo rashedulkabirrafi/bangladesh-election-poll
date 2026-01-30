@@ -124,24 +124,63 @@ const otherPartyColor = '#9aa5b1';
 
 const buildPartyIndex = () => {
   const index = new Map();
+  const list = [];
   Object.entries(partyGroups).forEach(([key, group]) => {
     group.parties.forEach((name) => {
-      index.set(normalizePartyName(name), key);
+      const normalized = normalizePartyName(name);
+      index.set(normalized, key);
+      list.push({ key, normalized });
     });
   });
-  return index;
+  list.sort((a, b) => b.normalized.length - a.normalized.length);
+  return { index, list };
 };
 
 const partyIndex = buildPartyIndex();
 
 const getPartyGroup = (partyName) => {
   const normalized = normalizePartyName(partyName);
-  return partyIndex.get(normalized) || null;
+  if (!normalized) return null;
+  if (partyIndex.index.has(normalized)) return partyIndex.index.get(normalized);
+  const matched = partyIndex.list.find(
+    (entry) =>
+      normalized.includes(entry.normalized) ||
+      entry.normalized.includes(normalized)
+  );
+  return matched ? matched.key : null;
 };
 
 const extractPartyFromLabel = (label = '') => {
   const match = label.match(/\(([^)]+)\)\s*$/);
   return match ? match[1].trim() : '';
+};
+
+const buildPartySymbolIndex = (candidates) => {
+  const counts = new Map();
+  Object.values(candidates || {}).forEach((seatCandidates) => {
+    seatCandidates.forEach((candidate) => {
+      const party = normalizePartyName(candidate.party || '');
+      const symbol = (candidate.symbol || '').trim();
+      if (!party || !symbol) return;
+      if (!counts.has(party)) counts.set(party, new Map());
+      const map = counts.get(party);
+      map.set(symbol, (map.get(symbol) || 0) + 1);
+    });
+  });
+
+  const result = new Map();
+  counts.forEach((map, party) => {
+    let best = '';
+    let bestCount = 0;
+    map.forEach((count, symbol) => {
+      if (count > bestCount) {
+        best = symbol;
+        bestCount = count;
+      }
+    });
+    if (best) result.set(party, best);
+  });
+  return result;
 };
 
 const buildSeatLayout = (totalSeats = 300, rows = 10) => {
@@ -251,6 +290,7 @@ const ElectionPoll = () => {
   const [hoverSeat, setHoverSeat] = useState(null);
   const [hoverSeatIndex, setHoverSeatIndex] = useState(null);
 
+  const partySymbols = useMemo(() => buildPartySymbolIndex(candidatesData || {}), []);
   const seatLayout = useMemo(() => buildSeatLayout(300, 10), []);
   const constituencyRows = useMemo(() => constituencyData || [], []);
 
@@ -469,6 +509,18 @@ const ElectionPoll = () => {
             </div>
           </div>
 
+          <div className="card info-card">
+            <div className="info-card-content">
+              <div>
+                <h3 className="info-title">জোট ও দলসমূহ</h3>
+                <p className="info-subtitle">প্রতিটি জোটের দল ও প্রতীক দেখুন</p>
+              </div>
+              <button onClick={() => setStep('alliances')} className="btn btn-secondary">
+                দল তালিকা দেখুন
+              </button>
+            </div>
+          </div>
+
           <div className="card seats-card">
             <div className="header centered">
               <h2 className="section-title section-title-center">জাতীয় সংসদের আসন বিন্যাস</h2>
@@ -622,6 +674,82 @@ const ElectionPoll = () => {
                   )}
                 </div>
               ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (step === 'alliances') {
+    return (
+      <div className="page">
+        <div className="container">
+          <div className="card">
+            <div className="header centered">
+              <h1 className="headline">জোট ও দল তালিকা</h1>
+              <p className="subtitle">দলভিত্তিক রঙ ও প্রতীক</p>
+            </div>
+
+            <div className="party-groups">
+              {Object.values(partyGroups).map((group) => (
+                <div className="party-group-card" key={group.label}>
+                  <div className="party-group-header">
+                    <span
+                      className="seat-legend-swatch"
+                      style={{ background: group.color }}
+                      aria-hidden="true"
+                    />
+                    <div>
+                      <div className="party-group-title">{group.label}</div>
+                      <div className="party-group-count">
+                        {group.parties.length} দল
+                      </div>
+                    </div>
+                  </div>
+                  <div className="party-list">
+                    {group.parties.map((party) => {
+                      const normalized = normalizePartyName(party);
+                      const symbol = partySymbols.get(normalized) || '—';
+                      return (
+                        <div className="party-item" key={party}>
+                          <span className="party-name">{party}</span>
+                          <span className="party-symbol">{symbol}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+              <div className="party-group-card">
+                <div className="party-group-header">
+                  <span
+                    className="seat-legend-swatch"
+                    style={{ background: otherPartyColor }}
+                    aria-hidden="true"
+                  />
+                  <div>
+                    <div className="party-group-title">অন্যান্য / স্বতন্ত্র</div>
+                    <div className="party-group-count">অন্যান্য দল</div>
+                  </div>
+                </div>
+                <div className="party-list">
+                  <div className="party-item">
+                    <span className="party-name">অন্যান্য দল</span>
+                    <span className="party-symbol">—</span>
+                  </div>
+                  <div className="party-item">
+                    <span className="party-name">স্বতন্ত্র</span>
+                    <span className="party-symbol">—</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="actions">
+              <button onClick={() => setStep('home')} className="btn btn-secondary">
+                হোম
+              </button>
             </div>
           </div>
         </div>
