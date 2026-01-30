@@ -137,6 +137,7 @@ const ElectionPoll = () => {
   const [fingerprint, setFingerprint] = useState('');
   const [blocked, setBlocked] = useState(false);
   const [hoverSeat, setHoverSeat] = useState(null);
+  const [hoverSeatIndex, setHoverSeatIndex] = useState(null);
 
   const seatLayout = useMemo(() => buildSeatLayout(300, 10), []);
   const constituencyRows = useMemo(() => constituencyData || [], []);
@@ -386,33 +387,60 @@ const ElectionPoll = () => {
                     data-seat={seat.index}
                     data-constituency={constituency?.constituency || ''}
                     onMouseEnter={(event) => {
+                      const svgRect =
+                        event.currentTarget.ownerSVGElement?.getBoundingClientRect();
+                      const scaleX = svgRect ? svgRect.width / seatLayout.width : 1;
+                      const scaleY = svgRect ? svgRect.height / seatLayout.height : 1;
+                      const offsetX = svgRect ? svgRect.left : 0;
+                      const offsetY = svgRect ? svgRect.top : 0;
+                      setHoverSeatIndex(index);
                       setHoverSeat({
                         label,
                         winner,
                         totalVotes,
-                        x: event.clientX + 14,
-                        y: event.clientY + 14
+                        x: offsetX + seat.cx * scaleX + 12,
+                        y: offsetY + seat.cy * scaleY + 12
                       });
                     }}
-                    onMouseMove={(event) => {
-                      setHoverSeat((current) =>
-                        current
-                          ? { ...current, x: event.clientX + 14, y: event.clientY + 14 }
-                          : current
-                      );
+                    onMouseLeave={() => {
+                      setHoverSeat(null);
+                      setHoverSeatIndex(null);
                     }}
-                    onMouseLeave={() => setHoverSeat(null)}
                   >
                     <title>{label}</title>
                   </circle>
                 );
               })}
             </svg>
-            {hoverSeat && (
-              <div
-                className="seat-tooltip"
-                style={{ left: hoverSeat.x, top: hoverSeat.y }}
+            {hoverSeatIndex !== null && seatLayout.seats[hoverSeatIndex] && (
+              <svg
+                viewBox={`0 0 ${seatLayout.width} ${seatLayout.height}`}
+                className="seats-svg seats-overlay"
               >
+                <defs>
+                  <linearGradient id="seatGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#1f8f4f" />
+                    <stop offset="50%" stopColor="#2d9cdb" />
+                    <stop offset="100%" stopColor="#f2c94c" />
+                  </linearGradient>
+                  <filter id="seatGlowShadow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="2.5" result="blur" />
+                    <feMerge>
+                      <feMergeNode in="blur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                </defs>
+                <circle
+                  cx={seatLayout.seats[hoverSeatIndex].cx}
+                  cy={seatLayout.seats[hoverSeatIndex].cy}
+                  r={seatLayout.seats[hoverSeatIndex].r + 3}
+                  className="seat-dot-ring"
+                />
+              </svg>
+            )}
+            {hoverSeat && (
+              <div className="seat-tooltip seat-tooltip-corner">
                 <div className="seat-tooltip-title">{hoverSeat.label}</div>
                 {hoverSeat.winner ? (
                   <>

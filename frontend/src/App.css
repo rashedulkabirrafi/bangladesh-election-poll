@@ -61,6 +61,33 @@
   }
 }
 
+@keyframes seatRingPulse {
+  0% {
+    opacity: 0.65;
+    stroke-width: 1.4;
+  }
+  50% {
+    opacity: 1;
+    stroke-width: 2.2;
+  }
+  100% {
+    opacity: 0.65;
+    stroke-width: 1.4;
+  }
+}
+
+@keyframes tooltipGlow {
+  0% {
+    box-shadow: 0 10px 24px rgba(24, 42, 62, 0.12);
+  }
+  50% {
+    box-shadow: 0 14px 30px rgba(31, 143, 79, 0.18);
+  }
+  100% {
+    box-shadow: 0 10px 24px rgba(24, 42, 62, 0.12);
+  }
+}
+
 .page {
   min-height: 100vh;
   background: linear-gradient(135deg, #f7fbf8 0%, #f4f7fb 50%, #eef2f6 100%);
@@ -1040,6 +1067,7 @@
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  position: relative;
 }
 
 .seats-svg {
@@ -1048,17 +1076,33 @@
   display: block;
 }
 
+.seats-overlay {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
 .seat-dot {
   fill: #ffffff;
   stroke: #d9e2ea;
   stroke-width: 0.9;
-  transition: transform 0.2s ease, stroke 0.2s ease, fill 0.2s ease;
+  transition: stroke 0.2s ease, fill 0.2s ease;
 }
 
 .seat-dot:hover {
-  transform: scale(1.15);
   stroke: #1f8f4f;
   fill: #f9fffe;
+}
+
+.seat-dot-ring {
+  fill: none;
+  stroke: url(#seatGlow);
+  stroke-width: 1.6;
+  opacity: 0.9;
+  filter: url(#seatGlowShadow);
+  animation: seatRingPulse 1.6s ease-in-out infinite;
 }
 
 .seat-count {
@@ -1069,16 +1113,41 @@
 }
 
 .seat-tooltip {
-  position: fixed;
+  position: absolute;
   z-index: 20;
   background: #ffffff;
-  border: 1px solid #d9e2ea;
+  border: 1px solid transparent;
   border-radius: 10px;
   padding: 8px 10px;
   min-width: 160px;
   box-shadow: 0 12px 24px rgba(24, 42, 62, 0.12);
   pointer-events: none;
-  transform: translateY(-4px);
+  animation: tooltipGlow 2.2s ease-in-out infinite;
+}
+
+.seat-tooltip-corner {
+  top: 12px;
+  right: 12px;
+}
+
+.seat-tooltip::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #0b6b3a, #1f8f4f, #e43d30);
+  z-index: -1;
+  opacity: 0.7;
+  filter: blur(0.4px);
+}
+
+.seat-tooltip::after {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  border-radius: 9px;
+  background: #ffffff;
+  z-index: -1;
 }
 
 .seat-tooltip-title {
