@@ -1,0 +1,129 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.5); /* Semi-transparent */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: none;
+  z-index: 1000;
+  box-shadow: none;
+  height: 64px;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 20px;
+  color: #1f8f4f;
+  transition: opacity 0.2s;
+}
+
+.navbar-logo:hover {
+  opacity: 0.8;
+}
+
+.logo-icon {
+  font-size: 24px;
+}
+
+.navbar-menu-desktop {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-link {
+  background: none;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  color: #5c6b73;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.nav-link:hover {
+  color: #1f8f4f;
+  background: rgba(31, 143, 79, 0.05);
+}
+
+.nav-link.active {
+  color: #1f8f4f;
+  background: rgba(31, 143, 79, 0.1);
+}
+
+.navbar-menu-mobile-toggle {
+  display: none;
+  cursor: pointer;
+  color: #1d2b36;
+}
+
+.navbar-mobile-overlay {
+  position: absolute;
+  top: 64px;
+  left: 0;
+  width: 100%;
+  background: white;
+  border-bottom: 1px solid #eee;
+  padding: 10px 0;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  animation: slideDown 0.3s ease-out;
+}
+
+.navbar-mobile-menu {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-nav-link {
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 12px 24px;
+  font-size: 16px;
+  color: #333;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.mobile-nav-link:last-child {
+  border-bottom: none;
+}
+
+.mobile-nav-link.active {
+  color: #1f8f4f;
+  background: #f9fdfa;
+  font-weight: 600;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .navbar-menu-desktop {
+    display: none;
+  }
+  
+  .navbar-menu-mobile-toggle {
+    display: block;
+  }
+}

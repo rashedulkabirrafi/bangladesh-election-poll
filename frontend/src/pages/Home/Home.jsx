@@ -4,6 +4,7 @@ import './Home.css';
 import constituencyData from '../../assets/constituencies.json';
 import candidatesData from '../../assets/candidates.json';
 import PartiesAndCoalitions from '../PartiesAndCoalitions/PartiesAndCoalitions';
+import Navbar from '../../components/Navbar/Navbar';
 import {
   stepOrder,
   makeKey,
@@ -260,6 +261,7 @@ const Home = () => {
 
     return (
       <div className="page">
+        <Navbar step={step} setStep={setStep} />
         <div className="container">
           <div className="card homepage-hero">
             <div className="header centered">
@@ -268,42 +270,7 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="stats-grid">
-            <div className="stat-card">
-              <div className="stat-number">{totalVotes}</div>
-              <div className="stat-label">মোট ভোট</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-number">{constituenciesWithVotes}</div>
-              <div className="stat-label">আসনে ভোট</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-number">{constituencyRows.length}</div>
-              <div className="stat-label">মোট আসন</div>
-            </div>
-          </div>
 
-          <div className="card cta-card">
-            <div className="cta-content">
-              <h2 className="cta-title">আপনার মতামত আমাদের কাছে গুরুত্বপূর্ণ!</h2>
-              <p className="cta-subtitle">এই জরিপে অংশগ্রহণ করুন এবং আপনার পছন্দের প্রার্থীকে ভোট দিন</p>
-              <button onClick={() => setStep('select')} className="btn btn-large">
-                আপনার আসনে ভোট দিন
-              </button>
-            </div>
-          </div>
-
-          <div className="card info-card">
-            <div className="info-card-content">
-              <div>
-                <h3 className="info-title">জোট ও দলসমূহ</h3>
-                <p className="info-subtitle">প্রতিটি জোটের দল ও প্রতীক দেখুন</p>
-              </div>
-              <button onClick={() => setStep('alliances')} className="btn btn-secondary">
-                দল তালিকা দেখুন
-              </button>
-            </div>
-          </div>
 
           <div className="card seats-card">
             <div className="header centered">
@@ -342,7 +309,20 @@ const Home = () => {
                     data-seat={seat.index}
                     data-constituency={constituency?.constituency || ''}
                     data-party={partyName}
-                    style={{ fill: seatColor }}
+                    style={{ fill: seatColor, cursor: 'pointer' }}
+                    onClick={() => {
+                        if (constituency) {
+                            setSelectedDivision(constituency.division);
+                            setSelectedDistrict(constituency.district);
+                            setSelectedConstituency({
+                                division: constituency.division,
+                                district: constituency.district,
+                                name: constituency.constituency,
+                                key: constituencyKey
+                            });
+                            setStep('results');
+                        }
+                    }}
                     onMouseEnter={(event) => {
                       const svgRect =
                         event.currentTarget.ownerSVGElement?.getBoundingClientRect();
@@ -438,6 +418,43 @@ const Home = () => {
           </div>
         </div>
 
+          <div className="card cta-card">
+            <div className="cta-content">
+              <h2 className="cta-title">আপনার মতামত আমাদের কাছে গুরুত্বপূর্ণ!</h2>
+              <p className="cta-subtitle">এই জরিপে অংশগ্রহণ করুন এবং আপনার পছন্দের প্রার্থীকে ভোট দিন</p>
+              <button onClick={() => setStep('select')} className="btn btn-large">
+                আপনার আসনে ভোট দিন
+              </button>
+            </div>
+          </div>
+          <div className="stats-grid">
+            <div className="stat-card">
+              <div className="stat-number">{totalVotes}</div>
+              <div className="stat-label">মোট ভোট</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-number">{constituenciesWithVotes}</div>
+              <div className="stat-label">আসনে ভোট</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-number">{constituencyRows.length}</div>
+              <div className="stat-label">মোট আসন</div>
+            </div>
+          </div>
+          <div className="card info-card">
+            <div className="info-card-content">
+              <div>
+                <h3 className="info-title">জোট ও দলসমূহ</h3>
+                <p className="info-subtitle">প্রতিটি জোটের দল ও প্রতীক দেখুন</p>
+              </div>
+              <button onClick={() => setStep('alliances')} className="btn btn-secondary">
+                দল তালিকা দেখুন
+              </button>
+            </div>
+          </div>
+
+
+
           <div className="card">
             <h2 className="section-title section-title-center">সকল আসনের ফলাফল</h2>
             <div className="constituencies-grid">
@@ -445,6 +462,17 @@ const Home = () => {
                 <div
                   key={const_data.name}
                   className={`constituency-box ${const_data.winner ? 'has-winner' : ''}`}
+                  onClick={() => {
+                        setSelectedDivision(const_data.division);
+                        setSelectedDistrict(const_data.district);
+                        setSelectedConstituency({
+                            division: const_data.division,
+                            district: const_data.district,
+                            name: const_data.name,
+                            key: makeKey(const_data.division, const_data.district, const_data.name)
+                        });
+                        setStep('results');
+                  }}
                 >
                   <div className="constituency-box-name">{const_data.name}</div>
                   {const_data.winner ? (
@@ -468,16 +496,8 @@ const Home = () => {
   if (step === 'alliances') {
     return (
       <div className="page">
+        <Navbar step={step} setStep={setStep} />
         <PartiesAndCoalitions />
-        <div className="container" style={{ marginTop: '20px' }}>
-          <div className="card">
-            <div className="actions">
-              <button onClick={() => setStep('home')} className="btn btn-secondary">
-                হোম
-              </button>
-            </div>
-          </div>
-        </div>
       </div>
     );
   }
@@ -486,14 +506,13 @@ const Home = () => {
     const hasData = divisions.length > 0;
     return (
       <div className="page">
+        <Navbar step={step} setStep={setStep} />
         <div className="container">
           <div className="card">
             <div className="header">
               <h1 className="headline">বাংলাদেশ নির্বাচন জরিপ ২০২৬</h1>
               <p className="subtitle">প্রথমে বিভাগ, এরপর জেলা ও আসন নির্বাচন করুন</p>
             </div>
-
-            <Stepper current={getStepperKey()} />
 
             {!hasData && (
               <div className="alert" role="alert">
@@ -502,8 +521,11 @@ const Home = () => {
             )}
 
             <div className="form-grid">
-              <label className="field">
-                <span>বিভাগ</span>
+              <label className={`field field-step ${!selectedDivision ? 'field-active' : 'field-completed'}`}>
+                <span className="field-label">
+                  <span className="step-number">১</span>
+                  বিভাগ
+                </span>
                 <select
                   value={selectedDivision}
                   onChange={(e) => {
@@ -521,8 +543,11 @@ const Home = () => {
                 </select>
               </label>
 
-              <label className="field">
-                <span>জেলা</span>
+              <label className={`field field-step ${!selectedDivision ? 'field-disabled' : !selectedDistrict ? 'field-active' : 'field-completed'}`}>
+                <span className="field-label">
+                  <span className="step-number">২</span>
+                  জেলা
+                </span>
                 <select
                   value={selectedDistrict}
                   onChange={(e) => {
@@ -540,8 +565,11 @@ const Home = () => {
                 </select>
               </label>
 
-              <label className="field">
-                <span>নির্বাচনী আসন</span>
+              <label className={`field field-step ${!selectedDivision || !selectedDistrict ? 'field-disabled' : !selectedConstituency ? 'field-active' : 'field-completed'}`}>
+                <span className="field-label">
+                  <span className="step-number">৩</span>
+                  নির্বাচনী আসন
+                </span>
                 <select
                   value={selectedConstituency?.name || ''}
                   onChange={(e) => {
@@ -605,65 +633,110 @@ const Home = () => {
   if (step === 'vote') {
     return (
       <div className="page">
+        <Navbar step={step} setStep={setStep} />
         <div className="container">
           <div className="card">
             <div className="header">
-              <h1 className="headline">ভোট দিন</h1>
-              <p className="subtitle">
-                {selectedConstituency?.name}, {selectedConstituency?.district}
-              </p>
+              <h2 className="title">প্রার্থী তালিকা</h2>
+              <p className="subtitle">{selectedConstituency.name}</p>
             </div>
 
-            <Stepper current="candidates" />
+            <Stepper current={getStepperKey()} />
 
-            <div className="candidates-list">
-              {candidatesForConstituency.map((candidate) => {
-                const party = normalizePartyName(candidate.party || '');
-                const symbol = (candidate.symbol || '').trim();
-                const partySymbol = partySymbols.get(party);
-                
-                // Determine symbol to show: specific candidate symbol, or party symbol, or emoji fallback
-                let symbolDisplay = <span className="fallback-symbol">🗳️</span>;
-                // Note: Logic for images vs text would be nice here if we have images for all. 
-                // For now, keeping original logic which was simple text or basic unicode in original App (though original App used emojis in JSON?)
-                // Actually original App code didn't have image logic in 'vote' step shown in previous snippets.
-                // Assuming text/emoji for now.
-                
-                return (
-                  <label key={candidate.name} className={`candidate-option ${selectedCandidate?.name === candidate.name ? 'selected' : ''}`}>
-                    <input
-                      type="radio"
-                      name="candidate"
-                      value={candidate.name}
-                      checked={selectedCandidate?.name === candidate.name}
-                      onChange={() => setSelectedCandidate(candidate)}
-                    />
-                    <div className="candidate-info">
-                      <div className="candidate-name">{candidate.name}</div>
-                      <div className="candidate-party">{candidate.party || 'স্বতন্ত্র'}</div>
-                    </div>
-                    <div className="candidate-symbol">
-                      {/* Placeholder for symbol */}
-                      {candidate.symbol || '🗳️'}
-                    </div>
-                    {selectedCandidate?.name === candidate.name && (
-                      <div className="check-icon">
-                        <Check size={20} />
-                      </div>
-                    )}
-                  </label>
-                );
-              })}
-            </div>
+            {candidatesForConstituency.length === 0 ? (
+              <div className="alert" role="alert">
+                এই আসনের জন্য প্রার্থী তালিকা পাওয়া যায়নি।
+              </div>
+            ) : (
+              <div className="table-wrap">
+                <table className="candidate-table">
+                  <thead>
+                    <tr>
+                      <th>ক্রম</th>
+                      <th>দাখিলকারীর নাম</th>
+                      <th>ছবি</th>
+                      <th>রাজনৈতিক দল/স্বতন্ত্র</th>
+                      <th>নির্বাচনী প্রতীক</th>
+                      <th>হলফনামা</th>
+                      <th>নির্বাচনী ব্যয় ও ব্যক্তিগত সম্পদের বিবরণী</th>
+                      <th>আয়কর রিটার্ন</th>
+                      <th>ভোট</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {candidatesForConstituency.map((candidate, index) => (
+                      <tr key={`${candidate.name}-${index}`}>
+                        <td>{index + 1}</td>
+                        <td>{candidate.name}</td>
+                        <td>
+                          {candidate.photo ? (
+                            <img
+                              src={candidate.photo}
+                              alt={candidate.name}
+                              className="candidate-photo"
+                            />
+                          ) : (
+                            '-'
+                          )}
+                        </td>
+                        <td>{candidate.party || '-'}</td>
+                        <td>{candidate.symbol || '-'}</td>
+                        <td>
+                          {candidate.affidavit ? (
+                            <a href={candidate.affidavit} target="_blank" rel="noreferrer" className="btn-download">
+                              ডাউনলোড
+                            </a>
+                          ) : (
+                            '-'
+                          )}
+                        </td>
+                        <td>
+                          {candidate.expense ? (
+                            <a href={candidate.expense} target="_blank" rel="noreferrer" className="btn-download">
+                              ডাউনলোড
+                            </a>
+                          ) : (
+                            '-'
+                          )}
+                        </td>
+                        <td>
+                          {candidate.tax ? (
+                            <a href={candidate.tax} target="_blank" rel="noreferrer" className="btn-download">
+                              ডাউনলোড
+                            </a>
+                          ) : (
+                            '-'
+                          )}
+                        </td>
+                        <td>
+                          <button
+                            className={`btn btn-small btn-vote ${
+                              selectedCandidate === candidate ? 'btn-vote-selected' : ''
+                            }`}
+                            onClick={() => setSelectedCandidate(candidate)}
+                          >
+                            {selectedCandidate === candidate ? 'নির্বাচিত' : 'ভোট দিন'}
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
 
-            {error && <div className="error-message">{error}</div>}
+            {error && (
+              <div className="alert" role="alert">
+                {error}
+              </div>
+            )}
 
             <div className="actions">
               <button onClick={resetToSelect} className="btn btn-secondary">
-                পেছনে যান
+                পিছনে
               </button>
-              <button onClick={submitVote} className="btn btn-primary">
-                ভোট নিশ্চিত করুন
+              <button onClick={submitVote} className="btn btn-primary" disabled={!selectedCandidate}>
+                ভোট জমা দিন
               </button>
             </div>
           </div>
@@ -680,6 +753,7 @@ const Home = () => {
 
     return (
       <div className="page">
+        <Navbar step={step} setStep={setStep} />
         <div className="container">
           <div className="card result-card">
             <div className="header centered">
