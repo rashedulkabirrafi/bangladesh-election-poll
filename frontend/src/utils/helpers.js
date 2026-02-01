@@ -156,9 +156,9 @@ export const buildSeatLayout = (totalSeats = 300, rows = 10) => {
   const centerX = width / 2;
   const centerY = height - 24;
   const innerRadius = 64;
-  const rowGap = 16;
-  const seatRadius = 4.6;
-  const seatSpacing = seatRadius * 2 + 5;
+  const rowGap = 22;
+  const seatRadius = 6.3;
+  const seatSpacing = seatRadius * 2 + 10;
 
   const radii = Array.from({ length: rows }, (_, index) => innerRadius + index * rowGap);
   const weights = radii.map((radius) => Math.max(1, Math.floor((Math.PI * radius) / seatSpacing)));
@@ -233,8 +233,8 @@ export const buildSenateSeatLayout = (totalSeats = 105, rows = 7) => {
   const centerY = height - 20;
   const innerRadius = 64;
   const rowGap = 22;
-  const seatRadius = 4.6;
-  const seatSpacing = seatRadius * 2 + 5;
+  const seatRadius = 6.3;
+  const seatSpacing = seatRadius * 2 + 10;
 
   const radii = Array.from({ length: rows }, (_, index) => innerRadius + index * rowGap);
   const weights = radii.map((radius) => Math.max(1, Math.floor((Math.PI * radius) / seatSpacing)));

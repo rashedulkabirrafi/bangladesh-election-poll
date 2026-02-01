@@ -364,7 +364,7 @@ const Home = () => {
                   ? groupKey
                     ? partyGroups[groupKey].color
                     : otherPartyColor
-                  : '#ffffff';
+                  : '#e0e0e0';
                 const label = constituency
                   ? `${constituency.constituency} · ${constituency.district}`
                   : `Seat ${index + 1}`;
@@ -505,7 +505,7 @@ const Home = () => {
                        cx={seat.cx}
                        cy={seat.cy}
                        r={seat.r}
-                       className="seat-dot"
+                       className="seat-dot seat-dot-winner"
                        style={{ fill: seatData.color }}
                        onMouseEnter={(event) => {
                           const svgRect = event.currentTarget.ownerSVGElement?.getBoundingClientRect();
