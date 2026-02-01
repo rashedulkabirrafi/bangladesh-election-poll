@@ -121,7 +121,7 @@ const Home = () => {
     const voted = localStorage.getItem(`voted_${fp}`);
     if (voted) {
       setBlocked(true);
-      setStep('results');
+      // setStep('results'); // User wants to stay on home page
     }
   }, []);
 
