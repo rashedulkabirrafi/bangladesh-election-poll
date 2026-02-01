@@ -1,9 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap');
+
 /* Global Styles */
 .parties-page {
   padding: 30px;
   max-width: 1200px;
   margin: 0 auto;
-  font-family: 'SolaimanLipi', sans-serif;
+  font-family: 'Hind Siliguri', sans-serif;
   background-color: #f8f9fa;
   min-height: 100vh;
 }
