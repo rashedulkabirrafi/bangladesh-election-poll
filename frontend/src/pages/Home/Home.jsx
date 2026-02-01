@@ -16,7 +16,8 @@ import {
   buildSeatLayout,
   buildSenateSeatLayout,
   calculateProportionalSeats,
-  generateFingerprint
+  generateFingerprint,
+  toBengaliNumber
 } from '../../utils/helpers';
 
 const otherPartyColor = '#9aa5b1';
@@ -587,15 +588,15 @@ const Home = () => {
           </div>
           <div className="stats-grid">
             <div className="stat-card">
-              <div className="stat-number">{totalVotes}</div>
+              <div className="stat-number">{toBengaliNumber(totalVotes)}</div>
               <div className="stat-label">মোট ভোট</div>
             </div>
             <div className="stat-card">
-              <div className="stat-number">{constituenciesWithVotes}</div>
+              <div className="stat-number">{toBengaliNumber(constituenciesWithVotes)}</div>
               <div className="stat-label">আসনে ভোট</div>
             </div>
             <div className="stat-card">
-              <div className="stat-number">{constituencyRows.length}</div>
+              <div className="stat-number">{toBengaliNumber(constituencyRows.length)}</div>
               <div className="stat-label">মোট আসন</div>
             </div>
           </div>

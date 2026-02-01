@@ -317,3 +317,7 @@ export const calculateProportionalSeats = (partyVotes, totalSeats = 100) => {
 
   return seatAllocation;
 };
+
+export const toBengaliNumber = (num) => {
+  return num.toString().replace(/\d/g, (d) => '০১২৩৪৫৬৭৮৯'[d]);
+};
