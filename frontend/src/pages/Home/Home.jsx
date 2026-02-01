@@ -14,10 +14,13 @@ import {
   extractPartyFromLabel,
   buildPartySymbolIndex,
   buildSeatLayout,
+  buildSenateSeatLayout,
+  calculateProportionalSeats,
   generateFingerprint
 } from '../../utils/helpers';
 
 const otherPartyColor = '#9aa5b1';
+const reservedSeatColor = '#34495e'; // Color for reserved seats
 
 const Stepper = ({ current }) => (
   <div className="stepper" aria-label="প্রক্রিয়া অগ্রগতি">
@@ -50,9 +53,14 @@ const Home = () => {
   const [blocked, setBlocked] = useState(false);
   const [hoverSeat, setHoverSeat] = useState(null);
   const [hoverSeatIndex, setHoverSeatIndex] = useState(null);
+  // Senate hover states
+  const [hoverSenateSeat, setHoverSenateSeat] = useState(null);
+  const [hoverSenateSeatIndex, setHoverSenateSeatIndex] = useState(null);
 
   const partySymbols = useMemo(() => buildPartySymbolIndex(candidatesData || {}), []);
   const seatLayout = useMemo(() => buildSeatLayout(300, 10), []);
+  // Senate layout: 105 seats (100 proportional + 5 reserved)
+  const senateLayout = useMemo(() => buildSenateSeatLayout(105, 7), []);
   const constituencyRows = useMemo(() => constituencyData || [], []);
 
   const candidateKeyLookup = useMemo(() => {
@@ -234,13 +242,6 @@ const Home = () => {
     const normalized = normalizePartyName(partyName);
     if (!normalized) return null;
     
-    // We need to rebuild partyIndex locally if we want to use it, or move it to helpers fully.
-    // For now, let's use a simpler lookup or assume partyGroups is imported.
-    // Re-implementing simplified logic using imported partyGroups since buildPartyIndex logic is complex to export cleanly without refs.
-    // actually, let's move buildPartyIndex logic to inside this function or helper.
-    // Wait, I didn't export `partyIndex` from helpers.js. I exported `partyGroups`.
-    // Let's implement the search logic here using `partyGroups`.
-    
     let foundKey = null;
     Object.entries(partyGroups).forEach(([key, group]) => {
       if (foundKey) return;
@@ -253,6 +254,73 @@ const Home = () => {
     });
     return foundKey;
   };
+
+  // Calculate total votes per party for PR system
+  const totalVotesByParty = useMemo(() => {
+    const partyVotes = {};
+    Object.values(votes).forEach(constituencyVotes => {
+      Object.entries(constituencyVotes).forEach(([candidateLabel, count]) => {
+        const party = extractPartyFromLabel(candidateLabel) || 'স্বতন্ত্র';
+        // Map to party group to keep colors consistent
+        const groupKey = getPartyGroup(party);
+        // Use group label if part of a group, otherwise use party name
+        // Ideally we map to the exact party name but color by group
+        // For simplicity in allocation, let's group by party name first
+        partyVotes[party] = (partyVotes[party] || 0) + count;
+      });
+    });
+    return partyVotes;
+  }, [votes]);
+
+  // Calculate proportional seats (100 seats)
+  const senateSeats = useMemo(() => {
+    return calculateProportionalSeats(totalVotesByParty, 100);
+  }, [totalVotesByParty]);
+
+  // Prepare seat array for visualization (105 seats)
+  // First 100 based on 'senateSeats', last 5 are reserved
+  const senateSeatArray = useMemo(() => {
+    const seatList = [];
+    
+    // Sort parties by seat count for clustered display
+    const sortedParties = Object.entries(senateSeats).sort((a, b) => b[1] - a[1]);
+    
+    sortedParties.forEach(([party, count]) => {
+      const groupKey = getPartyGroup(party);
+      const color = groupKey ? partyGroups[groupKey].color : otherPartyColor;
+      
+      for(let i=0; i<count; i++) {
+        seatList.push({
+          type: 'proportional',
+          party,
+          color,
+          label: `${party} (PR)`
+        });
+      }
+    });
+
+    // Fill remaining PR seats if calculation didn't reach 100 (e.g. 0 votes)
+    while (seatList.length < 100) {
+       seatList.push({
+         type: 'empty',
+         party: 'Empty',
+         color: '#e0e0e0',
+         label: 'Empty'
+       });
+    }
+
+    // Add 5 reserved seats
+    for(let i=0; i<5; i++) {
+      seatList.push({
+        type: 'reserved',
+        party: 'রাষ্ট্রপতি মনোনীত',
+        color: reservedSeatColor,
+        label: 'রাষ্ট্রপতি কর্তৃক মনোনীত'
+      });
+    }
+
+    return seatList;
+  }, [senateSeats]);
 
   if (step === 'home') {
     const totalVotes = getTotalVotesAllConstituencies();
@@ -414,6 +482,96 @@ const Home = () => {
                 aria-hidden="true"
               />
               <span className="seat-legend-label">অন্যান্য / স্বতন্ত্র</span>
+            </div>
+          </div>
+        </div>
+
+          <div className="card seats-card senate-card">
+            <div className="header centered">
+              <h2 className="section-title section-title-center">সিনেট (উচ্চকক্ষ) আসন বিন্যাস</h2>
+              <p className="subtitle">১০৫টি আসন: ১০০টি আনুপাতিক হার + ৫টি সংরক্ষিত</p>
+            </div>
+            <div className="seats-chart senate-chart" role="img" aria-label="১০৫ আসনের সিনেট চার্ট">
+              <svg
+                 viewBox={`0 0 ${senateLayout.width} ${senateLayout.height}`}
+                 className="seats-svg"
+              >
+                {senateLayout.seats.map((seat, index) => {
+                   const seatData = senateSeatArray[index] || { color: '#e0e0e0', label: 'Empty' };
+                   return (
+                     <circle
+                       key={`senate-${seat.index}`}
+                       cx={seat.cx}
+                       cy={seat.cy}
+                       r={seat.r}
+                       className="seat-dot"
+                       style={{ fill: seatData.color }}
+                       onMouseEnter={(event) => {
+                          const svgRect = event.currentTarget.ownerSVGElement?.getBoundingClientRect();
+                          const scaleX = svgRect ? svgRect.width / senateLayout.width : 1;
+                          const scaleY = svgRect ? svgRect.height / senateLayout.height : 1;
+                          const offsetX = svgRect ? svgRect.left : 0;
+                          const offsetY = svgRect ? svgRect.top : 0;
+                          setHoverSenateSeatIndex(index);
+                          setHoverSenateSeat({
+                            label: seatData.label,
+                            party: seatData.party,
+                            x: offsetX + seat.cx * scaleX + 12,
+                            y: offsetY + seat.cy * scaleY + 12
+                          });
+                       }}
+                       onMouseLeave={() => {
+                          setHoverSenateSeat(null);
+                          setHoverSenateSeatIndex(null);
+                       }}
+                     />
+                   );
+                })}
+              </svg>
+              {hoverSenateSeat && (
+                 <div 
+                   className="seat-tooltip"
+                   style={{
+                     position: 'fixed',
+                     left: hoverSenateSeat.x,
+                     top: hoverSenateSeat.y,
+                     pointerEvents: 'none',
+                     zIndex: 1000
+                   }}
+                 >
+                   <div className="seat-tooltip-title">{hoverSenateSeat.party}</div>
+                   <div className="seat-tooltip-row">{hoverSenateSeat.label}</div>
+                 </div>
+              )}
+             <div className="seat-count">১০৫ আসন (উচ্চকক্ষ)</div>
+            </div>
+
+            <div className="seat-legend" aria-label="দলভিত্তিক রঙ নির্দেশিকা">
+            {Object.values(partyGroups).map((group) => (
+              <div className="seat-legend-item" key={group.label}>
+                <span
+                  className="seat-legend-swatch"
+                  style={{ background: group.color }}
+                  aria-hidden="true"
+                />
+                <span className="seat-legend-label">{group.label}</span>
+              </div>
+            ))}
+            <div className="seat-legend-item">
+              <span
+                className="seat-legend-swatch"
+                style={{ background: otherPartyColor }}
+                aria-hidden="true"
+              />
+              <span className="seat-legend-label">অন্যান্য / স্বতন্ত্র</span>
+            </div>
+            <div className="seat-legend-item">
+              <span
+                className="seat-legend-swatch"
+                style={{ background: reservedSeatColor }}
+                aria-hidden="true"
+              />
+              <span className="seat-legend-label">সংরক্ষিত (রাষ্ট্রপতি মনোনীত)</span>
             </div>
           </div>
         </div>

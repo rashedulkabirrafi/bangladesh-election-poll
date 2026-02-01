@@ -106,7 +106,7 @@ export const partyGroups = {
   },
   otherParties: {
     label: 'অন্যান্য দলসমূহ',
-    color: '#95a5a6',
+    color: '#8e44ad',
     parties: [
       'ইসলামী আন্দোলন বাংলাদেশ',
       'জাতীয় পার্টি (এরশাদ)',
@@ -223,4 +223,97 @@ export const generateFingerprint = () => {
   };
 
   return btoa(JSON.stringify(fingerprint));
+};
+
+// Senate (Upper House) seat layout - 105 seats
+export const buildSenateSeatLayout = (totalSeats = 105, rows = 7) => {
+  const width = 480;
+  const height = 280;
+  const centerX = width / 2;
+  const centerY = height - 20;
+  const innerRadius = 64;
+  const rowGap = 22;
+  const seatRadius = 4.6;
+  const seatSpacing = seatRadius * 2 + 5;
+
+  const radii = Array.from({ length: rows }, (_, index) => innerRadius + index * rowGap);
+  const weights = radii.map((radius) => Math.max(1, Math.floor((Math.PI * radius) / seatSpacing)));
+  const weightSum = weights.reduce((sum, value) => sum + value, 0);
+  const seatsPerRow = weights.map((weight) =>
+    Math.max(1, Math.round((weight / weightSum) * totalSeats))
+  );
+
+  let diff = totalSeats - seatsPerRow.reduce((sum, count) => sum + count, 0);
+  while (diff !== 0) {
+    if (diff > 0) {
+      for (let i = rows - 1; i >= 0 && diff > 0; i -= 1) {
+        seatsPerRow[i] += 1;
+        diff -= 1;
+      }
+    } else {
+      for (let i = 0; i < rows && diff < 0; i += 1) {
+        if (seatsPerRow[i] > 2) {
+          seatsPerRow[i] -= 1;
+          diff += 1;
+        }
+      }
+    }
+  }
+
+  const seats = [];
+  seatsPerRow.forEach((count, rowIndex) => {
+    const radius = radii[rowIndex];
+    for (let i = 0; i < count; i += 1) {
+      const angle =
+        count === 1 ? Math.PI / 2 : Math.PI - (Math.PI * i) / (count - 1);
+      const x = centerX + Math.cos(angle) * radius;
+      const y = centerY - Math.sin(angle) * radius;
+      seats.push({
+        cx: x,
+        cy: y,
+        r: seatRadius,
+        row: rowIndex,
+        index: seats.length + 1
+      });
+    }
+  });
+
+  return { seats, width, height };
+};
+
+// D'Hondt method for proportional seat allocation
+export const calculateProportionalSeats = (partyVotes, totalSeats = 100) => {
+  // partyVotes is an object: { partyName: voteCount, ... }
+  const parties = Object.keys(partyVotes).filter(p => partyVotes[p] > 0);
+  
+  if (parties.length === 0) {
+    return {};
+  }
+
+  const seatAllocation = {};
+  parties.forEach(party => {
+    seatAllocation[party] = 0;
+  });
+
+  // D'Hondt method: allocate seats one by one to the party with highest quotient
+  for (let seat = 0; seat < totalSeats; seat++) {
+    let maxQuotient = -1;
+    let winningParty = null;
+
+    parties.forEach(party => {
+      const divisor = seatAllocation[party] + 1;
+      const quotient = partyVotes[party] / divisor;
+      
+      if (quotient > maxQuotient) {
+        maxQuotient = quotient;
+        winningParty = party;
+      }
+    });
+
+    if (winningParty) {
+      seatAllocation[winningParty]++;
+    }
+  }
+
+  return seatAllocation;
 };
