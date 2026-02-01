@@ -1169,7 +1169,15 @@ body {
   color: #ffffff;
   text-align: center;
   padding: 24px 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: none;
+}
+
+.homepage-hero .header {
+  text-align: center;
+  width: 100%;
 }
 
 .homepage-hero .headline {
