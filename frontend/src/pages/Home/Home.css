@@ -228,6 +228,23 @@ body {
   margin: 24px 0 32px;
 }
 
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: space-between;
+  margin: 24px 0 32px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+}
+
+.stepper .step {
+  flex: 1 0 auto;
+  white-space: nowrap;
+}
+
 .step {
   display: flex;
   align-items: center;
@@ -551,25 +568,68 @@ body {
   animation: pulse 2s ease-in-out infinite;
 }
 
+.btn-vote-cast {
+  background: linear-gradient(135deg, #059669, #047857);
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(5, 150, 105, 0.4);
+  animation: none !important;
+  border: 2px solid #10b981 !important;
+}
+
+.btn-vote-cast:disabled {
+  background: linear-gradient(135deg, #059669, #047857);
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+.btn-vote-disabled {
+  background: #ffffff;
+  color: #999;
+  border: 1px solid #ddd !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  cursor: not-allowed;
+  font-weight: 500;
+}
+
+.btn-vote-disabled:hover {
+  transform: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
 .btn-download {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 16px;
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  color: #ffffff;
+  padding: 8px 12px;
+  background: none;
+  color: var(--primary);
   text-decoration: none;
+  border: none;
+  border-bottom: 2px solid var(--primary);
   border-radius: 8px;
   font-size: 13px;
   font-weight: 600;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(31, 143, 79, 0.2);
+  box-shadow: none;
+  cursor: pointer;
 }
 
 .btn-download:hover {
+  background: rgba(31, 143, 79, 0.15);
+  color: var(--primary-dark);
+  border-bottom-color: var(--primary-dark);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(31, 143, 79, 0.3);
-  background: linear-gradient(135deg, #1f7a45, #166534);
+  box-shadow: 0 4px 12px rgba(31, 143, 79, 0.2);
+  font-weight: 700;
 }
 
 .btn-download:active {

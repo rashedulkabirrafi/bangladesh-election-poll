@@ -52,6 +52,7 @@ const Home = () => {
   const [votes, setVotes] = useState({});
   const [fingerprint, setFingerprint] = useState('');
   const [blocked, setBlocked] = useState(false);
+  const [votedCandidate, setVotedCandidate] = useState(null);
   const [hoverSeat, setHoverSeat] = useState(null);
   const [hoverSeatIndex, setHoverSeatIndex] = useState(null);
   // Senate hover states
@@ -149,6 +150,7 @@ const Home = () => {
     newVotes[key][label] = (newVotes[key][label] || 0) + 1;
 
     setVotes(newVotes);
+    setVotedCandidate(selectedCandidate);
     localStorage.setItem('pollVotes', JSON.stringify(newVotes));
     localStorage.setItem(`voted_${fingerprint}`, Date.now().toString());
 
@@ -871,10 +873,15 @@ const Home = () => {
                           <button
                             className={`btn btn-small btn-vote ${
                               selectedCandidate === candidate ? 'btn-vote-selected' : ''
+                            } ${
+                              votedCandidate === candidate ? 'btn-vote-cast' : ''
+                            } ${
+                              votedCandidate && votedCandidate !== candidate ? 'btn-vote-disabled' : ''
                             }`}
-                            onClick={() => setSelectedCandidate(candidate)}
+                            onClick={() => !votedCandidate && setSelectedCandidate(candidate)}
+                            disabled={blocked || (votedCandidate && votedCandidate !== candidate)}
                           >
-                            {selectedCandidate === candidate ? 'নির্বাচিত' : 'ভোট দিন'}
+                            {votedCandidate === candidate ? '✓ ভোট দেওয়া হয়েছে' : selectedCandidate === candidate ? 'নির্বাচিত' : 'ভোট দিন'}
                           </button>
                         </td>
                       </tr>
