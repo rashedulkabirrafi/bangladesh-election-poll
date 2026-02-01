@@ -449,6 +449,194 @@ body {
   color: #1d2b36;
 }
 
+/* Referendum Card Styles */
+.referendum-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.referendum-card {
+  padding: 24px;
+  text-align: center;
+  border-top: 5px solid #009c4d; /* Bangladesh Green */
+}
+
+.referendum-header {
+  margin-bottom: 18px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 12px;
+}
+
+.referendum-title {
+  color: #e60000; /* Red Title */
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.referendum-subtitle {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.referendum-content-box {
+  background: #f8f9fa;
+  padding: 16px;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.referendum-question {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 14px;
+  line-height: 1.6;
+  color: #2c3e50;
+}
+
+.referendum-points {
+  margin-bottom: 18px;
+}
+
+.referendum-point {
+  margin-bottom: 10px;
+  line-height: 1.5;
+  font-size: 1rem;
+  color: #444;
+}
+
+.referendum-actions {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin: 24px 0;
+}
+
+.referendum-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.referendum-box {
+  border: 1px solid #ccc;
+  padding: 10px 40px;
+  border-radius: 4px;
+  background: white;
+  min-width: 120px;
+  text-align: center;
+}
+
+.referendum-label-text {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #000;
+}
+
+.btn-referendum {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  border: none;
+  cursor: pointer;
+  color: white;
+}
+
+.btn-referendum:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.btn-yes {
+  background-color: #27ae60;
+}
+
+.btn-no {
+  background-color: #e67e22; /* Orange/Red distinct from title red */
+}
+
+.referendum-instruction, .referendum-note {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  margin-top: 15px;
+  font-style: italic;
+}
+
+/* Referendum Results Bar Styles */
+.referendum-results-card {
+  margin-bottom: 18px;
+  padding: 16px;
+}
+
+.referendum-results-card .header {
+  margin-bottom: 12px;
+}
+
+.referendum-results-card .section-title {
+  margin-bottom: 6px;
+  font-size: 16px;
+}
+
+.referendum-results-card .subtitle {
+  font-size: 14px;
+}
+
+.referendum-bar-container {
+  margin-top: 12px;
+  padding: 0 12px;
+}
+
+.referendum-bar-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.label-yes { color: #2e1ab5; /* Deep Blue from screenshot */ }
+.label-no { color: #ff6600; /* Orange from screenshot */ }
+
+.referendum-progress-bar {
+  height: 16px;
+  background: #eee;
+  display: flex;
+  overflow: hidden;
+  /* border-radius: 12px; Remove border radius for flat look if desired */
+}
+
+.referendum-progress-fill {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.8rem;
+  transition: width 1s ease-out;
+}
+
+.fill-yes { background-color: #2e1ab5; }
+.fill-no { background-color: #ff6600; }
+
+.referendum-bar-values {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.value-yes { color: #000; }
+.value-no { color: #000; }
+
 .preview-meta {
   font-size: 13px;
   color: #6b7a86;
@@ -980,7 +1168,7 @@ body {
   background: linear-gradient(135deg, #1f8f4f, #167a3a);
   color: #ffffff;
   text-align: center;
-  padding: 40px 32px;
+  padding: 24px 28px;
   border: none;
 }
 
@@ -991,7 +1179,7 @@ body {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: slideInDown 0.6s ease-out;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .homepage-hero .subtitle-large {

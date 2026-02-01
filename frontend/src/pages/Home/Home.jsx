@@ -19,6 +19,7 @@ import {
   generateFingerprint,
   toBengaliNumber
 } from '../../utils/helpers';
+import { referendumData } from '../../assets/referendum_data';
 
 const otherPartyColor = '#9aa5b1';
 const reservedSeatColor = '#34495e'; // Color for reserved seats
@@ -53,6 +54,9 @@ const Home = () => {
   const [fingerprint, setFingerprint] = useState('');
   const [blocked, setBlocked] = useState(false);
   const [votedCandidate, setVotedCandidate] = useState(null);
+  const [referendumVote, setReferendumVote] = useState(null); // 'yes' or 'no'
+  const [referendumCounts, setReferendumCounts] = useState({ yes: 0, no: 0 });
+  const [showThankYou, setShowThankYou] = useState(false);
   const [hoverSeat, setHoverSeat] = useState(null);
   const [hoverSeatIndex, setHoverSeatIndex] = useState(null);
   // Senate hover states
@@ -117,6 +121,18 @@ const Home = () => {
       setVotes(JSON.parse(savedVotes));
     }
 
+    const savedReferendumCounts = localStorage.getItem('referendumCounts');
+    if (savedReferendumCounts) {
+      try {
+        const parsedCounts = JSON.parse(savedReferendumCounts);
+        const yes = Number(parsedCounts?.yes ?? 0);
+        const no = Number(parsedCounts?.no ?? 0);
+        setReferendumCounts({ yes: Number.isFinite(yes) ? yes : 0, no: Number.isFinite(no) ? no : 0 });
+      } catch (error) {
+        setReferendumCounts({ yes: 0, no: 0 });
+      }
+    }
+
     const fp = generateFingerprint();
     setFingerprint(fp);
 
@@ -151,9 +167,32 @@ const Home = () => {
 
     setVotes(newVotes);
     setVotedCandidate(selectedCandidate);
-    localStorage.setItem('pollVotes', JSON.stringify(newVotes));
-    localStorage.setItem(`voted_${fingerprint}`, Date.now().toString());
+    // localStorage.setItem('pollVotes', JSON.stringify(newVotes)); // Deferred
+    // localStorage.setItem(`voted_${fingerprint}`, Date.now().toString()); // Deferred
 
+    setStep('referendum');
+  };
+
+  const submitReferendum = (vote) => {
+    setReferendumVote(vote);
+    
+    // Save personal vote
+    localStorage.setItem(`referendum_vote_${fingerprint}`, vote);
+
+    // Update global counts (simulated)
+    const currentCounts = { ...referendumCounts };
+    if (vote === 'yes') currentCounts.yes += 1;
+    if (vote === 'no') currentCounts.no += 1;
+    
+    setReferendumCounts(currentCounts);
+    localStorage.setItem('referendumCounts', JSON.stringify(currentCounts));
+    
+    // Now block the user and save the candidate vote permanently
+    localStorage.setItem('pollVotes', JSON.stringify(votes));
+    localStorage.setItem(`voted_${fingerprint}`, Date.now().toString());
+    
+    setBlocked(true);
+    setShowThankYou(true);
     setStep('results');
   };
 
@@ -325,25 +364,51 @@ const Home = () => {
     return seatList;
   }, [senateSeats]);
 
+  const referendumStats = useMemo(() => {
+     const total = referendumCounts.yes + referendumCounts.no;
+     if (total === 0) return { yes: 0, no: 0 };
+     const yes = Math.round((referendumCounts.yes / total) * 100);
+     return { yes, no: 100 - yes };
+  }, [referendumCounts]);
+
   if (step === 'home') {
     const totalVotes = getTotalVotesAllConstituencies();
     const constituenciesWithVotes = Object.keys(votes).length;
     const topConstituencies = getTopConstituencies();
 
-    return (
-      <div className="page">
-        <Navbar step={step} setStep={setStep} />
-        <div className="container">
-          <div className="card homepage-hero">
-            <div className="header centered">
-              <h1 className="headline">বাংলাদেশ নির্বাচন জরিপ ২০২৬</h1>
-              <p className="subtitle-large">একটি ডিজিটাল ভোট কেন্দ্র</p>
-            </div>
+  return (
+    <div className="page">
+      <Navbar step={step} setStep={setStep} />
+      <div className="container">
+        <div className="card homepage-hero">
+          <div className="header centered">
+            <h1 className="headline">বাংলাদেশ নির্বাচন জরিপ ২০২৬</h1>
+            <p className="subtitle-large">একটি ডিজিটাল ভোট কেন্দ্র</p>
           </div>
+        </div>
 
+        <div className="card results-card referendum-results-card">
+          <div className="header centered">
+            <h2 className="section-title section-title-center">গণভোট ফলাফল (লাইভ)</h2>
+            <p className="subtitle">জুলাই জাতীয় সনদ (সংবিধান সংশোধন)</p>
+          </div>
+          <div className="referendum-bar-container">
+             <div className="referendum-bar-labels">
+                <span className="referendum-bar-label label-yes">হ্যাঁ</span>
+                <span className="referendum-bar-label label-no">না</span>
+             </div>
+             <div className="referendum-progress-bar">
+                <div className="referendum-progress-fill fill-yes" style={{ width: `${referendumStats.yes}%` }}></div>
+                <div className="referendum-progress-fill fill-no" style={{ width: `${referendumStats.no}%` }}></div>
+             </div>
+             <div className="referendum-bar-values">
+                <span className="referendum-bar-value value-yes">{toBengaliNumber(referendumStats.yes)}%</span>
+                <span className="referendum-bar-value value-no">{toBengaliNumber(referendumStats.no)}%</span>
+             </div>
+          </div>
+        </div>
 
-
-          <div className="card seats-card">
+        <div className="card seats-card">
             <div className="header centered">
               <h2 className="section-title section-title-center">জাতীয় সংসদ (নিম্নকক্ষ) আসন বিন্যাস</h2>
               <p className="subtitle">৩০০টি আসন (নিম্নকক্ষ)</p>
@@ -663,6 +728,62 @@ const Home = () => {
     );
   }
 
+  if (step === 'referendum') {
+    return (
+      <div className="page">
+        <Navbar step={step} setStep={setStep} />
+        <div className="referendum-container">
+          <div className="card referendum-card">
+            <div className="referendum-header">
+              <img src="/emblem.png" alt="Bangladesh Emblem" className="referendum-emblem" style={{ height: '60px', marginBottom: '10px' }} onError={(e) => e.target.style.display = 'none'} />
+              <h1 className="referendum-title">{referendumData.title}</h1>
+              <p className="referendum-subtitle">{referendumData.subtitle}</p>
+            </div>
+            
+            <div className="referendum-content-box">
+              <p className="referendum-question">{referendumData.question}</p>
+              
+              <div className="referendum-points">
+                {referendumData.points.map((point, idx) => (
+                  <p key={idx} className="referendum-point">{point}</p>
+                ))}
+              </div>
+              
+              <div className="referendum-actions">
+                <div className="referendum-option">
+                  <div className="referendum-box">
+                    <span className="referendum-label-text">হ্যাঁ</span>
+                  </div>
+                  <button 
+                    className="btn btn-referendum btn-yes"
+                    onClick={() => submitReferendum('yes')}
+                  >
+                    ✓
+                  </button>
+                </div>
+
+                <div className="referendum-option">
+                  <div className="referendum-box">
+                    <span className="referendum-label-text">না</span>
+                  </div>
+                  <button 
+                    className="btn btn-referendum btn-no"
+                    onClick={() => submitReferendum('no')}
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+
+              <p className="referendum-instruction">ভোট প্রদানের জন্য উপরের যে-কোনো একটিতে (✓) টিক বা (✕) ক্রস চিহ্ন দিন।</p>
+              <p className="referendum-note">তাহলে হ্যাঁ ভোট দিন, "হ্যাঁ" ভোট দিলে উপরের সবকিছু পাবেন। "না" ভোট দিলে কিছুই পাবেন না। মনে রাখবেন, পরিবর্তনের চাবি এবার আপনার হাতে।</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (step === 'select') {
     const hasData = divisions.length > 0;
     return (
@@ -935,6 +1056,12 @@ const Home = () => {
             </div>
 
             <Stepper current="candidates" />
+
+            {showThankYou && (
+              <div className="alert">
+                ধন্যবাদ! আপনার মূল্যবান ভোট গ্রহণ করা হয়েছে।
+              </div>
+            )}
 
             <div className="results-list">
               {sortedCandidates.length > 0 ? (
