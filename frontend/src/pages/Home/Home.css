@@ -589,6 +589,10 @@ body {
   font-size: 14px;
 }
 
+.referendum-results-card + .seats-card {
+  margin-top: -16px;
+}
+
 .referendum-bar-container {
   margin-top: 12px;
   padding: 0 12px;
@@ -1168,11 +1172,13 @@ body {
   background: linear-gradient(135deg, #1f8f4f, #167a3a);
   color: #ffffff;
   text-align: center;
-  padding: 24px 28px;
+  padding: 14px 24px 6px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   border: none;
+  min-height: 88px;
 }
 
 .homepage-hero .header {
@@ -1182,12 +1188,10 @@ body {
 
 .homepage-hero .headline {
   color: #ffffff;
-  background: #ffffff;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background: none;
+  -webkit-text-fill-color: #ffffff;
   animation: slideInDown 0.6s ease-out;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .homepage-hero .subtitle-large {
