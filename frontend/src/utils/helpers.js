@@ -150,6 +150,7 @@ export const buildPartySymbolIndex = (candidates) => {
   return result;
 };
 
+
 export const buildSeatLayout = (totalSeats = 300, rows = 10) => {
   const width = 560;
   const height = 320;
