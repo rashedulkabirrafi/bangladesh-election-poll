@@ -13,18 +13,19 @@ export const normalizeConstituencyName = (value = '') =>
     .trim()
     .replace(/\s+/g, '')
     .replace(/[–—]/g, '-')
-    .replace(/ড়/g, 'ড়')
-    .replace(/ঢ়/g, 'ঢ়')
-    .replace(/য়/g, 'য়')
-    .replace(/য়া/g, 'য়া')
     .replace(/চট্রগ্রাম/g, 'চট্টগ্রাম')
-    .replace(/টাংগাইল/g, 'টাঙ্গাইল')
-    .replace(/নেত্রকোণা/g, 'নেত্রকোনা')
+    .replace(/মাগুড়া/g, 'মাগুরা')
     .replace(/লক্ষীপুর/g, 'লক্ষ্মীপুর')
-    .replace(/নোয়াখালী/g, 'নোয়াখালী')
     .replace(/মাদারিপুর/g, 'মাদারীপুর')
+    .replace(/ব্রাক্ষণবাড়িয়া/g, 'ব্রাহ্মণবাড়িয়া')
+    .replace(/নোয়াখালী/g, 'নোয়াখালী')
+    .replace(/নেত্রকোণা/g, 'নেত্রকোনা')
+    .replace(/টাংগাইল/g, 'টাঙ্গাইল')
     .replace(/রাঙ্গামাটি/g, 'রাঙামাটি')
-    .replace(/ব্রাক্ষণ/g, 'ব্রাহ্মণ');
+    .replace(/ড়/g, 'ড়')
+    .replace(/ঢ়/g, 'ঢ়')
+    .replace(/য়/g, 'য়')
+    .replace(/য়া/g, 'য়া');
 
 export const normalizePartyName = (value = '') =>
   value
