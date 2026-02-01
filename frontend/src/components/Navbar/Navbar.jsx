@@ -24,6 +24,12 @@ const Navbar = ({ step, setStep }) => {
 
         <div className="navbar-menu-desktop">
           <button 
+            className={`nav-link ${step === 'select' ? 'active' : ''}`}
+            onClick={() => handleNavClick('select')}
+          >
+            ভোট দিন
+          </button>
+          <button 
             className={`nav-link ${step === 'home' || step === 'select' || step === 'vote' ? 'active' : ''}`}
             onClick={() => handleNavClick('home')}
           >
@@ -45,6 +51,12 @@ const Navbar = ({ step, setStep }) => {
       {isMenuOpen && (
         <div className="navbar-mobile-overlay">
           <div className="navbar-mobile-menu">
+            <button 
+              className={`mobile-nav-link ${step === 'select' ? 'active' : ''}`}
+              onClick={() => handleNavClick('select')}
+            >
+              ভোট দিন
+            </button>
             <button 
               className={`mobile-nav-link ${step === 'home' ? 'active' : ''}`}
               onClick={() => handleNavClick('home')}
