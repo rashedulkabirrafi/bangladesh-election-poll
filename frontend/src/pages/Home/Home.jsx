@@ -342,8 +342,8 @@ const Home = () => {
 
           <div className="card seats-card">
             <div className="header centered">
-              <h2 className="section-title section-title-center">জাতীয় সংসদের আসন বিন্যাস</h2>
-              <p className="subtitle">৩০০টি আসনের ভিজ্যুয়াল ম্যাপ</p>
+              <h2 className="section-title section-title-center">জাতীয় সংসদ (নিম্নকক্ষ) আসন বিন্যাস</h2>
+              <p className="subtitle">৩০০টি আসন (নিম্নকক্ষ)</p>
             </div>
             <div className="seats-chart" role="img" aria-label="৩০০ আসনের সেমি-সার্কুলার লেআউট">
               <svg
@@ -462,7 +462,7 @@ const Home = () => {
                 <div className="seat-tooltip-meta">মোট ভোট: {hoverSeat.totalVotes}</div>
               </div>
             )}
-            <div className="seat-count">৩০০ আসন</div>
+            <div className="seat-count">৩০০ আসন (নিম্নকক্ষ)</div>
           </div>
           <div className="seat-legend" aria-label="দলভিত্তিক রঙ নির্দেশিকা">
             {Object.values(partyGroups).map((group) => (
