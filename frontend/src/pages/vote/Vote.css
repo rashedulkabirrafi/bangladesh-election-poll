@@ -3,6 +3,7 @@
   border-radius: 12px;
   border: 1px solid #e0e6eb;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  -webkit-overflow-scrolling: touch;
 }
 
 .candidate-table {
@@ -22,6 +23,7 @@
   font-size: 14px;
   transition: all 0.2s ease;
   border-bottom: 1px solid #f1f5f9;
+  word-break: break-word;
 }
 
 .candidate-table th {
@@ -83,6 +85,7 @@
   box-shadow: 0 4px 12px rgba(31, 143, 79, 0.2);
   position: relative;
   overflow: hidden;
+  touch-action: manipulation;
 }
 
 .btn-vote:hover:not(:disabled) {

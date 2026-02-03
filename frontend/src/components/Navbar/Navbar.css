@@ -106,6 +106,7 @@
   display: none;
   cursor: pointer;
   color: #1d2b36;
+  touch-action: manipulation;
 }
 
 .navbar-mobile-overlay {
@@ -133,6 +134,8 @@
   font-size: 16px;
   color: #333;
   border-bottom: 1px solid #f5f5f5;
+  min-height: 44px;
+  touch-action: manipulation;
 }
 
 .mobile-nav-link:first-child {
@@ -182,5 +185,20 @@
   
   .navbar-menu-mobile-toggle {
     display: block;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-container {
+    padding: 0 14px;
+  }
+
+  .navbar-logo {
+    font-size: 18px;
+    gap: 8px;
+  }
+
+  .logo-icon {
+    font-size: 20px;
   }
 }

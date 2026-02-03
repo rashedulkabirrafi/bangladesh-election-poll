@@ -6,6 +6,21 @@
   margin-top: 16px;
 }
 
+@media (max-width: 600px) {
+  .constituencies-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .constituency-box {
+    padding: 12px;
+  }
+
+  .constituency-box-name {
+    font-size: 11px;
+    min-height: 26px;
+  }
+}
+
 .constituency-box {
   background: #ffffff;
   border: 2px solid #e0e6eb;
@@ -61,6 +76,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  word-break: break-word;
 }
 
 .constituency-box-winner {
@@ -82,6 +98,7 @@
   font-weight: 700;
   color: #1d2b36;
   line-height: 1.2;
+  word-break: break-word;
 }
 
 .winner-votes {
