@@ -1036,7 +1036,21 @@ const Home = () => {
     const key = selectedConstituency ? selectedConstituency.key : '';
     const total = getTotalVotes(key);
     const votesForConst = votes[key] || {};
-    const sortedCandidates = Object.entries(votesForConst).sort((a, b) => b[1] - a[1]);
+    const candidateLabelMap = new Map();
+    candidatesForConstituency.forEach((candidate) => {
+      const label = `${candidate.name} (${candidate.party || 'স্বতন্ত্র'})`;
+      candidateLabelMap.set(label, {
+        label,
+        count: votesForConst[label] || 0
+      });
+    });
+    Object.entries(votesForConst).forEach(([label, count]) => {
+      if (!candidateLabelMap.has(label)) {
+        candidateLabelMap.set(label, { label, count });
+      }
+    });
+    const sortedCandidates = Array.from(candidateLabelMap.values())
+      .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label, 'bn'));
 
     return (
       <div className="page">
@@ -1065,14 +1079,14 @@ const Home = () => {
 
             <div className="results-list">
               {sortedCandidates.length > 0 ? (
-                sortedCandidates.map(([candName, count], idx) => {
-                  const pct = getPercentage(key, candName);
-                  const isWinner = idx === 0;
+                sortedCandidates.map(({ label, count }, idx) => {
+                  const pct = getPercentage(key, label);
+                  const isWinner = idx === 0 && count > 0;
                   return (
-                    <div key={candName} className={`result-row ${isWinner ? 'winner' : ''}`}>
+                    <div key={label} className={`result-row ${isWinner ? 'winner' : ''}`}>
                       <div className="result-info">
                         <div className="result-name">
-                          {candName}
+                          {label}
                           {isWinner && <span className="badge">বিজয়ী</span>}
                         </div>
                         <div className="progress-bar-bg">

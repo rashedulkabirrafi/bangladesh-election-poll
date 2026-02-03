@@ -535,10 +535,10 @@ body {
 }
 
 .btn-referendum {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  font-size: 1.5rem;
+  min-width: 120px;
+  padding: 10px 40px;
+  border-radius: 4px;
+  font-size: 1.2rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -547,6 +547,8 @@ body {
   border: none;
   cursor: pointer;
   color: white;
+  animation: referendum-pulse 1.8s ease-in-out infinite;
+  position: relative;
 }
 
 .btn-referendum:hover {
@@ -560,6 +562,55 @@ body {
 
 .btn-no {
   background-color: #e67e22; /* Orange/Red distinct from title red */
+}
+
+.btn-referendum::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 6px;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  opacity: 0;
+  animation: referendum-ring 1.8s ease-out infinite;
+  pointer-events: none;
+}
+
+.btn-yes::after {
+  border-color: rgba(39, 174, 96, 0.7);
+}
+
+.btn-no::after {
+  border-color: rgba(230, 126, 34, 0.7);
+}
+
+@keyframes referendum-pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  50% {
+    transform: scale(1.04);
+    box-shadow: 0 10px 18px rgba(0,0,0,0.18);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+}
+
+@keyframes referendum-ring {
+  0% {
+    transform: scale(0.98);
+    opacity: 0.6;
+  }
+  70% {
+    transform: scale(1.08);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.08);
+    opacity: 0;
+  }
 }
 
 .referendum-instruction, .referendum-note {
@@ -1246,6 +1297,107 @@ body {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.result-card {
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdfc 100%);
+  border: 1px solid rgba(31, 143, 79, 0.08);
+  box-shadow: 0 12px 30px rgba(31, 143, 79, 0.08);
+}
+
+.result-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #f9fbfd, #f5f8fc);
+  border: 1px solid rgba(31, 143, 79, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.result-row:hover {
+  transform: translateY(-2px);
+  border-color: rgba(31, 143, 79, 0.18);
+  box-shadow: 0 10px 22px rgba(31, 143, 79, 0.12);
+}
+
+.result-row.winner {
+  background: linear-gradient(135deg, #e9f6ee, #d4efe5);
+  border-color: rgba(31, 143, 79, 0.35);
+  box-shadow: 0 12px 24px rgba(31, 143, 79, 0.2);
+}
+
+.result-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.result-name {
+  font-weight: 700;
+  color: #1d2b36;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #1f7a45;
+  background: rgba(31, 143, 79, 0.12);
+  border: 1px solid rgba(31, 143, 79, 0.2);
+}
+
+.progress-bar-bg {
+  height: 10px;
+  background: #e9eef2;
+  border-radius: 999px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #1f8f4f, #3fc26b, #1f8f4f);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}
+
+.result-row.winner .progress-bar-fill {
+  background: linear-gradient(90deg, #1f7a45, #55d28a, #1f7a45);
+}
+
+.result-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  min-width: 90px;
+}
+
+.vote-count {
+  font-weight: 700;
+  color: #1f7a45;
+  font-size: 14px;
+}
+
+.percentage {
+  font-size: 13px;
+  font-weight: 700;
+  color: #2b3a43;
+  background: #ffffff;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(31, 143, 79, 0.15);
 }
 
 .result-item {
