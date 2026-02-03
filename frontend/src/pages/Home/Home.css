@@ -951,6 +951,13 @@ body {
   box-shadow: 0 4px 12px rgba(255, 100, 100, 0.1);
 }
 
+.alert.alert-success {
+  background: linear-gradient(135deg, #ecfbf2, #d9f6e6);
+  border-color: #9fe1c2;
+  color: #166534;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.15);
+}
+
 .result-block {
   border-top: 1px solid #edf1f4;
   padding-top: 14px;

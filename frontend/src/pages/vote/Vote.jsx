@@ -28,6 +28,12 @@ const Vote = ({
 
           {stepper}
 
+          {blocked && (
+            <div className="alert alert-success" role="alert">
+              ধন্যবাদ! আপনার মূল্যবান ভোট গ্রহণ করা হয়েছে।
+            </div>
+          )}
+
           {candidatesForConstituency.length === 0 ? (
             <div className="alert" role="alert">
               এই আসনের জন্য প্রার্থী তালিকা পাওয়া যায়নি।

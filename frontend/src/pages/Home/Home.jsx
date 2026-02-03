@@ -961,12 +961,6 @@ const Home = () => {
 
             <Stepper current="candidates" />
 
-            {showThankYou && (
-              <div className="alert">
-                ধন্যবাদ! আপনার মূল্যবান ভোট গ্রহণ করা হয়েছে।
-              </div>
-            )}
-
             <div className="results-list">
               {sortedCandidates.length > 0 ? (
                 sortedCandidates.map(({ label, count }, idx) => {
