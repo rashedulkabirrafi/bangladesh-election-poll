@@ -650,8 +650,8 @@ const Home = () => {
             <div className="cta-content">
               <h2 className="cta-title">আপনার মতামত আমাদের কাছে গুরুত্বপূর্ণ!</h2>
               <p className="cta-subtitle">এই জরিপে অংশগ্রহণ করুন এবং আপনার আসনের পছন্দের প্রার্থীকে ভোট দিন</p>
-              <button onClick={() => setStep('select')} className="btn btn-large">
-                আপনার আসনে ভোট দিন
+              <button onClick={() => setStep('select')} className="btn btn-large btn-pulse-green btn-menu-effect">
+                <span className="btn-text-pulse">আপনার আসনে ভোট দিন</span>
               </button>
             </div>
           </div>
@@ -675,7 +675,7 @@ const Home = () => {
                 <h3 className="info-title">জোট ও দলসমূহ</h3>
                 <p className="info-subtitle">প্রতিটি জোটের দল ও প্রতীক দেখুন</p>
               </div>
-              <button onClick={() => setStep('alliances')} className="btn btn-secondary btn-pulse-green">
+              <button onClick={() => setStep('alliances')} className="btn btn-secondary btn-pulse-green btn-menu-effect">
                 দল তালিকা দেখুন
               </button>
             </div>

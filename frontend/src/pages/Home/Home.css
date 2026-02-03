@@ -875,6 +875,17 @@ body {
   animation: btnPulseGreen 2s ease-in-out infinite;
 }
 
+.btn-menu-effect {
+  border: 2px solid #1f8f4f;
+  box-shadow: 0 0 0 0 rgba(31, 143, 79, 0.4);
+  animation: menuBorderPulse 2s ease-in-out infinite;
+}
+
+.btn-text-pulse {
+  display: inline-block;
+  animation: textPulseGreen 1.8s ease-in-out infinite;
+}
+
 @keyframes btnPulseGreen {
   0% {
     transform: translateY(0);
@@ -887,6 +898,32 @@ body {
   100% {
     transform: translateY(0);
     box-shadow: 0 0 0 0 rgba(31, 143, 79, 0);
+  }
+}
+
+@keyframes menuBorderPulse {
+  0% {
+    border-color: #1f8f4f;
+    box-shadow: 0 0 0 0 rgba(31, 143, 79, 0.45);
+  }
+  50% {
+    border-color: #1f8f4f;
+    box-shadow: 0 0 0 10px rgba(31, 143, 79, 0);
+  }
+  100% {
+    border-color: #1f8f4f;
+    box-shadow: 0 0 0 0 rgba(31, 143, 79, 0);
+  }
+}
+
+@keyframes textPulseGreen {
+  0%, 100% {
+    color: #1f8f4f;
+    transform: scale(1);
+  }
+  50% {
+    color: #167a3a;
+    transform: scale(1.04);
   }
 }
 
