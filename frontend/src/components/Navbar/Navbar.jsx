@@ -30,17 +30,23 @@ const Navbar = ({ step, setStep }) => {
             ভোট দিন
           </button>
           <button 
-            className={`nav-link ${step === 'home' || step === 'select' || step === 'vote' ? 'active' : ''}`}
-            onClick={() => handleNavClick('home')}
+            className={`nav-link ${step === 'all-results' ? 'active' : ''}`}
+            onClick={() => handleNavClick('all-results')}
           >
-            হোম
+            সকল আসনের ফলাফল
           </button>
           <button 
             className={`nav-link ${step === 'alliances' ? 'active' : ''}`}
             onClick={() => handleNavClick('alliances')}
           >
             দল ও জোট
-          </button>         
+          </button>
+          <button 
+            className={`nav-link ${step === 'home' || step === 'select' || step === 'vote' ? 'active' : ''}`}
+            onClick={() => handleNavClick('home')}
+          >
+            হোম
+          </button>
         </div>
 
         <div className="navbar-menu-mobile-toggle" onClick={toggleMenu}>
@@ -58,16 +64,22 @@ const Navbar = ({ step, setStep }) => {
               ভোট দিন
             </button>
             <button 
-              className={`mobile-nav-link ${step === 'home' ? 'active' : ''}`}
-              onClick={() => handleNavClick('home')}
+              className={`mobile-nav-link ${step === 'all-results' ? 'active' : ''}`}
+              onClick={() => handleNavClick('all-results')}
             >
-              হোম
+              সকল আসনের ফলাফল
             </button>
             <button 
               className={`mobile-nav-link ${step === 'alliances' ? 'active' : ''}`}
               onClick={() => handleNavClick('alliances')}
             >
               দল ও জোট
+            </button>
+            <button 
+              className={`mobile-nav-link ${step === 'home' ? 'active' : ''}`}
+              onClick={() => handleNavClick('home')}
+            >
+              হোম
             </button>
           </div>
         </div>

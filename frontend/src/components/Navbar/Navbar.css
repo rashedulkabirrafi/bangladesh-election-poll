@@ -79,7 +79,8 @@
 }
 
 .nav-link:nth-child(2),
-.nav-link:nth-child(3) {
+.nav-link:nth-child(3),
+.nav-link:nth-child(4) {
   border-bottom: 2px solid #1f8f4f;
 }
 
@@ -141,7 +142,8 @@
 }
 
 .mobile-nav-link:nth-child(2),
-.mobile-nav-link:nth-child(3) {
+.mobile-nav-link:nth-child(3),
+.mobile-nav-link:nth-child(4) {
   border-left: 4px solid #1f8f4f;
   border-bottom: 2px solid #1f8f4f;
 }

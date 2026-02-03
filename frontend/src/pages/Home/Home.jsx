@@ -647,7 +647,7 @@ const Home = () => {
           <div className="card cta-card">
             <div className="cta-content">
               <h2 className="cta-title">আপনার মতামত আমাদের কাছে গুরুত্বপূর্ণ!</h2>
-              <p className="cta-subtitle">এই জরিপে অংশগ্রহণ করুন এবং আপনার পছন্দের প্রার্থীকে ভোট দিন</p>
+              <p className="cta-subtitle">এই জরিপে অংশগ্রহণ করুন এবং আপনার আসনের পছন্দের প্রার্থীকে ভোট দিন</p>
               <button onClick={() => setStep('select')} className="btn btn-large">
                 আপনার আসনে ভোট দিন
               </button>
@@ -681,6 +681,25 @@ const Home = () => {
 
 
 
+        </div>
+      </div>
+    );
+  }
+
+  if (step === 'alliances') {
+    return (
+      <div className="page">
+        <Navbar step={step} setStep={setStep} />
+        <PartiesAndCoalitions />
+      </div>
+    );
+  }
+
+  if (step === 'all-results') {
+    return (
+      <div className="page">
+        <Navbar step={step} setStep={setStep} />
+        <div className="container">
           <div className="card">
             <h2 className="section-title section-title-center">সকল আসনের ফলাফল</h2>
             <div className="constituencies-grid">
@@ -715,15 +734,6 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </div>
-    );
-  }
-
-  if (step === 'alliances') {
-    return (
-      <div className="page">
-        <Navbar step={step} setStep={setStep} />
-        <PartiesAndCoalitions />
       </div>
     );
   }
