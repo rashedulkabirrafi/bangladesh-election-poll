@@ -675,7 +675,7 @@ const Home = () => {
                 <h3 className="info-title">জোট ও দলসমূহ</h3>
                 <p className="info-subtitle">প্রতিটি জোটের দল ও প্রতীক দেখুন</p>
               </div>
-              <button onClick={() => setStep('alliances')} className="btn btn-secondary">
+              <button onClick={() => setStep('alliances')} className="btn btn-secondary btn-pulse-green">
                 দল তালিকা দেখুন
               </button>
             </div>

@@ -870,6 +870,26 @@ body {
   height: 300px;
 }
 
+.btn-pulse-green {
+  position: relative;
+  animation: btnPulseGreen 2s ease-in-out infinite;
+}
+
+@keyframes btnPulseGreen {
+  0% {
+    transform: translateY(0);
+    box-shadow: 0 0 0 0 rgba(31, 143, 79, 0.35);
+  }
+  70% {
+    transform: translateY(-1px);
+    box-shadow: 0 0 0 12px rgba(31, 143, 79, 0);
+  }
+  100% {
+    transform: translateY(0);
+    box-shadow: 0 0 0 0 rgba(31, 143, 79, 0);
+  }
+}
+
 .btn:disabled {
   opacity: 0.55;
   cursor: not-allowed;
