@@ -702,6 +702,7 @@ const Home = () => {
       <Result
         step={step}
         setStep={setStep}
+        setShowThankYou={setShowThankYou}
         divisions={divisions}
         districts={districts}
         constituencyOptions={constituencyOptions}
