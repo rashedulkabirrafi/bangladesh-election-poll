@@ -7,6 +7,7 @@ import PartiesAndCoalitions from '../PartiesAndCoalitions/PartiesAndCoalitions';
 import Navbar from '../../components/Navbar/Navbar';
 import Result from '../result/Result';
 import Vote from '../vote/Vote';
+import VoterGuide from '../VoterGuide/VoterGuide';
 import {
   stepOrder,
   makeKey,
@@ -117,6 +118,7 @@ const Home = () => {
         ]
       : [];
 
+
   useEffect(() => {
     const savedVotes = localStorage.getItem('pollVotes');
     if (savedVotes) {
@@ -144,6 +146,10 @@ const Home = () => {
       // setStep('results'); // User wants to stay on home page
     }
   }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [step]);
 
   const selectConstituency = () => {
     if (!selectedDivision || !selectedDistrict || !selectedConstituency) return;
@@ -366,6 +372,7 @@ const Home = () => {
     return seatList;
   }, [senateSeats]);
 
+
   const referendumStats = useMemo(() => {
      const total = referendumCounts.yes + referendumCounts.no;
      if (total === 0) return { yes: 0, no: 0 };
@@ -409,6 +416,7 @@ const Home = () => {
              </div>
           </div>
         </div>
+
 
         <div className="card seats-card">
             <div className="header centered">
@@ -920,6 +928,10 @@ const Home = () => {
         error={error}
       />
     );
+  }
+
+  if (step === 'guide') {
+    return <VoterGuide step={step} setStep={setStep} />;
   }
 
   if (step === 'results') {

@@ -1,0 +1,98 @@
+.guide-page {
+  padding: 90px 16px 48px;
+}
+
+.guide-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.guide-title {
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 800;
+  margin: 0 0 8px;
+}
+
+.guide-subtitle {
+  color: #6b7a86;
+  margin: 0;
+}
+
+.guide-section {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 8px 24px rgba(24, 42, 62, 0.08);
+  border: 1px solid rgba(31, 143, 79, 0.08);
+}
+
+.guide-section + .guide-section {
+  margin-top: 20px;
+}
+
+.guide-section-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.step-card {
+  background: linear-gradient(135deg, #f7fafc, #f0f6fb);
+  border-radius: 14px;
+  padding: 16px;
+  border: 1px solid rgba(31, 143, 79, 0.12);
+}
+
+.step-title {
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.list {
+  margin: 0;
+  padding-left: 18px;
+  color: #2b3a43;
+}
+
+.myth-fact {
+  border-left: 4px solid #1f8f4f;
+  padding: 12px 14px;
+  background: #f9fffb;
+  border-radius: 10px;
+}
+
+.myth-fact strong {
+  color: #0f6a36;
+}
+
+.fact {
+  color: #1d2b36;
+}
+
+.tip-card {
+  background: #f9fbff;
+  border-radius: 12px;
+  padding: 14px;
+  border: 1px solid rgba(45, 156, 219, 0.2);
+}
+
+.cta-note {
+  background: linear-gradient(135deg, #1f8f4f, #167a3a);
+  color: #ffffff;
+  border-radius: 14px;
+  padding: 18px;
+  text-align: center;
+  font-weight: 600;
+}
+
+@media (max-width: 720px) {
+  .guide-page {
+    padding: 84px 12px 36px;
+  }
+}

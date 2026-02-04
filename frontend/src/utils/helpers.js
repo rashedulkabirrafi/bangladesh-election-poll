@@ -43,6 +43,23 @@ export const normalizePartyName = (value = '') =>
     .replace(/এনসিপি/g, 'এনসিপি')
     .trim();
 
+export const getApiBase = () => {
+  if (typeof import.meta !== 'undefined' && import.meta.env) {
+    return import.meta.env.VITE_API_BASE || '';
+  }
+  return '';
+};
+
+export const buildAssetUrl = (value = '') => {
+  if (!value) return '';
+  if (value.startsWith('/candidatess/')) {
+    const base = getApiBase();
+    if (!base) return value;
+    return `${base}/api/files?path=${encodeURIComponent(value)}`;
+  }
+  return value;
+};
+
 export const partyGroups = {
   bnpAlliance: {
     label: 'বিএনপি জোট',

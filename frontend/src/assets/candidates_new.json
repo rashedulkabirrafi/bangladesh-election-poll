@@ -10960,7 +10960,7 @@
       "name": "মোঃ আবদুল্লাহ্ আখন্দ",
       "party": "ইসলামী আন্দোলন বাংলাদেশ",
       "symbol": "হাতপাখা",
-      "photo": "/candidatess/photoss/ম-আবদ-ল-ল-হ-আখন-দ-b3980b4d70f3be4fd4be1618.jpg",
+      "photo": "/candidatess/photoss/ম-আবদ-ল-ল-হ-আখন-দ-f454bd03b523a90102483a2f.jpg",
       "affidavit": "/candidatess/affidavitt/ম-আবদ-ল-ল-হ-আখন-দ-d0cc31da5cbe1816df4c125d.pdf",
       "expense": "/candidatess/expensee/ম-আবদ-ল-ল-হ-আখন-দ-cae6eda5213045dbeb548251.pdf",
       "tax": "/candidatess/taxx/ম-আবদ-ল-ল-হ-আখন-দ-46f6e1e1993e2f0fd2b853d6.pdf"
@@ -12962,6 +12962,24 @@
       "affidavit": "/candidatess/affidavitt/স-য়দ-ইউন-ছ-আহ-ম-মদ-35b4ecf6ae23d8dfff93d5b6.pdf",
       "expense": "/candidatess/expensee/স-য়দ-ইউন-ছ-আহ-ম-মদ-efa48735a71f4d1afe454602.pdf",
       "tax": "/candidatess/taxx/স-য়দ-ইউন-ছ-আহ-ম-মদ-3971f5b31effcbe5dd4f471e.pdf"
+    },
+    {
+      "name": "হোছনেয়ারা বেগম",
+      "party": "স্বতন্ত্র",
+      "symbol": "হরিণ",
+      "photo": "/candidatess/photoss/হ-ছন-য়-র-ব-গম-0ba53cd2b4ed6c981225a48b.jpg",
+      "affidavit": "/candidatess/affidavitt/হ-ছন-য়-র-ব-গম-4ae6991efc9095363b81a7fe.pdf",
+      "expense": "/candidatess/expensee/হ-ছন-য়-র-ব-গম-55b7c8258562bd9bb94827c5.pdf",
+      "tax": "/candidatess/taxx/হ-ছন-য়-র-ব-গম-b9c112e4dd77f6d4a71638fa.pdf"
+    },
+    {
+      "name": "মাসুদ ইব্রাহীম",
+      "party": "স্বতন্ত্র",
+      "symbol": "ফুটবল",
+      "photo": "/candidatess/photoss/ম-স-দ-ইব-র-হ-ম-419fd68c03d1222d9a9e17d9.jpg",
+      "affidavit": "/candidatess/affidavitt/ম-স-দ-ইব-র-হ-ম-ea67d9649e3d89987342eb8c.pdf",
+      "expense": "/candidatess/expensee/ম-স-দ-ইব-র-হ-ম-dfbc4f76fb0a94d7c6ca755b.pdf",
+      "tax": "/candidatess/taxx/ম-স-দ-ইব-র-হ-ম-6db46ffdff968520034391fd.pdf"
     },
     {
       "name": "শেখ মোঃ আক্কাছ আলী",
@@ -15153,15 +15171,6 @@
   ],
   "রংপুর-১": [
     {
-      "name": "মোঃ মঞ্জুম আলী",
-      "party": "জাতীয় পার্টি",
-      "symbol": "লাঙ্গল",
-      "photo": "/candidatess/photoss/ম-মঞ-জ-ম-আল-0232bdefd66490518883a652.jpg",
-      "affidavit": "/candidatess/affidavitt/ম-মঞ-জ-ম-আল-96865e12463c43dcdcc5635f.pdf",
-      "expense": "/candidatess/expensee/ম-মঞ-জ-ম-আল-0f7a793d33d5c3fee8729fd5.pdf",
-      "tax": "/candidatess/taxx/ম-মঞ-জ-ম-আল-69c7cdb1475bc1a809943871.pdf"
-    },
-    {
       "name": "মোঃ মোকাররম হোসেন সুজন",
       "party": "বাংলাদেশ জাতীয়তাবাদী দল - বি.এন.পি",
       "symbol": "ধানের শীষ",
@@ -15329,6 +15338,25 @@
     }
   ],
   "রংপুর-৪": [
+    {
+      "name": "মোঃ জয়নুল আবেদিন",
+      "party": "স্বতন্ত্র",
+      "symbol": "ঘোড়া",
+      "photo": "/candidatess/photoss/ম-জয়ন-ল-আব-দ-ন-18258106d8e67c239a2a4d43.jpg",
+      "affidavit": "/candidatess/affidavitt/ম-জয়ন-ল-আব-দ-ন-c88d24dec1c5f5bb333891a9.pdf",
+      "expense": "/candidatess/expensee/placeholder.pdf",
+      "tax": "/candidatess/taxx/ম-জয়ন-ল-আব-দ-ন-043370c3dd370395d805de9a.pdf",
+      "expense_missing": true
+    },
+    {
+      "name": "উজ্জল চন্দ্র রায়",
+      "party": "বাংলাদেশ কংগ্রেস",
+      "symbol": "ডাব",
+      "photo": "/candidatess/photoss/উজ-জল-চন-দ-র-র-য়-d020edbf00d8bd77b246bfcb.jpg",
+      "affidavit": "/candidatess/affidavitt/উজ-জল-চন-দ-র-র-য়-97ba27052263448e3763d3be.pdf",
+      "expense": "/candidatess/expensee/উজ-জল-চন-দ-র-র-য়-75babe109dc51a23508f01ce.pdf",
+      "tax": "/candidatess/taxx/উজ-জল-চন-দ-র-র-য়-140595528495a049eb598e4a.pdf"
+    },
     {
       "name": "আখতার হোসেন",
       "party": "জাতীয় নাগরিক পার্টি-এনসিপি",
@@ -15503,6 +15531,15 @@
       "affidavit": "/candidatess/affidavitt/ম-ন-র-ল-আম-ন-589357c83e05c0f55efca559.pdf",
       "expense": "/candidatess/expensee/ম-ন-র-ল-আম-ন-4e3f4eede180ab25e87ce3a4.pdf",
       "tax": "/candidatess/taxx/ম-ন-র-ল-আম-ন-48c61007ce2d100483757afd.pdf"
+    },
+    {
+      "name": "তাকিয়া জাহান চৌধুরী",
+      "party": "স্বতন্ত্র",
+      "symbol": "সূর্যমুখী ফুল",
+      "photo": "/candidatess/photoss/ত-ক-য়-জ-হ-ন-চ-ধ-র-d80aac6c18417a02fcf12853.jpg",
+      "affidavit": "/candidatess/affidavitt/ত-ক-য়-জ-হ-ন-চ-ধ-র-88d1f34a9580450513fc2b28.pdf",
+      "expense": "/candidatess/expensee/ত-ক-য়-জ-হ-ন-চ-ধ-র-92857092c2ce6b2e63c76de2.pdf",
+      "tax": "/candidatess/taxx/ত-ক-য়-জ-হ-ন-চ-ধ-র-9bcda0959356961b886f2ed2.pdf"
     },
     {
       "name": "মোঃ ছাদেকুল ইসলাম",
@@ -17193,6 +17230,19 @@
   ],
   "পাবনা-১": [
     {
+      "name": "মোঃ আব্দুল গনি",
+      "party": "ইসলামী আন্দোলন বাংলাদেশ",
+      "symbol": "হাতপাখা",
+      "photo": "/candidatess/photoss/placeholder.svg",
+      "affidavit": "/candidatess/affidavitt/ম-আব-দ-ল-গন-9a9a9ad4772e20a2f9d0a05d.pdf",
+      "expense": "/candidatess/expensee/ম-আব-দ-ল-গন-3d990240ff2cf67c135dca3b.pdf",
+      "tax": "/candidatess/taxx/ম-আব-দ-ল-গন-9fac5fdb883fbd748436945a.pdf",
+      "photo_missing": true,
+      "asset_errors": [
+        "non-image content for photo (content-type=application/pdf)"
+      ]
+    },
+    {
       "name": "মোঃ তাজুল ইসলাম",
       "party": "স্বতন্ত্র",
       "symbol": "মোটর সাইকেল",
@@ -17204,15 +17254,6 @@
       "asset_errors": [
         "non-image content for photo (content-type=application/pdf)"
       ]
-    },
-    {
-      "name": "মোঃ আব্দুল গনি",
-      "party": "ইসলামী আন্দোলন বাংলাদেশ",
-      "symbol": "হাতপাখা",
-      "photo": "/candidatess/photoss/ম-আব-দ-ল-গন-57a43e7fb1a78e9eeeaec7d7.jpg",
-      "affidavit": "/candidatess/affidavitt/ম-আব-দ-ল-গন-ea3ae00332f98eb70a6e9da7.pdf",
-      "expense": "/candidatess/expensee/ম-আব-দ-ল-গন-e01174b57d3ffbb8ce8360bf.pdf",
-      "tax": "/candidatess/taxx/ম-আব-দ-ল-গন-3981b7071c7e8e34c212abe6.pdf"
     },
     {
       "name": "মোহাম্মদ নাজিবুর রহমান",

@@ -1,6 +1,7 @@
 import React from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import './Vote.css';
+import { buildAssetUrl } from '../../utils/helpers';
 
 const Vote = ({
   step,
@@ -62,7 +63,7 @@ const Vote = ({
                       <td>
                         {candidate.photo ? (
                           <img
-                            src={candidate.photo}
+                            src={buildAssetUrl(candidate.photo)}
                             alt={candidate.name}
                             className="candidate-photo"
                           />
@@ -74,7 +75,7 @@ const Vote = ({
                       <td>{candidate.symbol || '-'}</td>
                       <td>
                         {candidate.affidavit ? (
-                          <a href={candidate.affidavit} target="_blank" rel="noreferrer" className="btn-download">
+                          <a href={buildAssetUrl(candidate.affidavit)} target="_blank" rel="noreferrer" className="btn-download">
                             ডাউনলোড
                           </a>
                         ) : (
@@ -83,7 +84,7 @@ const Vote = ({
                       </td>
                       <td>
                         {candidate.expense ? (
-                          <a href={candidate.expense} target="_blank" rel="noreferrer" className="btn-download">
+                          <a href={buildAssetUrl(candidate.expense)} target="_blank" rel="noreferrer" className="btn-download">
                             ডাউনলোড
                           </a>
                         ) : (
@@ -92,7 +93,7 @@ const Vote = ({
                       </td>
                       <td>
                         {candidate.tax ? (
-                          <a href={candidate.tax} target="_blank" rel="noreferrer" className="btn-download">
+                          <a href={buildAssetUrl(candidate.tax)} target="_blank" rel="noreferrer" className="btn-download">
                             ডাউনলোড
                           </a>
                         ) : (
