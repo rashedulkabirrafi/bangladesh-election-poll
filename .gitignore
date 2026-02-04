@@ -28,5 +28,11 @@ dist-ssr
 .env
 .env.local
 .env.production
-backend/public/candidates/
+
+# Large candidate data folders (stored in Cloudflare R2 instead)
 backend/public/candidatess/
+backend/public/candidatess/affidavitt/
+backend/public/candidatess/expensee/
+backend/public/candidatess/photoss/
+backend/public/candidatess/taxx/
+backend/public/candidates/
