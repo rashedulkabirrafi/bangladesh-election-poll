@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { Check } from 'lucide-react';
 import './Home.css';
 import constituencyData from '../../assets/constituencies.json';
-import candidatesData from '../../assets/candidates.json';
+import candidatesData from '../../assets/candidates_new.json';
 import PartiesAndCoalitions from '../PartiesAndCoalitions/PartiesAndCoalitions';
 import Navbar from '../../components/Navbar/Navbar';
 import Result from '../result/Result';
