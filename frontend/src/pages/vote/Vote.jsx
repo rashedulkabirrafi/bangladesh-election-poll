@@ -75,7 +75,7 @@ const Vote = ({
                       <td>{candidate.symbol || '-'}</td>
                       <td>
                         {candidate.affidavit ? (
-                          <a href={buildAssetUrl(candidate.affidavit)} target="_blank" rel="noreferrer" className="btn-download">
+                          <a href={buildAssetUrl(candidate.affidavit, candidate.name, 'হলফনামা')} target="_blank" rel="noreferrer" className="btn-download">
                             ডাউনলোড
                           </a>
                         ) : (
@@ -84,7 +84,7 @@ const Vote = ({
                       </td>
                       <td>
                         {candidate.expense ? (
-                          <a href={buildAssetUrl(candidate.expense)} target="_blank" rel="noreferrer" className="btn-download">
+                          <a href={buildAssetUrl(candidate.expense, candidate.name, 'নির্বাচনী ব্যয় ও ব্যক্তিগত সম্পদের বিবরণী')} target="_blank" rel="noreferrer" className="btn-download">
                             ডাউনলোড
                           </a>
                         ) : (
@@ -93,7 +93,7 @@ const Vote = ({
                       </td>
                       <td>
                         {candidate.tax ? (
-                          <a href={buildAssetUrl(candidate.tax)} target="_blank" rel="noreferrer" className="btn-download">
+                          <a href={buildAssetUrl(candidate.tax, candidate.name, 'আয়কর রিটার্ন')} target="_blank" rel="noreferrer" className="btn-download">
                             ডাউনলোড
                           </a>
                         ) : (

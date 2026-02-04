@@ -5,6 +5,10 @@ import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import cors from "cors";
 import path from "path";
+import fs from "fs";
+import crypto from "crypto";
+import rateLimit from "express-rate-limit";
+import pg from "pg";
 import { fileURLToPath } from "url";
 import { S3Client, GetObjectCommand, HeadObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
@@ -29,6 +33,11 @@ const {
   R2_URL_TTL = "300",
   AUTH_BYPASS = "0",
   REQUIRE_ORIGIN = "1",
+  VOTE_TOKEN_SECRET,
+  VOTE_TOKEN_TTL_MS = "300000",
+  VOTE_REQUIRE_AUTH = "0",
+  DATABASE_URL,
+  DATABASE_SSL = "1",
 } = process.env;
 
 if (!SESSION_SECRET || !GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET || !GOOGLE_CALLBACK_URL) {
@@ -43,6 +52,8 @@ if (!R2_ACCOUNT_ID || !R2_ACCESS_KEY_ID || !R2_SECRET_ACCESS_KEY || !R2_BUCKET) 
 
 const app = express();
 const isProd = process.env.NODE_ENV === "production";
+
+app.use(express.json({ limit: "1mb" }));
 
 app.set("trust proxy", 1);
 
@@ -107,6 +118,9 @@ const ensureOrigin = (req, res, next) => {
   if (REQUIRE_ORIGIN !== "1") return next();
   const origin = req.get("Origin");
   const referer = req.get("Referer");
+  if (!origin && !referer && req.method === "GET" && req.path.startsWith("/api/files")) {
+    return next();
+  }
   if (isAllowedOrigin(origin) || isAllowedOrigin(referer)) {
     return next();
   }
@@ -121,6 +135,96 @@ const ensureAuth = (req, res, next) => {
     return next();
   }
   return res.status(401).json({ error: "Unauthorized" });
+};
+
+const ensureVoteAuth = (req, res, next) => {
+  if (VOTE_REQUIRE_AUTH === "1") {
+    return ensureAuth(req, res, next);
+  }
+  return next();
+};
+
+const voteLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const voteTokenSecret = VOTE_TOKEN_SECRET || SESSION_SECRET;
+const voteTokenTtlMs = Math.max(60_000, Number(VOTE_TOKEN_TTL_MS) || 300_000);
+const { Pool } = pg;
+const votePool = new Pool({
+  connectionString: DATABASE_URL,
+  ssl: DATABASE_SSL === "1" ? { rejectUnauthorized: false } : false,
+});
+
+const ensureVoteTable = async () => {
+  await votePool.query(`
+    CREATE TABLE IF NOT EXISTS vote_locks (
+      fingerprint_hash TEXT PRIMARY KEY,
+      voted_at BIGINT NOT NULL,
+      ip_hash TEXT,
+      ua_hash TEXT
+    );
+    CREATE INDEX IF NOT EXISTS idx_vote_locks_voted_at ON vote_locks(voted_at);
+  `);
+};
+
+const getClientIp = (req) => {
+  const forwarded = req.headers["x-forwarded-for"];
+  if (typeof forwarded === "string" && forwarded.length > 0) {
+    return forwarded.split(",")[0].trim();
+  }
+  return req.ip || req.socket?.remoteAddress || "";
+};
+
+const hashValue = (value) => {
+  return crypto
+    .createHmac("sha256", voteTokenSecret)
+    .update(value || "")
+    .digest("hex");
+};
+
+const createVoteToken = (fingerprintHash, ipHash, uaHash) => {
+  const expiresAt = Date.now() + voteTokenTtlMs;
+  const nonce = crypto.randomBytes(8).toString("hex");
+  const payload = `${fingerprintHash}.${ipHash}.${uaHash}.${expiresAt}.${nonce}`;
+  const signature = crypto
+    .createHmac("sha256", voteTokenSecret)
+    .update(payload)
+    .digest("hex");
+  return Buffer.from(`${payload}.${signature}`).toString("base64url");
+};
+
+const verifyVoteToken = (token, fingerprintHash, ipHash, uaHash) => {
+  try {
+    const decoded = Buffer.from(token, "base64url").toString("utf-8");
+    const [hash, tokenIpHash, tokenUaHash, expiresAt, nonce, signature] = decoded.split(".");
+    if (!hash || !tokenIpHash || !tokenUaHash || !expiresAt || !nonce || !signature) {
+      return { ok: false, reason: "invalid_token" };
+    }
+    if (hash !== fingerprintHash) {
+      return { ok: false, reason: "fingerprint_mismatch" };
+    }
+    if (tokenIpHash !== ipHash || tokenUaHash !== uaHash) {
+      return { ok: false, reason: "device_mismatch" };
+    }
+    if (Number(expiresAt) < Date.now()) {
+      return { ok: false, reason: "token_expired" };
+    }
+    const payload = `${hash}.${tokenIpHash}.${tokenUaHash}.${expiresAt}.${nonce}`;
+    const expected = crypto
+      .createHmac("sha256", voteTokenSecret)
+      .update(payload)
+      .digest("hex");
+    if (!crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(signature))) {
+      return { ok: false, reason: "invalid_signature" };
+    }
+    return { ok: true };
+  } catch (error) {
+    return { ok: false, reason: "invalid_token" };
+  }
 };
 
 app.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
@@ -146,6 +250,62 @@ app.post("/auth/logout", (req, res) => {
 
 app.get("/api/me", ensureAuth, (req, res) => {
   res.json({ user: req.user });
+});
+
+app.post("/api/vote/init", ensureOrigin, ensureVoteAuth, voteLimiter, async (req, res) => {
+  const { fingerprintHash } = req.body || {};
+  if (!fingerprintHash || typeof fingerprintHash !== "string") {
+    return res.status(400).json({ error: "Invalid fingerprint" });
+  }
+  try {
+    const result = await votePool.query(
+      "SELECT fingerprint_hash FROM vote_locks WHERE fingerprint_hash = $1",
+      [fingerprintHash]
+    );
+    if (result.rowCount > 0) {
+      return res.json({ allowed: false, reason: "already_voted" });
+    }
+    const ipHash = hashValue(getClientIp(req));
+    const uaHash = hashValue(req.get("user-agent") || "");
+    const token = createVoteToken(fingerprintHash, ipHash, uaHash);
+    return res.json({ allowed: true, token, expiresInMs: voteTokenTtlMs });
+  } catch (error) {
+    console.error("Vote init error:", error);
+    return res.status(500).json({ error: "vote_init_failed" });
+  }
+});
+
+app.post("/api/vote/submit", ensureOrigin, ensureVoteAuth, voteLimiter, async (req, res) => {
+  const { fingerprintHash, token } = req.body || {};
+  if (!fingerprintHash || typeof fingerprintHash !== "string" || !token) {
+    return res.status(400).json({ error: "Invalid request" });
+  }
+  try {
+    const existing = await votePool.query(
+      "SELECT fingerprint_hash FROM vote_locks WHERE fingerprint_hash = $1",
+      [fingerprintHash]
+    );
+    if (existing.rowCount > 0) {
+      return res.status(409).json({ error: "already_voted" });
+    }
+
+    const ipHash = hashValue(getClientIp(req));
+    const uaHash = hashValue(req.get("user-agent") || "");
+    const verified = verifyVoteToken(token, fingerprintHash, ipHash, uaHash);
+    if (!verified.ok) {
+      return res.status(401).json({ error: verified.reason || "invalid_token" });
+    }
+
+    await votePool.query(
+      "INSERT INTO vote_locks (fingerprint_hash, voted_at, ip_hash, ua_hash) VALUES ($1, $2, $3, $4)",
+      [fingerprintHash, Date.now(), ipHash, uaHash]
+    );
+
+    return res.json({ ok: true });
+  } catch (error) {
+    console.error("Vote submit error:", error);
+    return res.status(500).json({ error: "vote_submit_failed" });
+  }
 });
 
 app.get("/api/candidates/:constituency", (req, res) => {
@@ -174,7 +334,7 @@ const r2 = new S3Client({
   },
 });
 
-app.get("/api/files", ensureOrigin, ensureAuth, (req, res) => {
+app.get("/api/files", ensureOrigin, ensureAuth, async (req, res) => {
   const rawPath = String(req.query.path || "");
   if (!rawPath.startsWith("/candidatess/")) {
     return res.status(400).json({ error: "Invalid path" });
@@ -185,21 +345,47 @@ app.get("/api/files", ensureOrigin, ensureAuth, (req, res) => {
     return res.status(403).json({ error: "Forbidden" });
   }
 
-  const expiresIn = Math.max(60, Number(R2_URL_TTL) || 300);
   const command = new GetObjectCommand({
     Bucket: R2_BUCKET,
     Key: key,
   });
 
-  getSignedUrl(r2, command, { expiresIn })
-    .then((url) => {
-      res.setHeader("Cache-Control", "no-store");
-      res.redirect(url);
-    })
-    .catch((err) => {
-      console.error("Signed URL error:", err);
-      res.status(404).json({ error: "Not found" });
-    });
+  try {
+    const data = await r2.send(command);
+    
+    // Construct filename from candidateName and docType if provided
+    const candidateName = req.query.candidateName || '';
+    const docType = req.query.docType || '';
+    const originalFileName = path.posix.basename(key);
+    const ext = path.extname(originalFileName);
+    
+    let fileName = originalFileName;
+    if (candidateName && docType) {
+      fileName = `${candidateName} - ${docType}${ext}`;
+    }
+
+    if (data.ContentType) {
+      res.setHeader("Content-Type", data.ContentType);
+    }
+    if (data.ContentLength) {
+      res.setHeader("Content-Length", data.ContentLength.toString());
+    }
+
+    res.setHeader("Cache-Control", "no-store");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="${encodeURIComponent(fileName)}"; filename*=UTF-8''${encodeURIComponent(fileName)}`
+    );
+
+    if (data.Body && typeof data.Body.pipe === "function") {
+      return data.Body.pipe(res);
+    }
+
+    return res.status(500).json({ error: "Invalid file stream" });
+  } catch (err) {
+    console.error("File proxy error:", err);
+    return res.status(404).json({ error: "Not found" });
+  }
 });
 
 app.get("/api/files/exists", ensureOrigin, ensureAuth, async (req, res) => {
@@ -221,6 +407,13 @@ app.get("/api/files/exists", ensureOrigin, ensureAuth, async (req, res) => {
 
 app.get("/health", (req, res) => res.json({ ok: true }));
 
-app.listen(PORT, () => {
-  console.log(`Backend listening on ${PORT}`);
-});
+ensureVoteTable()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Backend listening on ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error("Failed to initialize vote storage:", error);
+    process.exit(1);
+  });

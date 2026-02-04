@@ -45,17 +45,29 @@ export const normalizePartyName = (value = '') =>
 
 export const getApiBase = () => {
   if (typeof import.meta !== 'undefined' && import.meta.env) {
-    return import.meta.env.VITE_API_BASE || '';
+    const base = import.meta.env.VITE_API_BASE || '';
+    if (base) return base;
+    if (import.meta.env.DEV) {
+      return 'http://localhost:8080';
+    }
+    return '';
   }
   return '';
 };
 
-export const buildAssetUrl = (value = '') => {
+export const buildAssetUrl = (value = '', candidateName = '', docType = '') => {
   if (!value) return '';
   if (value.startsWith('/candidatess/')) {
     const base = getApiBase();
     if (!base) return value;
-    return `${base}/api/files?path=${encodeURIComponent(value)}`;
+    let url = `${base}/api/files?path=${encodeURIComponent(value)}`;
+    if (candidateName) {
+      url += `&candidateName=${encodeURIComponent(candidateName)}`;
+    }
+    if (docType) {
+      url += `&docType=${encodeURIComponent(docType)}`;
+    }
+    return url;
   }
   return value;
 };
@@ -243,6 +255,21 @@ export const generateFingerprint = () => {
   };
 
   return btoa(JSON.stringify(fingerprint));
+};
+
+export const hashFingerprint = async (value) => {
+  try {
+    if (window.crypto && window.crypto.subtle) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(value);
+      const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+    }
+  } catch (error) {
+    // Fallback below
+  }
+  return btoa(value).replace(/=+$/, '');
 };
 
 // Senate (Upper House) seat layout - 105 seats

@@ -36,3 +36,6 @@ backend/public/candidatess/expensee/
 backend/public/candidatess/photoss/
 backend/public/candidatess/taxx/
 backend/public/candidates/
+
+# Vote lock storage
+backend/data/vote-locks.json

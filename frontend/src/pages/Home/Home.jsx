@@ -20,6 +20,8 @@ import {
   buildSenateSeatLayout,
   calculateProportionalSeats,
   generateFingerprint,
+  hashFingerprint,
+  getApiBase,
   toBengaliNumber,
   sortCandidatesByBengali
 } from '../../utils/helpers';
@@ -56,6 +58,8 @@ const Home = () => {
   const [selectedCandidate, setSelectedCandidate] = useState(null);
   const [votes, setVotes] = useState({});
   const [fingerprint, setFingerprint] = useState('');
+  const [fingerprintHash, setFingerprintHash] = useState('');
+  const [voteToken, setVoteToken] = useState('');
   const [blocked, setBlocked] = useState(false);
   const [votedCandidate, setVotedCandidate] = useState(null);
   const [referendumVote, setReferendumVote] = useState(null); // 'yes' or 'no'
@@ -141,11 +145,46 @@ const Home = () => {
     const fp = generateFingerprint();
     setFingerprint(fp);
 
-    const voted = localStorage.getItem(`voted_${fp}`);
-    if (voted) {
-      setBlocked(true);
-      // setStep('results'); // User wants to stay on home page
-    }
+    let active = true;
+    const initVoteLock = async () => {
+      try {
+        const hash = await hashFingerprint(fp);
+        if (!active) return;
+        setFingerprintHash(hash);
+
+        const response = await fetch(`${getApiBase()}/api/vote/init`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ fingerprintHash: hash })
+        });
+
+        const data = await response.json().catch(() => ({}));
+        if (!active) return;
+
+        if (!response.ok) {
+          setError(data.error || 'ডিভাইস যাচাই করা যায়নি।');
+          return;
+        }
+
+        if (!data.allowed) {
+          setBlocked(true);
+          setError('এই ডিভাইস থেকে ইতিমধ্যে ভোট দেওয়া হয়েছে।');
+          return;
+        }
+
+        setVoteToken(data.token || '');
+      } catch (error) {
+        if (!active) return;
+        setError('ডিভাইস যাচাই করা যায়নি।');
+      }
+    };
+
+    initVoteLock();
+
+    return () => {
+      active = false;
+    };
   }, []);
 
   useEffect(() => {
@@ -159,9 +198,39 @@ const Home = () => {
     setStep('vote');
   };
 
-  const submitVote = () => {
+  const submitVote = async () => {
     if (!selectedCandidate || !selectedConstituency) {
       setError('অনুগ্রহ করে একজন প্রার্থী নির্বাচন করুন');
+      return;
+    }
+
+    if (!fingerprintHash || !voteToken) {
+      setError('ডিভাইস যাচাই সম্পন্ন হয়নি। পরে আবার চেষ্টা করুন।');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${getApiBase()}/api/vote/submit`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ fingerprintHash, token: voteToken })
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (response.status === 409 || data?.error === 'already_voted') {
+        setBlocked(true);
+        setError('এই ডিভাইস থেকে ইতিমধ্যে ভোট দেওয়া হয়েছে।');
+        return;
+      }
+
+      if (!response.ok) {
+        setError(data.error || 'ভোট জমা দিতে সমস্যা হয়েছে।');
+        return;
+      }
+    } catch (error) {
+      setError('ভোট জমা দিতে সমস্যা হয়েছে।');
       return;
     }
 
