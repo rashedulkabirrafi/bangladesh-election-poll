@@ -341,3 +341,49 @@ export const calculateProportionalSeats = (partyVotes, totalSeats = 100) => {
 export const toBengaliNumber = (num) => {
   return num.toString().replace(/\d/g, (d) => '০১২৩৪৫৬৭৮৯'[d]);
 };
+// Bengali alphabet order (Sworborna first, then Byonjonborna)
+// Sworborna (স্বরবর্ণ): অ আ ই ঈ উ ঊ ঋ এ ঐ ও ঔ
+// Byonjonborna (ব্যঞ্জনবর্ণ): ক খ গ ঘ ঙ চ ছ জ ঝ ঞ ট ঠ ড ঢ ণ ত থ দ ধ ন প ফ ব ভ ম য র ল শ ষ স হ
+const bengaliAlphabet = [
+  // Sworborna (Vowels)
+  'অ', 'আ', 'ই', 'ঈ', 'উ', 'ঊ', 'ঋ', 'এ', 'ঐ', 'ও', 'ঔ',
+  // Byonjonborna (Consonants)
+  'ক', 'খ', 'গ', 'ঘ', 'ঙ',
+  'চ', 'ছ', 'জ', 'ঝ', 'ঞ',
+  'ট', 'ঠ', 'ড', 'ঢ', 'ণ',
+  'ত', 'থ', 'দ', 'ধ', 'ন',
+  'প', 'ফ', 'ব', 'ভ', 'ম',
+  'য', 'র', 'ল',
+  'শ', 'ষ', 'স', 'হ'
+];
+
+export const sortCandidatesByBengali = (candidates) => {
+  return [...candidates].sort((a, b) => {
+    const nameA = a.name || '';
+    const nameB = b.name || '';
+    
+    // Compare character by character
+    for (let i = 0; i < Math.min(nameA.length, nameB.length); i++) {
+      const charA = nameA[i];
+      const charB = nameB[i];
+      
+      const indexA = bengaliAlphabet.indexOf(charA);
+      const indexB = bengaliAlphabet.indexOf(charB);
+      
+      // If both characters are in Bengali alphabet, compare by their order
+      if (indexA !== -1 && indexB !== -1 && indexA !== indexB) {
+        return indexA - indexB;
+      }
+      
+      // If not in Bengali alphabet, fall back to Unicode comparison
+      if (indexA === -1 || indexB === -1) {
+        if (charA !== charB) {
+          return charA.localeCompare(charB, 'bn');
+        }
+      }
+    }
+    
+    // If all compared characters are equal, shorter string comes first
+    return nameA.length - nameB.length;
+  });
+};

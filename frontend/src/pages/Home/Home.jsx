@@ -20,7 +20,8 @@ import {
   buildSenateSeatLayout,
   calculateProportionalSeats,
   generateFingerprint,
-  toBengaliNumber
+  toBengaliNumber,
+  sortCandidatesByBengali
 } from '../../utils/helpers';
 import { referendumData } from '../../assets/referendum_data';
 
@@ -232,11 +233,16 @@ const Home = () => {
 
   const candidatesForConstituency = useMemo(() => {
     if (!selectedConstituency) return [];
+    let candidates = [];
     const exact = candidatesData[selectedConstituency.name];
-    if (exact) return exact;
-    const normalizedKey = normalizeConstituencyName(selectedConstituency.name);
-    const lookup = candidateKeyLookup.get(normalizedKey);
-    return lookup ? candidatesData[lookup] || [] : [];
+    if (exact) candidates = exact;
+    else {
+      const normalizedKey = normalizeConstituencyName(selectedConstituency.name);
+      const lookup = candidateKeyLookup.get(normalizedKey);
+      candidates = lookup ? candidatesData[lookup] || [] : [];
+    }
+    // Sort candidates by Bengali alphabet order
+    return sortCandidatesByBengali(candidates);
   }, [selectedConstituency, candidateKeyLookup]);
 
   const getTotalVotesAllConstituencies = () => {
