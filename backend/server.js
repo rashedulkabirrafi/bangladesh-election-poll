@@ -168,6 +168,23 @@ const ensureVoteTable = async () => {
       ua_hash TEXT
     );
     CREATE INDEX IF NOT EXISTS idx_vote_locks_voted_at ON vote_locks(voted_at);
+    
+    CREATE TABLE IF NOT EXISTS constituency_votes (
+      id SERIAL PRIMARY KEY,
+      constituency_key TEXT NOT NULL,
+      candidate_name TEXT NOT NULL,
+      party TEXT,
+      voted_at BIGINT NOT NULL,
+      fingerprint_hash TEXT
+    );
+    CREATE INDEX IF NOT EXISTS idx_constituency_votes_key ON constituency_votes(constituency_key);
+    
+    CREATE TABLE IF NOT EXISTS referendum_votes (
+      id SERIAL PRIMARY KEY,
+      vote TEXT NOT NULL CHECK (vote IN ('yes', 'no')),
+      voted_at BIGINT NOT NULL,
+      fingerprint_hash TEXT
+    );
   `);
 };
 
@@ -276,9 +293,12 @@ app.post("/api/vote/init", ensureOrigin, ensureVoteAuth, voteLimiter, async (req
 });
 
 app.post("/api/vote/submit", ensureOrigin, ensureVoteAuth, voteLimiter, async (req, res) => {
-  const { fingerprintHash, token } = req.body || {};
+  const { fingerprintHash, token, constituencyKey, candidateName, party } = req.body || {};
   if (!fingerprintHash || typeof fingerprintHash !== "string" || !token) {
     return res.status(400).json({ error: "Invalid request" });
+  }
+  if (!constituencyKey || !candidateName) {
+    return res.status(400).json({ error: "Missing vote data" });
   }
   try {
     const existing = await votePool.query(
@@ -296,15 +316,142 @@ app.post("/api/vote/submit", ensureOrigin, ensureVoteAuth, voteLimiter, async (r
       return res.status(401).json({ error: verified.reason || "invalid_token" });
     }
 
-    await votePool.query(
-      "INSERT INTO vote_locks (fingerprint_hash, voted_at, ip_hash, ua_hash) VALUES ($1, $2, $3, $4)",
-      [fingerprintHash, Date.now(), ipHash, uaHash]
-    );
+    const votedAt = Date.now();
+    
+    // Insert vote lock and actual vote in a transaction
+    const client = await votePool.connect();
+    try {
+      await client.query('BEGIN');
+      
+      console.log('Inserting vote lock for:', fingerprintHash);
+      await client.query(
+        "INSERT INTO vote_locks (fingerprint_hash, voted_at, ip_hash, ua_hash) VALUES ($1, $2, $3, $4)",
+        [fingerprintHash, votedAt, ipHash, uaHash]
+      );
+      console.log('Vote lock inserted successfully');
+      
+      console.log('Inserting constituency vote:', { constituencyKey, candidateName, party: party || null });
+      await client.query(
+        "INSERT INTO constituency_votes (constituency_key, candidate_name, party, voted_at, fingerprint_hash) VALUES ($1, $2, $3, $4, $5)",
+        [constituencyKey, candidateName, party || null, votedAt, fingerprintHash]
+      );
+      console.log('Constituency vote inserted successfully');
+      
+      await client.query('COMMIT');
+      console.log('Transaction committed successfully');
+    } catch (e) {
+      console.error('Transaction error, rolling back:', e.message);
+      await client.query('ROLLBACK');
+      throw e;
+    } finally {
+      client.release();
+    }
 
     return res.json({ ok: true });
   } catch (error) {
     console.error("Vote submit error:", error);
     return res.status(500).json({ error: "vote_submit_failed" });
+  }
+});
+
+// Get vote counts for a specific constituency
+app.get("/api/votes/constituency/:key", ensureOrigin, async (req, res) => {
+  try {
+    const { key } = req.params;
+    const result = await votePool.query(
+      `SELECT candidate_name, party, COUNT(*) as vote_count 
+       FROM constituency_votes 
+       WHERE constituency_key = $1 
+       GROUP BY candidate_name, party 
+       ORDER BY vote_count DESC`,
+      [key]
+    );
+    
+    const votes = {};
+    result.rows.forEach(row => {
+      const label = `${row.candidate_name} (${row.party || 'স্বতন্ত্র'})`;
+      votes[label] = parseInt(row.vote_count, 10);
+    });
+    
+    return res.json({ constituency: key, votes });
+  } catch (error) {
+    console.error("Error fetching constituency votes:", error);
+    return res.status(500).json({ error: "fetch_failed" });
+  }
+});
+
+// Get vote counts for all constituencies
+app.get("/api/votes/all", ensureOrigin, async (req, res) => {
+  try {
+    const result = await votePool.query(
+      `SELECT constituency_key, candidate_name, party, COUNT(*) as vote_count 
+       FROM constituency_votes 
+       GROUP BY constituency_key, candidate_name, party 
+       ORDER BY constituency_key, vote_count DESC`
+    );
+    
+    const votesByConstituency = {};
+    result.rows.forEach(row => {
+      const key = row.constituency_key;
+      if (!votesByConstituency[key]) {
+        votesByConstituency[key] = {};
+      }
+      const label = `${row.candidate_name} (${row.party || 'স্বতন্ত্র'})`;
+      votesByConstituency[key][label] = parseInt(row.vote_count, 10);
+    });
+    
+    return res.json({ votes: votesByConstituency });
+  } catch (error) {
+    console.error("Error fetching all votes:", error);
+    return res.status(500).json({ error: "fetch_failed" });
+  }
+});
+
+// Submit referendum vote
+app.post("/api/referendum/submit", ensureOrigin, ensureVoteAuth, voteLimiter, async (req, res) => {
+  const { fingerprintHash, vote } = req.body || {};
+  if (!fingerprintHash || !vote || !['yes', 'no'].includes(vote)) {
+    return res.status(400).json({ error: "Invalid request" });
+  }
+  
+  try {
+    // Check if already voted
+    const existing = await votePool.query(
+      "SELECT id FROM referendum_votes WHERE fingerprint_hash = $1",
+      [fingerprintHash]
+    );
+    if (existing.rowCount > 0) {
+      return res.status(409).json({ error: "already_voted" });
+    }
+    
+    await votePool.query(
+      "INSERT INTO referendum_votes (vote, voted_at, fingerprint_hash) VALUES ($1, $2, $3)",
+      [vote, Date.now(), fingerprintHash]
+    );
+    
+    return res.json({ ok: true });
+  } catch (error) {
+    console.error("Referendum vote error:", error);
+    return res.status(500).json({ error: "vote_submit_failed" });
+  }
+});
+
+// Get referendum vote counts
+app.get("/api/referendum/counts", ensureOrigin, async (req, res) => {
+  try {
+    const result = await votePool.query(
+      `SELECT vote, COUNT(*) as count FROM referendum_votes GROUP BY vote`
+    );
+    
+    const counts = { yes: 0, no: 0 };
+    result.rows.forEach(row => {
+      counts[row.vote] = parseInt(row.count, 10);
+    });
+    
+    return res.json(counts);
+  } catch (error) {
+    console.error("Error fetching referendum counts:", error);
+    return res.status(500).json({ error: "fetch_failed" });
   }
 });
 

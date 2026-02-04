@@ -125,22 +125,74 @@ const Home = () => {
 
 
   useEffect(() => {
-    const savedVotes = localStorage.getItem('pollVotes');
-    if (savedVotes) {
-      setVotes(JSON.parse(savedVotes));
-    }
-
-    const savedReferendumCounts = localStorage.getItem('referendumCounts');
-    if (savedReferendumCounts) {
+    // Load votes from backend
+    const loadVotes = async () => {
       try {
-        const parsedCounts = JSON.parse(savedReferendumCounts);
-        const yes = Number(parsedCounts?.yes ?? 0);
-        const no = Number(parsedCounts?.no ?? 0);
-        setReferendumCounts({ yes: Number.isFinite(yes) ? yes : 0, no: Number.isFinite(no) ? no : 0 });
+        const response = await fetch(`${getApiBase()}/api/votes/all`, {
+          credentials: 'include'
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setVotes(data.votes || {});
+        } else {
+          // Fallback to localStorage if backend fails
+          const savedVotes = localStorage.getItem('pollVotes');
+          if (savedVotes) {
+            setVotes(JSON.parse(savedVotes));
+          }
+        }
       } catch (error) {
-        setReferendumCounts({ yes: 0, no: 0 });
+        console.error('Failed to load votes from backend:', error);
+        // Fallback to localStorage
+        const savedVotes = localStorage.getItem('pollVotes');
+        if (savedVotes) {
+          setVotes(JSON.parse(savedVotes));
+        }
       }
-    }
+    };
+
+    // Load referendum counts from backend
+    const loadReferendumCounts = async () => {
+      try {
+        const response = await fetch(`${getApiBase()}/api/referendum/counts`, {
+          credentials: 'include'
+        });
+        if (response.ok) {
+          const counts = await response.json();
+          setReferendumCounts(counts);
+        } else {
+          // Fallback to localStorage
+          const savedReferendumCounts = localStorage.getItem('referendumCounts');
+          if (savedReferendumCounts) {
+            try {
+              const parsedCounts = JSON.parse(savedReferendumCounts);
+              const yes = Number(parsedCounts?.yes ?? 0);
+              const no = Number(parsedCounts?.no ?? 0);
+              setReferendumCounts({ yes: Number.isFinite(yes) ? yes : 0, no: Number.isFinite(no) ? no : 0 });
+            } catch (error) {
+              setReferendumCounts({ yes: 0, no: 0 });
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load referendum counts from backend:', error);
+        // Fallback to localStorage
+        const savedReferendumCounts = localStorage.getItem('referendumCounts');
+        if (savedReferendumCounts) {
+          try {
+            const parsedCounts = JSON.parse(savedReferendumCounts);
+            const yes = Number(parsedCounts?.yes ?? 0);
+            const no = Number(parsedCounts?.no ?? 0);
+            setReferendumCounts({ yes: Number.isFinite(yes) ? yes : 0, no: Number.isFinite(no) ? no : 0 });
+          } catch (error) {
+            setReferendumCounts({ yes: 0, no: 0 });
+          }
+        }
+      }
+    };
+
+    loadVotes();
+    loadReferendumCounts();
 
     const fp = generateFingerprint();
     setFingerprint(fp);
@@ -214,7 +266,13 @@ const Home = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ fingerprintHash, token: voteToken })
+        body: JSON.stringify({ 
+          fingerprintHash, 
+          token: voteToken,
+          constituencyKey: selectedConstituency.key,
+          candidateName: selectedCandidate.name,
+          party: selectedCandidate.party || 'স্বতন্ত্র'
+        })
       });
 
       const data = await response.json().catch(() => ({}));
@@ -251,21 +309,38 @@ const Home = () => {
     setStep('referendum');
   };
 
-  const submitReferendum = (vote) => {
+  const submitReferendum = async (vote) => {
     setReferendumVote(vote);
     
-    // Save personal vote
+    // Save personal vote to localStorage
     localStorage.setItem(`referendum_vote_${fingerprint}`, vote);
 
-    // Update global counts (simulated)
-    const currentCounts = { ...referendumCounts };
-    if (vote === 'yes') currentCounts.yes += 1;
-    if (vote === 'no') currentCounts.no += 1;
+    // Submit to backend
+    try {
+      await fetch(`${getApiBase()}/api/referendum/submit`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ fingerprintHash, vote })
+      });
+    } catch (error) {
+      console.error('Failed to submit referendum vote:', error);
+    }
+
+    // Fetch updated counts from backend
+    try {
+      const response = await fetch(`${getApiBase()}/api/referendum/counts`, {
+        credentials: 'include'
+      });
+      if (response.ok) {
+        const counts = await response.json();
+        setReferendumCounts(counts);
+      }
+    } catch (error) {
+      console.error('Failed to fetch referendum counts:', error);
+    }
     
-    setReferendumCounts(currentCounts);
-    localStorage.setItem('referendumCounts', JSON.stringify(currentCounts));
-    
-    // Now block the user and save the candidate vote permanently
+    // Now block the user and save the candidate vote permanently to localStorage
     localStorage.setItem('pollVotes', JSON.stringify(votes));
     localStorage.setItem(`voted_${fingerprint}`, Date.now().toString());
     
