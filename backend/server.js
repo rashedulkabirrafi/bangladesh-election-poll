@@ -118,9 +118,6 @@ const ensureOrigin = (req, res, next) => {
   if (REQUIRE_ORIGIN !== "1") return next();
   const origin = req.get("Origin");
   const referer = req.get("Referer");
-  if (!origin && !referer && req.method === "GET" && req.path.startsWith("/api/files")) {
-    return next();
-  }
   if (isAllowedOrigin(origin) || isAllowedOrigin(referer)) {
     return next();
   }
@@ -481,7 +478,7 @@ const r2 = new S3Client({
   },
 });
 
-app.get("/api/files", ensureOrigin, ensureAuth, async (req, res) => {
+app.get("/api/files", ensureOrigin, async (req, res) => {
   const rawPath = String(req.query.path || "");
   if (!rawPath.startsWith("/candidatess/")) {
     return res.status(400).json({ error: "Invalid path" });
@@ -535,7 +532,7 @@ app.get("/api/files", ensureOrigin, ensureAuth, async (req, res) => {
   }
 });
 
-app.get("/api/files/exists", ensureOrigin, ensureAuth, async (req, res) => {
+app.get("/api/files/exists", ensureOrigin, async (req, res) => {
   const rawPath = String(req.query.path || "");
   if (!rawPath.startsWith("/candidatess/")) {
     return res.status(400).json({ error: "Invalid path" });
