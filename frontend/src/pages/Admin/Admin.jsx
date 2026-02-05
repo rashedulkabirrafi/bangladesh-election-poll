@@ -51,10 +51,26 @@ const Admin = ({ onBack }) => {
     return map;
   }, []);
 
+  const getConstituencyName = (key) => {
+    if (!key) return '';
+    const parts = String(key).split('||');
+    return parts.length >= 3 ? parts[2] : key;
+  };
+
   const buildCandidateRows = (summaryRows, constituencyKey) => {
     const data = candidatesData || {};
-    const normalizedKey = candidateKeyLookup.get(constituencyKey) || constituencyKey;
-    const candidateList = data[normalizedKey] || [];
+    const constituencyName = getConstituencyName(constituencyKey);
+    const normalizedName = normalizeConstituencyName(constituencyName);
+    const normalizedKey =
+      candidateKeyLookup.get(constituencyKey) ||
+      candidateKeyLookup.get(normalizedName) ||
+      candidateKeyLookup.get(constituencyName) ||
+      normalizedName;
+    const candidateList =
+      data[normalizedKey] ||
+      data[constituencyName] ||
+      data[normalizedName] ||
+      [];
 
     const rowMap = new Map();
     summaryRows.forEach((row) => {
