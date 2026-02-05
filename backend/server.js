@@ -462,7 +462,7 @@ app.post('/api/admin/login', async (req, res) => {
   
   try {
     // Hardcoded admin credentials (CHANGE THESE!)
-    if (username === 'admin' && password === 'YourSecurePassword123!') {
+    if (username === 'admin' && password === 'CannotWorkWithThis5!') {
       const token = crypto
         .createHmac('sha256', SESSION_SECRET)
         .update(`${username}-${Date.now()}`)
