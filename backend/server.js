@@ -251,17 +251,29 @@ const partyGroups = [
   },
 ];
 
-const partyCoalitionMap = new Map();
-partyGroups.forEach((group) => {
-  group.parties.forEach((party) => {
-    partyCoalitionMap.set(party, group.label);
-  });
-});
-
 const normalizePartyName = (value = "") =>
   String(value || "")
     .trim()
-    .replace(/\s+/g, " ");
+    .replace(/[().\-–—]/g, " ")
+    .replace(/\s+/g, " ")
+    .replace(/জাতীয়/g, "জাতীয়")
+    .replace(/ইসলামী/g, "ইসলামী")
+    .replace(/জামায়াতে/g, "জামায়াতে")
+    .replace(/বি\.?এন\.?পি/g, "বিএনপি")
+    .replace(/এল\.?ডি\.?পি/g, "এলডিপি")
+    .replace(/এবি পার্টি/g, "এবি পার্টি")
+    .replace(/এনসিপি/g, "এনসিপি")
+    .trim();
+
+const partyCoalitionMap = new Map();
+partyGroups.forEach((group) => {
+  group.parties.forEach((party) => {
+    const normalized = normalizePartyName(party);
+    if (normalized) {
+      partyCoalitionMap.set(normalized, group.label);
+    }
+  });
+});
 
 const getCoalitionLabel = (party = "") => {
   const normalized = normalizePartyName(party);
