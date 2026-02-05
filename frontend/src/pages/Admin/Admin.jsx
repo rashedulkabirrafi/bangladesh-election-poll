@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import './Admin.css';
 import constituencyData from '../../assets/constituencies.json';
 import candidatesData from '../../assets/candidates_new.json';
@@ -14,6 +14,7 @@ const Admin = ({ onBack }) => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [savingAll, setSavingAll] = useState(false);
+  const [autoLoaded, setAutoLoaded] = useState(false);
 
   const constituencyRows = useMemo(() => constituencyData || [], []);
   const divisions = useMemo(
@@ -110,6 +111,7 @@ const Admin = ({ onBack }) => {
       const data = await response.json();
       const nextRows = buildCandidateRows(data.rows || [], constituencyKey);
       setRows(nextRows);
+      setAutoLoaded(true);
     } catch (err) {
       setError(err.message || 'লোড ব্যর্থ হয়েছে।');
     } finally {
@@ -134,89 +136,17 @@ const Admin = ({ onBack }) => {
     }
   };
 
-  const updateReferendum = async (vote, value) => {
-    setError('');
-    setMessage('');
-    const countValue = Number(value);
-    if (!Number.isFinite(countValue) || countValue < 0) {
-      setError('ভোট সংখ্যা সঠিক নয়।');
+  useEffect(() => {
+    if (!selectedDivision || !selectedDistrict || !selectedConstituency) {
+      setRows([]);
+      setAutoLoaded(false);
       return;
     }
-    try {
-      const response = await fetch(`${getApiBase()}/api/admin/referendum-count`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ vote, count: countValue })
-      });
-      if (!response.ok) {
-        const data = await response.json().catch(() => ({}));
-        throw new Error(data.error || 'সংরক্ষণ ব্যর্থ হয়েছে।');
-      }
-      setMessage('গণভোট আপডেট হয়েছে।');
-      fetchReferendumCounts();
-    } catch (err) {
-      setError(err.message || 'সংরক্ষণ ব্যর্থ হয়েছে।');
-    }
-  };
+    fetchSummary();
+  }, [selectedDivision, selectedDistrict, selectedConstituency]);
 
-  const updateCount = async (row) => {
-    setError('');
-    setMessage('');
-    const constituencyKey = makeKey(selectedDivision, selectedDistrict, selectedConstituency);
-    const countValue = Number(row.inputValue);
-    if (!Number.isFinite(countValue) || countValue < 0) {
-      setError('ভোট সংখ্যা সঠিক নয়।');
-      return;
-    }
-    try {
-      const response = await fetch(`${getApiBase()}/api/admin/candidate-count`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({
-          constituencyKey,
-          candidateName: row.candidateName,
-          party: row.party || '',
-          count: countValue
-        })
-      });
-      if (!response.ok) {
-        const data = await response.json().catch(() => ({}));
-        throw new Error(data.error || 'সংরক্ষণ ব্যর্থ হয়েছে।');
-      }
-      setMessage('সংরক্ষণ করা হয়েছে।');
-      await fetchSummary();
-    } catch (err) {
-      setError(err.message || 'সংরক্ষণ ব্যর্থ হয়েছে।');
-    }
-  };
 
-  const deleteCount = async (row) => {
-    setError('');
-    setMessage('');
-    const constituencyKey = makeKey(selectedDivision, selectedDistrict, selectedConstituency);
-    try {
-      const response = await fetch(`${getApiBase()}/api/admin/candidate-count`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({
-          constituencyKey,
-          candidateName: row.candidateName,
-          party: row.party || ''
-        })
-      });
-      if (!response.ok) {
-        const data = await response.json().catch(() => ({}));
-        throw new Error(data.error || 'মুছে ফেলা যায়নি।');
-      }
-      setMessage('মুছে ফেলা হয়েছে।');
-      await fetchSummary();
-    } catch (err) {
-      setError(err.message || 'মুছে ফেলা যায়নি।');
-    }
-  };
+  const totalVotes = rows.reduce((sum, row) => sum + Number(row.inputValue || 0), 0);
 
   const saveAllCounts = async () => {
     setError('');
@@ -225,31 +155,35 @@ const Admin = ({ onBack }) => {
       setError('প্রথমে বিভাগ, জেলা ও আসন নির্বাচন করুন।');
       return;
     }
+    const yes = Number(referendumCounts.yes);
+    const no = Number(referendumCounts.no);
+    if (!Number.isFinite(yes) || !Number.isFinite(no) || yes + no !== totalVotes) {
+      setError('গণভোটের হ্যাঁ + না = মোট ভোট হতে হবে।');
+      return;
+    }
     setSavingAll(true);
     const constituencyKey = makeKey(selectedDivision, selectedDistrict, selectedConstituency);
     try {
-      for (const row of rows) {
-        const countValue = Number(row.inputValue);
-        if (!Number.isFinite(countValue) || countValue < 0) {
-          throw new Error('ভোট সংখ্যা সঠিক নয়।');
-        }
-        const response = await fetch(`${getApiBase()}/api/admin/candidate-count`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify({
-            constituencyKey,
-            candidateName: row.candidateName,
-            party: row.party || '',
-            count: countValue
-          })
-        });
-        if (!response.ok) {
-          const data = await response.json().catch(() => ({}));
-          throw new Error(data.error || 'সংরক্ষণ ব্যর্থ হয়েছে।');
-        }
+      const payload = {
+        constituencyKey,
+        candidates: rows.map((row) => ({
+          candidateName: row.candidateName,
+          party: row.party || '',
+          count: Number(row.inputValue || 0)
+        })),
+        referendum: { yes, no }
+      };
+      const response = await fetch(`${getApiBase()}/api/admin/constituency-batch`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(payload)
+      });
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data.error || 'সংরক্ষণ ব্যর্থ হয়েছে।');
       }
-      setMessage('সব ভোট সংখ্যা সংরক্ষণ হয়েছে।');
+      setMessage('সব ডাটা সংরক্ষণ হয়েছে।');
       await fetchSummary();
     } catch (err) {
       setError(err.message || 'সংরক্ষণ ব্যর্থ হয়েছে।');
@@ -325,9 +259,6 @@ const Admin = ({ onBack }) => {
               ))}
             </select>
           </label>
-          <button className="btn btn-primary" onClick={fetchSummary} disabled={loading}>
-            {loading ? 'লোড হচ্ছে...' : 'ডাটা লোড করুন'}
-          </button>
           <button className="btn btn-secondary" onClick={fetchReferendumCounts}>
             গণভোট লোড
           </button>
@@ -374,21 +305,19 @@ const Admin = ({ onBack }) => {
                     />
                   </div>
                   <div className="admin-actions-inline">
-                    <button className="btn btn-primary" onClick={() => updateCount(row)}>
-                      সংরক্ষণ
-                    </button>
-                    <button className="btn btn-secondary" onClick={() => deleteCount(row)}>
-                      মুছুন
-                    </button>
+                    <span className="admin-inline-hint">সবগুলো একসাথে সংরক্ষণ করুন</span>
                   </div>
                 </div>
               ))}
+            </div>
+            <div className="admin-total">
+              মোট ভোট (এই আসনে): <strong>{totalVotes}</strong>
             </div>
           </>
         )}
 
         <div className="admin-referendum">
-          <h3>গণভোট (সরাসরি আপডেট)</h3>
+          <h3>গণভোট (হ্যাঁ + না = মোট ভোট)</h3>
           <div className="admin-referendum-grid">
             <label>
               হ্যাঁ
@@ -412,18 +341,9 @@ const Admin = ({ onBack }) => {
                 }
               />
             </label>
-            <button
-              className="btn btn-primary"
-              onClick={() => updateReferendum('yes', referendumCounts.yes)}
-            >
-              হ্যাঁ সংরক্ষণ
-            </button>
-            <button
-              className="btn btn-primary"
-              onClick={() => updateReferendum('no', referendumCounts.no)}
-            >
-              না সংরক্ষণ
-            </button>
+            <div className="admin-referendum-hint">
+              মোট ভোট: {totalVotes}
+            </div>
           </div>
         </div>
       </div>

@@ -97,6 +97,22 @@
   gap: 8px;
 }
 
+.admin-inline-hint {
+  font-size: 12px;
+  color: #52606d;
+}
+
+.admin-total {
+  margin-top: 12px;
+  font-weight: 700;
+}
+
+.admin-referendum-hint {
+  font-size: 14px;
+  color: #52606d;
+  align-self: center;
+}
+
 .admin-referendum {
   margin-top: 24px;
   padding-top: 16px;

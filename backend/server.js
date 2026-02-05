@@ -793,6 +793,84 @@ app.post("/api/admin/referendum-count", ensureOrigin, ensureAdmin, async (req, r
   }
 });
 
+app.post("/api/admin/constituency-batch", ensureOrigin, ensureAdmin, async (req, res) => {
+  try {
+    const { constituencyKey, candidates, referendum } = req.body || {};
+    if (!constituencyKey || !Array.isArray(candidates) || candidates.length === 0) {
+      return res.status(400).json({ error: "invalid_payload" });
+    }
+
+    let total = 0;
+    const normalized = candidates.map((row) => {
+      const candidateName = String(row.candidateName || "").trim();
+      const party = normalizePartyName(row.party || "");
+      const count = Number(row.count);
+      if (!candidateName || !Number.isFinite(count) || count < 0) {
+        throw new Error("invalid_candidate");
+      }
+      total += count;
+      return {
+        candidateName,
+        party,
+        coalition: getCoalitionLabel(party),
+        count,
+      };
+    });
+
+    const yes = Number(referendum?.yes);
+    const no = Number(referendum?.no);
+    if (!Number.isFinite(yes) || !Number.isFinite(no) || yes < 0 || no < 0) {
+      return res.status(400).json({ error: "invalid_referendum" });
+    }
+    if (yes + no !== total) {
+      return res.status(400).json({ error: "referendum_mismatch" });
+    }
+
+    const client = await votePool.connect();
+    try {
+      await client.query("BEGIN");
+
+      // Replace counts for this constituency
+      await client.query(
+        "DELETE FROM constituency_candidate_counts WHERE constituency_key = $1",
+        [constituencyKey]
+      );
+
+      for (const row of normalized) {
+        await client.query(
+          `INSERT INTO constituency_candidate_counts
+            (constituency_key, candidate_name, party, coalition, vote_count)
+           VALUES ($1, $2, $3, $4, $5)`,
+          [constituencyKey, row.candidateName, row.party, row.coalition, row.count]
+        );
+      }
+
+      await client.query(
+        `INSERT INTO referendum_counts (vote, vote_count)
+         VALUES ('yes', $1), ('no', $2)
+         ON CONFLICT (vote)
+         DO UPDATE SET vote_count = EXCLUDED.vote_count`,
+        [yes, no]
+      );
+
+      await client.query("COMMIT");
+    } catch (err) {
+      await client.query("ROLLBACK");
+      throw err;
+    } finally {
+      client.release();
+    }
+
+    return res.json({ ok: true });
+  } catch (error) {
+    console.error("Admin batch error:", error);
+    if (error.message === "invalid_candidate") {
+      return res.status(400).json({ error: "invalid_candidate" });
+    }
+    return res.status(500).json({ error: "batch_failed" });
+  }
+});
+
 app.post("/api/admin/rebuild-counts", ensureOrigin, ensureAdmin, async (req, res) => {
   try {
     await votePool.query("BEGIN");
