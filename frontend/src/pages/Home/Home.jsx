@@ -344,7 +344,11 @@ const Home = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ fingerprintHash, vote })
+        body: JSON.stringify({
+          fingerprintHash,
+          vote,
+          constituencyKey: selectedConstituency?.key || null
+        })
       });
     } catch (error) {
       console.error('Failed to submit referendum vote:', error);

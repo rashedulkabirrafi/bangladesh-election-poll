@@ -180,6 +180,7 @@ const voteLimiter = rateLimit({
 
 const voteTokenSecret = VOTE_TOKEN_SECRET || SESSION_SECRET;
 const voteTokenTtlMs = Math.max(60_000, Number(VOTE_TOKEN_TTL_MS) || 300_000);
+const GLOBAL_REFERENDUM_KEY = "__GLOBAL__";
 
 const partyGroups = [
   {
@@ -322,14 +323,17 @@ const ensureVoteTable = async () => {
       fingerprint_hash TEXT
     );
 
-    CREATE TABLE IF NOT EXISTS referendum_counts (
-      vote TEXT PRIMARY KEY CHECK (vote IN ('yes', 'no')),
+    ALTER TABLE referendum_votes
+      ADD COLUMN IF NOT EXISTS constituency_key TEXT;
+
+    CREATE TABLE IF NOT EXISTS constituency_referendum_counts (
+      constituency_key TEXT NOT NULL,
+      vote TEXT NOT NULL CHECK (vote IN ('yes', 'no')),
       vote_count INT NOT NULL DEFAULT 0 CHECK (vote_count >= 0)
     );
 
-    INSERT INTO referendum_counts (vote, vote_count)
-    VALUES ('yes', 0), ('no', 0)
-    ON CONFLICT (vote) DO NOTHING;
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_constituency_referendum_counts_key
+      ON constituency_referendum_counts(constituency_key, vote);
 
     CREATE OR REPLACE VIEW constituency_vote_totals AS
       SELECT constituency_key, SUM(vote_count) AS total_votes
@@ -389,22 +393,25 @@ const backfillCountsIfEmpty = async () => {
     }
   }
 
+  await votePool.query(
+    "UPDATE referendum_votes SET constituency_key = $1 WHERE constituency_key IS NULL",
+    [GLOBAL_REFERENDUM_KEY]
+  );
+
   const referendumTotals = await votePool.query(
-    "SELECT SUM(vote_count) AS total FROM referendum_counts"
+    "SELECT SUM(vote_count) AS total FROM constituency_referendum_counts"
   );
   const referendumTotal = Number(referendumTotals.rows[0]?.total || 0);
   if (referendumTotal === 0) {
-    await votePool.query("TRUNCATE referendum_counts");
+    await votePool.query("TRUNCATE constituency_referendum_counts");
     await votePool.query(
-      `INSERT INTO referendum_counts (vote, vote_count)
-       SELECT vote, COUNT(*) AS vote_count
+      `INSERT INTO constituency_referendum_counts (constituency_key, vote, vote_count)
+       SELECT COALESCE(constituency_key, $1) AS constituency_key,
+              vote,
+              COUNT(*) AS vote_count
        FROM referendum_votes
-       GROUP BY vote`
-    );
-    await votePool.query(
-      `INSERT INTO referendum_counts (vote, vote_count)
-       VALUES ('yes', 0), ('no', 0)
-       ON CONFLICT (vote) DO NOTHING`
+       GROUP BY COALESCE(constituency_key, $1), vote`,
+      [GLOBAL_REFERENDUM_KEY]
     );
   }
 };
@@ -667,17 +674,18 @@ app.post("/api/referendum/submit", ensureOrigin, ensureVoteAuth, voteLimiter, as
     }
     
     const votedAt = Date.now();
+    const constituencyKey = req.body?.constituencyKey || GLOBAL_REFERENDUM_KEY;
     await votePool.query(
-      "INSERT INTO referendum_votes (vote, voted_at, fingerprint_hash) VALUES ($1, $2, $3)",
-      [vote, votedAt, fingerprintHash]
+      "INSERT INTO referendum_votes (vote, voted_at, fingerprint_hash, constituency_key) VALUES ($1, $2, $3, $4)",
+      [vote, votedAt, fingerprintHash, constituencyKey]
     );
 
     await votePool.query(
-      `INSERT INTO referendum_counts (vote, vote_count)
-       VALUES ($1, 1)
-       ON CONFLICT (vote)
-       DO UPDATE SET vote_count = referendum_counts.vote_count + 1`,
-      [vote]
+      `INSERT INTO constituency_referendum_counts (constituency_key, vote, vote_count)
+       VALUES ($1, $2, 1)
+       ON CONFLICT (constituency_key, vote)
+       DO UPDATE SET vote_count = constituency_referendum_counts.vote_count + 1`,
+      [constituencyKey, vote]
     );
     
     return res.json({ ok: true });
@@ -691,7 +699,9 @@ app.post("/api/referendum/submit", ensureOrigin, ensureVoteAuth, voteLimiter, as
 app.get("/api/referendum/counts", ensureOrigin, async (req, res) => {
   try {
     const result = await votePool.query(
-      `SELECT vote, vote_count as count FROM referendum_counts`
+      `SELECT vote, SUM(vote_count) as count
+       FROM constituency_referendum_counts
+       GROUP BY vote`
     );
 
     const counts = { yes: 0, no: 0 };
@@ -727,7 +737,17 @@ app.get("/api/admin/constituency", ensureOrigin, ensureAdmin, async (req, res) =
        ORDER BY vote_count DESC`,
       [constituencyKey]
     );
-    res.json({ constituencyKey, rows: result.rows });
+    const refResult = await votePool.query(
+      `SELECT vote, vote_count
+       FROM constituency_referendum_counts
+       WHERE constituency_key = $1`,
+      [constituencyKey]
+    );
+    const referendum = { yes: 0, no: 0 };
+    (refResult.rows || []).forEach((row) => {
+      referendum[row.vote] = Number(row.vote_count) || 0;
+    });
+    res.json({ constituencyKey, rows: result.rows, referendum });
   } catch (error) {
     console.error("Admin constituency error:", error);
     res.status(500).json({ error: "fetch_failed" });
@@ -783,7 +803,10 @@ app.delete("/api/admin/candidate-count", ensureOrigin, ensureAdmin, async (req, 
 
 app.post("/api/admin/referendum-count", ensureOrigin, ensureAdmin, async (req, res) => {
   try {
-    const { vote, count } = req.body || {};
+    const { constituencyKey, vote, count } = req.body || {};
+    if (!constituencyKey) {
+      return res.status(400).json({ error: "constituency_required" });
+    }
     if (!["yes", "no"].includes(vote)) {
       return res.status(400).json({ error: "invalid_vote" });
     }
@@ -792,11 +815,11 @@ app.post("/api/admin/referendum-count", ensureOrigin, ensureAdmin, async (req, r
       return res.status(400).json({ error: "invalid_count" });
     }
     await votePool.query(
-      `INSERT INTO referendum_counts (vote, vote_count)
-       VALUES ($1, $2)
-       ON CONFLICT (vote)
+      `INSERT INTO constituency_referendum_counts (constituency_key, vote, vote_count)
+       VALUES ($1, $2, $3)
+       ON CONFLICT (constituency_key, vote)
        DO UPDATE SET vote_count = EXCLUDED.vote_count`,
-      [vote, voteCount]
+      [constituencyKey, vote, voteCount]
     );
     res.json({ ok: true });
   } catch (error) {
@@ -858,11 +881,11 @@ app.post("/api/admin/constituency-batch", ensureOrigin, ensureAdmin, async (req,
       }
 
       await client.query(
-        `INSERT INTO referendum_counts (vote, vote_count)
-         VALUES ('yes', $1), ('no', $2)
-         ON CONFLICT (vote)
+        `INSERT INTO constituency_referendum_counts (constituency_key, vote, vote_count)
+         VALUES ($1, 'yes', $2), ($1, 'no', $3)
+         ON CONFLICT (constituency_key, vote)
          DO UPDATE SET vote_count = EXCLUDED.vote_count`,
-        [yes, no]
+        [constituencyKey, yes, no]
       );
 
       await client.query("COMMIT");
@@ -915,17 +938,15 @@ app.post("/api/admin/rebuild-counts", ensureOrigin, ensureAdmin, async (req, res
       );
     }
 
-    await votePool.query("TRUNCATE referendum_counts");
+    await votePool.query("TRUNCATE constituency_referendum_counts");
     await votePool.query(
-      `INSERT INTO referendum_counts (vote, vote_count)
-       SELECT vote, COUNT(*) AS vote_count
+      `INSERT INTO constituency_referendum_counts (constituency_key, vote, vote_count)
+       SELECT COALESCE(constituency_key, $1) AS constituency_key,
+              vote,
+              COUNT(*) AS vote_count
        FROM referendum_votes
-       GROUP BY vote`
-    );
-    await votePool.query(
-      `INSERT INTO referendum_counts (vote, vote_count)
-       VALUES ('yes', 0), ('no', 0)
-       ON CONFLICT (vote) DO NOTHING`
+       GROUP BY COALESCE(constituency_key, $1), vote`,
+      [GLOBAL_REFERENDUM_KEY]
     );
 
     await votePool.query("COMMIT");

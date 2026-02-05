@@ -127,6 +127,12 @@ const Admin = ({ onBack }) => {
       const data = await response.json();
       const nextRows = buildCandidateRows(data.rows || [], constituencyKey);
       setRows(nextRows);
+      if (data.referendum) {
+        setReferendumCounts({
+          yes: Number(data.referendum.yes || 0),
+          no: Number(data.referendum.no || 0)
+        });
+      }
       setAutoLoaded(true);
     } catch (err) {
       setError(err.message || 'লোড ব্যর্থ হয়েছে।');
@@ -164,6 +170,7 @@ const Admin = ({ onBack }) => {
       inputValue: ''
     }));
     setRows(candidateRows);
+    setReferendumCounts({ yes: '', no: '' });
     setAutoLoaded(false);
   }, [selectedDivision, selectedDistrict, selectedConstituency]);
 
