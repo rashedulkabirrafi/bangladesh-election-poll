@@ -452,6 +452,149 @@ app.get("/api/referendum/counts", ensureOrigin, async (req, res) => {
   }
 });
 
+// ========================================
+// ADMIN ROUTES
+// ========================================
+
+// Admin login
+app.post('/api/admin/login', async (req, res) => {
+  const { username, password } = req.body;
+  
+  try {
+    // Hardcoded admin credentials (CHANGE THESE!)
+    if (username === 'admin' && password === 'YourSecurePassword123!') {
+      const token = crypto
+        .createHmac('sha256', SESSION_SECRET)
+        .update(`${username}-${Date.now()}`)
+        .digest('hex');
+      
+      return res.json({ token });
+    }
+    
+    res.status(401).json({ error: 'Invalid credentials' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Middleware to verify admin token
+const authenticateAdmin = (req, res, next) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) return res.status(401).json({ error: 'No token provided' });
+  
+  // Simple token validation (you should enhance this)
+  if (token.length > 10) {
+    next();
+  } else {
+    res.status(401).json({ error: 'Invalid token' });
+  }
+};
+
+// Get statistics
+app.get('/api/admin/stats', ensureOrigin, authenticateAdmin, async (req, res) => {
+  try {
+    const constituencyCount = await votePool.query('SELECT COUNT(DISTINCT constituency_key) FROM constituency_votes');
+    const referendumCount = await votePool.query('SELECT COUNT(*) FROM referendum_votes');
+    const totalVotes = await votePool.query('SELECT COUNT(*) FROM constituency_votes');
+    
+    res.json({
+      totalConstituencies: parseInt(constituencyCount.rows[0].count),
+      totalReferendums: parseInt(referendumCount.rows[0].count),
+      totalVotesCast: parseInt(totalVotes.rows[0].count || 0)
+    });
+  } catch (error) {
+    console.error('Stats error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get constituency votes with pagination
+app.get('/api/admin/constituency-votes', ensureOrigin, authenticateAdmin, async (req, res) => {
+  const { page = 1, limit = 50, search = '' } = req.query;
+  const offset = (page - 1) * limit;
+  
+  try {
+    const result = await votePool.query(
+      `SELECT constituency_key, candidate_name, party, COUNT(*) as vote_count, 
+              MAX(voted_at) as last_vote_at
+       FROM constituency_votes 
+       WHERE candidate_name ILIKE $1 OR party ILIKE $1 OR constituency_key ILIKE $1
+       GROUP BY constituency_key, candidate_name, party
+       ORDER BY vote_count DESC 
+       LIMIT $2 OFFSET $3`,
+      [`%${search}%`, limit, offset]
+    );
+    
+    const countResult = await votePool.query(
+      `SELECT COUNT(DISTINCT (constituency_key, candidate_name, party)) 
+       FROM constituency_votes 
+       WHERE candidate_name ILIKE $1 OR party ILIKE $1 OR constituency_key ILIKE $1`,
+      [`%${search}%`]
+    );
+    
+    res.json({
+      data: result.rows,
+      total: parseInt(countResult.rows[0].count),
+      page: parseInt(page),
+      totalPages: Math.ceil(countResult.rows[0].count / limit)
+    });
+  } catch (error) {
+    console.error('Constituency votes error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get referendum votes
+app.get('/api/admin/referendum-votes', ensureOrigin, authenticateAdmin, async (req, res) => {
+  try {
+    const result = await votePool.query(
+      `SELECT vote, COUNT(*) as count FROM referendum_votes GROUP BY vote`
+    );
+    
+    const votes = { yes: 0, no: 0 };
+    result.rows.forEach(row => {
+      votes[row.vote] = parseInt(row.count, 10);
+    });
+    
+    res.json(votes);
+  } catch (error) {
+    console.error('Referendum votes error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get vote locks
+app.get('/api/admin/vote-locks', ensureOrigin, authenticateAdmin, async (req, res) => {
+  try {
+    const result = await votePool.query(
+      `SELECT fingerprint_hash, voted_at, ip_hash, ua_hash 
+       FROM vote_locks 
+       ORDER BY voted_at DESC 
+       LIMIT 100`
+    );
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Vote locks error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Delete constituency vote (example admin action)
+app.delete('/api/admin/constituency-votes/:constituency/:candidate', ensureOrigin, authenticateAdmin, async (req, res) => {
+  const { constituency, candidate } = req.params;
+  
+  try {
+    await votePool.query(
+      'DELETE FROM constituency_votes WHERE constituency_key = $1 AND candidate_name = $2',
+      [constituency, candidate]
+    );
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Delete vote error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.get("/api/candidates/:constituency", (req, res) => {
   try {
     const candidateFilePath = path.join(__dirname, "public", "candidates.json");
