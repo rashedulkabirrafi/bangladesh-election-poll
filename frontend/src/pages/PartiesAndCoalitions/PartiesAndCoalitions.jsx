@@ -9,7 +9,7 @@ export default function PartiesAndCoalitions() {
       parties: [
         {
           name: 'বাংলাদেশ জাতীয়তাবাদী দল',
-          symbolImg: '/wiki_images/120px-Bangladesh_Nationalist_Party_election_symbol_Black_%26_White.svg.png',
+          symbolImg: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Bangladesh_Nationalist_Party_Election_Symbol.svg/120px-Bangladesh_Nationalist_Party_Election_Symbol.svg.png',
           flagImg: '/wiki_images/120px-Flag_of_the_Bangladesh_Nationalist_Party.svg.png',
           leader: 'তারেক রহমান',
           contestedSeats: '২৮৫',
