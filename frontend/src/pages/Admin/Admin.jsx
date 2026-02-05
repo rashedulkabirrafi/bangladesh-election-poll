@@ -158,7 +158,13 @@ const Admin = ({ onBack }) => {
       setAutoLoaded(false);
       return;
     }
-    fetchSummary();
+    const constituencyKey = makeKey(selectedDivision, selectedDistrict, selectedConstituency);
+    const candidateRows = buildCandidateRows([], constituencyKey).map((row) => ({
+      ...row,
+      inputValue: ''
+    }));
+    setRows(candidateRows);
+    setAutoLoaded(false);
   }, [selectedDivision, selectedDistrict, selectedConstituency]);
 
 
@@ -281,6 +287,9 @@ const Admin = ({ onBack }) => {
               ))}
             </select>
           </label>
+          <button className="btn btn-secondary" onClick={fetchSummary} disabled={loading}>
+            {loading ? 'লোড হচ্ছে...' : 'আগের ভোট লোড'}
+          </button>
           <button className="btn btn-secondary" onClick={fetchReferendumCounts}>
             গণভোট লোড
           </button>
