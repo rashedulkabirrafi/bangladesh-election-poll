@@ -199,8 +199,14 @@ const Admin = ({ onBack }) => {
         const data = await response.json().catch(() => ({}));
         throw new Error(data.error || 'সংরক্ষণ ব্যর্থ হয়েছে।');
       }
-      setMessage('সব ডাটা সংরক্ষণ হয়েছে।');
-      await fetchSummary();
+      setMessage('সব ডাটা সংরক্ষণ হয়েছে। নতুন ইনপুট দিতে পারেন।');
+      setRows((prev) =>
+        prev.map((row) => ({
+          ...row,
+          inputValue: ''
+        }))
+      );
+      setReferendumCounts({ yes: '', no: '' });
     } catch (err) {
       setError(err.message || 'সংরক্ষণ ব্যর্থ হয়েছে।');
     } finally {
