@@ -1121,7 +1121,8 @@ const Home = () => {
               <button
                 className="btn btn-primary"
                 onClick={() => {
-                  window.location.href = `${getApiBase()}/auth/google`;
+                  const returnTo = `${window.location.origin}/?admin=1`;
+                  window.location.href = `${getApiBase()}/auth/google?state=${encodeURIComponent(returnTo)}`;
                 }}
               >
                 গুগল দিয়ে লগইন করুন

@@ -459,8 +459,18 @@ app.get(
   "/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/auth/failure" }),
   (req, res) => {
-    const redirectTo = req.query.state || "/";
-    res.redirect(redirectTo);
+    const redirectTo = String(req.query.state || "").trim();
+    const fallback = allowedOrigins[0] || "/";
+    if (!redirectTo) {
+      return res.redirect(fallback);
+    }
+    if (redirectTo.startsWith("/") && !redirectTo.startsWith("//")) {
+      return res.redirect(redirectTo);
+    }
+    if (isAllowedOrigin(redirectTo)) {
+      return res.redirect(redirectTo);
+    }
+    return res.redirect(fallback);
   }
 );
 
