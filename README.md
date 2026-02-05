@@ -98,9 +98,11 @@ npm run candidates:build
 Local assets (photos + PDFs) are downloaded to:
 `backend/public/candidatess/{photoss,affidavitt,expensee,taxx}`.
 
-For local dev, Vite must be able to serve these assets. Create a symlink:
+For local dev, Vite must be able to serve these assets. If you want to serve
+the backend assets directly, replace the folder with a symlink:
 
 ```bash
+rm -rf frontend/public/candidatess
 ln -s /home/rafi/bangladesh-election-poll/backend/public/candidatess frontend/public/candidatess
 ```
 
