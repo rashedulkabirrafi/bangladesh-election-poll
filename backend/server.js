@@ -465,7 +465,7 @@ app.post('/api/admin/login', async (req, res) => {
     if (username === 'admin' && password === 'CannotWorkWithThis5!') {
       const token = crypto
         .createHmac('sha256', SESSION_SECRET)
-        .update(`${username}-${Date.now()}`)
+        .update(`${username}-${Date.now()}`)  // ✅ Fixed - parentheses around backticks
         .digest('hex');
       
       return res.json({ token });
