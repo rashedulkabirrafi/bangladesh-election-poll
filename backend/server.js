@@ -865,17 +865,14 @@ app.post("/api/admin/constituency-batch", ensureOrigin, ensureAdmin, async (req,
     try {
       await client.query("BEGIN");
 
-      // Replace counts for this constituency
-      await client.query(
-        "DELETE FROM constituency_candidate_counts WHERE constituency_key = $1",
-        [constituencyKey]
-      );
-
       for (const row of normalized) {
         await client.query(
           `INSERT INTO constituency_candidate_counts
             (constituency_key, candidate_name, party, coalition, vote_count)
-           VALUES ($1, $2, $3, $4, $5)`,
+           VALUES ($1, $2, $3, $4, $5)
+           ON CONFLICT (constituency_key, candidate_name, party)
+           DO UPDATE SET vote_count = constituency_candidate_counts.vote_count + EXCLUDED.vote_count,
+                         coalition = EXCLUDED.coalition`,
           [constituencyKey, row.candidateName, row.party, row.coalition, row.count]
         );
       }
@@ -884,7 +881,7 @@ app.post("/api/admin/constituency-batch", ensureOrigin, ensureAdmin, async (req,
         `INSERT INTO constituency_referendum_counts (constituency_key, vote, vote_count)
          VALUES ($1, 'yes', $2), ($1, 'no', $3)
          ON CONFLICT (constituency_key, vote)
-         DO UPDATE SET vote_count = EXCLUDED.vote_count`,
+         DO UPDATE SET vote_count = constituency_referendum_counts.vote_count + EXCLUDED.vote_count`,
         [constituencyKey, yes, no]
       );
 
