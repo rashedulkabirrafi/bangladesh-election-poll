@@ -63,6 +63,12 @@
   color: #0f5132;
 }
 
+.admin-actions {
+  margin: 16px 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
 .admin-table {
   margin-top: 16px;
   display: grid;

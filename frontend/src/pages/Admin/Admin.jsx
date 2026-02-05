@@ -13,6 +13,7 @@ const Admin = ({ onBack }) => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [savingAll, setSavingAll] = useState(false);
 
   const constituencyRows = useMemo(() => constituencyData || [], []);
   const divisions = useMemo(
@@ -217,6 +218,46 @@ const Admin = ({ onBack }) => {
     }
   };
 
+  const saveAllCounts = async () => {
+    setError('');
+    setMessage('');
+    if (!selectedDivision || !selectedDistrict || !selectedConstituency) {
+      setError('প্রথমে বিভাগ, জেলা ও আসন নির্বাচন করুন।');
+      return;
+    }
+    setSavingAll(true);
+    const constituencyKey = makeKey(selectedDivision, selectedDistrict, selectedConstituency);
+    try {
+      for (const row of rows) {
+        const countValue = Number(row.inputValue);
+        if (!Number.isFinite(countValue) || countValue < 0) {
+          throw new Error('ভোট সংখ্যা সঠিক নয়।');
+        }
+        const response = await fetch(`${getApiBase()}/api/admin/candidate-count`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({
+            constituencyKey,
+            candidateName: row.candidateName,
+            party: row.party || '',
+            count: countValue
+          })
+        });
+        if (!response.ok) {
+          const data = await response.json().catch(() => ({}));
+          throw new Error(data.error || 'সংরক্ষণ ব্যর্থ হয়েছে।');
+        }
+      }
+      setMessage('সব ভোট সংখ্যা সংরক্ষণ হয়েছে।');
+      await fetchSummary();
+    } catch (err) {
+      setError(err.message || 'সংরক্ষণ ব্যর্থ হয়েছে।');
+    } finally {
+      setSavingAll(false);
+    }
+  };
+
   return (
     <div className="admin-page">
       <div className="admin-header">
@@ -296,47 +337,54 @@ const Admin = ({ onBack }) => {
         {message && <div className="admin-alert success">{message}</div>}
 
         {rows.length > 0 && (
-          <div className="admin-table">
-            <div className="admin-row admin-head">
-              <div>প্রার্থী</div>
-              <div>দল</div>
-              <div>জোট</div>
-              <div>ভোট</div>
-              <div>অ্যাকশন</div>
+          <>
+            <div className="admin-actions">
+              <button className="btn btn-primary" onClick={saveAllCounts} disabled={savingAll}>
+                {savingAll ? 'সংরক্ষণ হচ্ছে...' : 'সব সংরক্ষণ করুন'}
+              </button>
             </div>
-            {rows.map((row) => (
-              <div className="admin-row" key={`${row.candidateName}-${row.party}`}>
-                <div>{row.candidateName}</div>
-                <div>{row.party || 'স্বতন্ত্র'}</div>
-                <div>{row.coalition || 'অন্যান্য দলসমূহ'}</div>
-                <div>
-                  <input
-                    type="number"
-                    min="0"
-                    value={row.inputValue}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      setRows((prev) =>
-                        prev.map((item) =>
-                          item.candidateName === row.candidateName && item.party === row.party
-                            ? { ...item, inputValue: value }
-                            : item
-                        )
-                      );
-                    }}
-                  />
-                </div>
-                <div className="admin-actions-inline">
-                  <button className="btn btn-primary" onClick={() => updateCount(row)}>
-                    সংরক্ষণ
-                  </button>
-                  <button className="btn btn-secondary" onClick={() => deleteCount(row)}>
-                    মুছুন
-                  </button>
-                </div>
+            <div className="admin-table">
+              <div className="admin-row admin-head">
+                <div>প্রার্থী</div>
+                <div>দল</div>
+                <div>জোট</div>
+                <div>ভোট</div>
+                <div>অ্যাকশন</div>
               </div>
-            ))}
-          </div>
+              {rows.map((row) => (
+                <div className="admin-row" key={`${row.candidateName}-${row.party}`}>
+                  <div>{row.candidateName}</div>
+                  <div>{row.party || 'স্বতন্ত্র'}</div>
+                  <div>{row.coalition || 'অন্যান্য দলসমূহ'}</div>
+                  <div>
+                    <input
+                      type="number"
+                      min="0"
+                      value={row.inputValue}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setRows((prev) =>
+                          prev.map((item) =>
+                            item.candidateName === row.candidateName && item.party === row.party
+                              ? { ...item, inputValue: value }
+                              : item
+                          )
+                        );
+                      }}
+                    />
+                  </div>
+                  <div className="admin-actions-inline">
+                    <button className="btn btn-primary" onClick={() => updateCount(row)}>
+                      সংরক্ষণ
+                    </button>
+                    <button className="btn btn-secondary" onClick={() => deleteCount(row)}>
+                      মুছুন
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
         )}
 
         <div className="admin-referendum">
