@@ -8,6 +8,7 @@ import Navbar from '../../components/Navbar/Navbar';
 import Result from '../result/Result';
 import Vote from '../vote/Vote';
 import VoterGuide from '../VoterGuide/VoterGuide';
+import Admin from '../Admin/Admin';
 import {
   stepOrder,
   makeKey,
@@ -70,6 +71,7 @@ const Home = () => {
   // Senate hover states
   const [hoverSenateSeat, setHoverSenateSeat] = useState(null);
   const [hoverSenateSeatIndex, setHoverSenateSeatIndex] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const partySymbols = useMemo(() => buildPartySymbolIndex(candidatesData || {}), []);
   const seatLayout = useMemo(() => buildSeatLayout(300, 10), []);
@@ -237,6 +239,27 @@ const Home = () => {
     return () => {
       active = false;
     };
+  }, []);
+
+  useEffect(() => {
+    const checkAdmin = async () => {
+      try {
+        const response = await fetch(`${getApiBase()}/api/admin/me`, {
+          credentials: 'include'
+        });
+        setIsAdmin(response.ok);
+      } catch (error) {
+        setIsAdmin(false);
+      }
+    };
+    checkAdmin();
+  }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('admin') === '1') {
+      setStep('admin');
+    }
   }, []);
 
   useEffect(() => {
@@ -1082,6 +1105,38 @@ const Home = () => {
 
   if (step === 'guide') {
     return <VoterGuide step={step} setStep={setStep} />;
+  }
+
+  if (step === 'admin') {
+    if (!isAdmin) {
+      return (
+        <div className="page">
+          <Navbar step={step} setStep={setStep} />
+          <div className="container">
+            <div className="card">
+              <div className="header">
+                <h1 className="headline">অ্যাডমিন লগইন</h1>
+                <p className="subtitle">এই অংশে প্রবেশের জন্য অ্যাডমিন লগইন প্রয়োজন।</p>
+              </div>
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  window.location.href = `${getApiBase()}/auth/google`;
+                }}
+              >
+                গুগল দিয়ে লগইন করুন
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div className="page">
+        <Navbar step={step} setStep={setStep} />
+        <Admin onBack={() => setStep('home')} />
+      </div>
+    );
   }
 
   if (step === 'results') {

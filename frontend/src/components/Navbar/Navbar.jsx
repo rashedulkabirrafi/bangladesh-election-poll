@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import './Navbar.css';
-import { getApiBase } from '../../utils/helpers';
 
 const Navbar = ({ step, setStep }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

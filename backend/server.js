@@ -38,6 +38,7 @@ const {
   VOTE_REQUIRE_AUTH = "0",
   DATABASE_URL,
   DATABASE_SSL = "1",
+  ADMIN_EMAILS = "",
 } = process.env;
 
 if (!SESSION_SECRET || !GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET || !GOOGLE_CALLBACK_URL) {
@@ -109,6 +110,25 @@ const allowedOrigins = (ALLOWED_ORIGIN || "")
   .map((s) => s.trim())
   .filter(Boolean);
 
+const adminEmails = ADMIN_EMAILS.split(",")
+  .map((s) => s.trim().toLowerCase())
+  .filter(Boolean);
+
+const getUserEmails = (user) => {
+  if (!user) return [];
+  const emails = Array.isArray(user.emails) ? user.emails : [];
+  return emails
+    .map((entry) => (typeof entry === "string" ? entry : entry?.value))
+    .filter(Boolean)
+    .map((value) => String(value).toLowerCase());
+};
+
+const isAdminUser = (user) => {
+  if (adminEmails.length === 0) return false;
+  const emails = getUserEmails(user);
+  return emails.some((email) => adminEmails.includes(email));
+};
+
 const isAllowedOrigin = (value) => {
   if (!value) return false;
   return allowedOrigins.some((origin) => value.startsWith(origin));
@@ -134,6 +154,16 @@ const ensureAuth = (req, res, next) => {
   return res.status(401).json({ error: "Unauthorized" });
 };
 
+const ensureAdmin = (req, res, next) => {
+  if (!req.isAuthenticated || !req.isAuthenticated()) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+  if (!isAdminUser(req.user)) {
+    return res.status(403).json({ error: "Forbidden" });
+  }
+  return next();
+};
+
 const ensureVoteAuth = (req, res, next) => {
   if (VOTE_REQUIRE_AUTH === "1") {
     return ensureAuth(req, res, next);
@@ -150,6 +180,94 @@ const voteLimiter = rateLimit({
 
 const voteTokenSecret = VOTE_TOKEN_SECRET || SESSION_SECRET;
 const voteTokenTtlMs = Math.max(60_000, Number(VOTE_TOKEN_TTL_MS) || 300_000);
+
+const partyGroups = [
+  {
+    label: "বিএনপি জোট",
+    parties: [
+      "বাংলাদেশ জাতীয়তাবাদী দল",
+      "বাংলাদেশ জাতীয় পার্টি",
+      "জাতীয়তাবাদী গণতান্ত্রিক আন্দোলন",
+      "জমিয়তে উলামায়ে ইসলাম বাংলাদেশ",
+      "গণঅধিকার পরিষদ",
+      "গণসংহতি আন্দোলন",
+      "বাংলাদেশের বিপ্লবী ওয়ার্কার্স পার্টি",
+      "নাগরিক ঐক্য",
+      "ন্যাশনাল পিপলস পার্টি",
+      "ইসলামী ঐক্যজোট",
+    ],
+  },
+  {
+    label: "এগারো দলীয় নির্বাচনি ঐক্য",
+    parties: [
+      "বাংলাদেশ জামায়াতে ইসলামী",
+      "জাতীয় নাগরিক পার্টি",
+      "বাংলাদেশ খেলাফত মজলিস",
+      "বাংলাদেশ খেলাফত আন্দোলন",
+      "খেলাফত মজলিস",
+      "বাংলাদেশ নেজামে ইসলাম পার্টি",
+      "বাংলাদেশ ডেভেলপমেন্ট পার্টি",
+      "জাতীয় গণতান্ত্রিক পার্টি (জাগপা)",
+      "লিবারেল ডেমোক্রেটিক পার্টি",
+      "আমার বাংলাদেশ পার্টি (এবি পার্টি)",
+      "বাংলাদেশ লেবার পার্টি",
+    ],
+  },
+  {
+    label: "গণতান্ত্রিক যুক্তফ্রন্ট",
+    parties: [
+      "বাংলাদেশের কমিউনিস্ট পার্টি",
+      "বাংলাদেশের সমাজতান্ত্রিক দল–বাসদ",
+      "বাংলাদেশের সমাজতান্ত্রিক দল (মার্কসবাদী)",
+      "বাংলাদেশ জাতীয় সমাজতান্ত্রিক দল",
+    ],
+  },
+  {
+    label: "বৃহত্তর সুন্নী জোট",
+    parties: [
+      "বাংলাদেশ ইসলামী ফ্রন্ট",
+      "ইসলামিক ফ্রন্ট বাংলাদেশ",
+      "বাংলাদেশ সুপ্রিম পার্টি",
+    ],
+  },
+  {
+    label: "জাতীয় গণতান্ত্রিক ফ্রন্ট",
+    parties: [
+      "জাতীয় পার্টি (এরশাদ) (একাংশ)",
+      "বাংলাদেশ সাংস্কৃতিক মুক্তিজোট",
+      "জাতীয় পার্টি–জেপি(মঞ্জু)",
+      "বাংলাদেশ মুসলিম লীগ-বিএমএল",
+    ],
+  },
+  {
+    label: "অন্যান্য দলসমূহ",
+    parties: [
+      "ইসলামী আন্দোলন বাংলাদেশ",
+      "জাতীয় পার্টি (এরশাদ)",
+      "ইনসানিয়াত বিপ্লব বাংলাদেশ",
+      "জাতীয় সমাজতান্ত্রিক দল-জেএসডি",
+      "গণফোরাম",
+    ],
+  },
+];
+
+const partyCoalitionMap = new Map();
+partyGroups.forEach((group) => {
+  group.parties.forEach((party) => {
+    partyCoalitionMap.set(party, group.label);
+  });
+});
+
+const normalizePartyName = (value = "") =>
+  String(value || "")
+    .trim()
+    .replace(/\s+/g, " ");
+
+const getCoalitionLabel = (party = "") => {
+  const normalized = normalizePartyName(party);
+  if (!normalized) return "স্বতন্ত্র";
+  return partyCoalitionMap.get(normalized) || "অন্যান্য দলসমূহ";
+};
 const { Pool } = pg;
 const votePool = new Pool({
   connectionString: DATABASE_URL,
@@ -175,6 +293,15 @@ const ensureVoteTable = async () => {
       fingerprint_hash TEXT
     );
     CREATE INDEX IF NOT EXISTS idx_constituency_votes_key ON constituency_votes(constituency_key);
+
+    CREATE TABLE IF NOT EXISTS constituency_candidate_counts (
+      constituency_key TEXT NOT NULL,
+      candidate_name TEXT NOT NULL,
+      party TEXT NOT NULL DEFAULT '',
+      coalition TEXT NOT NULL DEFAULT '',
+      vote_count INT NOT NULL DEFAULT 0 CHECK (vote_count >= 0),
+      PRIMARY KEY (constituency_key, candidate_name, party)
+    );
     
     CREATE TABLE IF NOT EXISTS referendum_votes (
       id SERIAL PRIMARY KEY,
@@ -182,7 +309,92 @@ const ensureVoteTable = async () => {
       voted_at BIGINT NOT NULL,
       fingerprint_hash TEXT
     );
+
+    CREATE TABLE IF NOT EXISTS referendum_counts (
+      vote TEXT PRIMARY KEY CHECK (vote IN ('yes', 'no')),
+      vote_count INT NOT NULL DEFAULT 0 CHECK (vote_count >= 0)
+    );
+
+    INSERT INTO referendum_counts (vote, vote_count)
+    VALUES ('yes', 0), ('no', 0)
+    ON CONFLICT (vote) DO NOTHING;
+
+    CREATE OR REPLACE VIEW constituency_vote_totals AS
+      SELECT constituency_key, SUM(vote_count) AS total_votes
+      FROM constituency_candidate_counts
+      GROUP BY constituency_key;
+
+    CREATE OR REPLACE VIEW global_vote_total AS
+      SELECT COALESCE(SUM(vote_count), 0) AS total_votes
+      FROM constituency_candidate_counts;
+
+    CREATE OR REPLACE VIEW party_coalition_totals AS
+      SELECT constituency_key, party, coalition, SUM(vote_count) AS vote_count
+      FROM constituency_candidate_counts
+      GROUP BY constituency_key, party, coalition;
+
+    CREATE OR REPLACE VIEW global_party_coalition_totals AS
+      SELECT party, coalition, SUM(vote_count) AS vote_count
+      FROM constituency_candidate_counts
+      GROUP BY party, coalition;
   `);
+};
+
+const backfillCountsIfEmpty = async () => {
+  const countsResult = await votePool.query(
+    "SELECT COUNT(*) AS count FROM constituency_candidate_counts"
+  );
+  const countsTotal = Number(countsResult.rows[0]?.count || 0);
+  if (countsTotal === 0) {
+    const rawCount = await votePool.query(
+      "SELECT COUNT(*) AS count FROM constituency_votes"
+    );
+    const rawTotal = Number(rawCount.rows[0]?.count || 0);
+    if (rawTotal > 0) {
+      await votePool.query(
+        `INSERT INTO constituency_candidate_counts (constituency_key, candidate_name, party, coalition, vote_count)
+         SELECT constituency_key,
+                candidate_name,
+                COALESCE(party, '') AS party,
+                '' AS coalition,
+                COUNT(*) AS vote_count
+         FROM constituency_votes
+         GROUP BY constituency_key, candidate_name, COALESCE(party, '')`
+      );
+      const rows = await votePool.query(
+        "SELECT constituency_key, candidate_name, party FROM constituency_candidate_counts"
+      );
+      for (const row of rows.rows) {
+        const normalizedParty = normalizePartyName(row.party || "");
+        const coalition = getCoalitionLabel(normalizedParty);
+        await votePool.query(
+          `UPDATE constituency_candidate_counts
+           SET coalition = $1
+           WHERE constituency_key = $2 AND candidate_name = $3 AND party = $4`,
+          [coalition, row.constituency_key, row.candidate_name, row.party]
+        );
+      }
+    }
+  }
+
+  const referendumTotals = await votePool.query(
+    "SELECT SUM(vote_count) AS total FROM referendum_counts"
+  );
+  const referendumTotal = Number(referendumTotals.rows[0]?.total || 0);
+  if (referendumTotal === 0) {
+    await votePool.query("TRUNCATE referendum_counts");
+    await votePool.query(
+      `INSERT INTO referendum_counts (vote, vote_count)
+       SELECT vote, COUNT(*) AS vote_count
+       FROM referendum_votes
+       GROUP BY vote`
+    );
+    await votePool.query(
+      `INSERT INTO referendum_counts (vote, vote_count)
+       VALUES ('yes', 0), ('no', 0)
+       ON CONFLICT (vote) DO NOTHING`
+    );
+  }
 };
 
 const getClientIp = (req) => {
@@ -315,7 +527,7 @@ app.post("/api/vote/submit", ensureOrigin, ensureVoteAuth, voteLimiter, async (r
 
     const votedAt = Date.now();
     
-    // Insert vote lock and actual vote in a transaction
+    // Insert vote lock and update counts in a transaction
     const client = await votePool.connect();
     try {
       await client.query('BEGIN');
@@ -327,12 +539,25 @@ app.post("/api/vote/submit", ensureOrigin, ensureVoteAuth, voteLimiter, async (r
       );
       console.log('Vote lock inserted successfully');
       
-      console.log('Inserting constituency vote:', { constituencyKey, candidateName, party: party || null });
+      const normalizedParty = normalizePartyName(party || "");
+      const coalition = getCoalitionLabel(normalizedParty);
+
+      console.log('Inserting constituency vote:', { constituencyKey, candidateName, party: normalizedParty || null });
       await client.query(
         "INSERT INTO constituency_votes (constituency_key, candidate_name, party, voted_at, fingerprint_hash) VALUES ($1, $2, $3, $4, $5)",
-        [constituencyKey, candidateName, party || null, votedAt, fingerprintHash]
+        [constituencyKey, candidateName, normalizedParty || null, votedAt, fingerprintHash]
       );
       console.log('Constituency vote inserted successfully');
+
+      await client.query(
+        `INSERT INTO constituency_candidate_counts
+          (constituency_key, candidate_name, party, coalition, vote_count)
+         VALUES ($1, $2, $3, $4, 1)
+         ON CONFLICT (constituency_key, candidate_name, party)
+         DO UPDATE SET vote_count = constituency_candidate_counts.vote_count + 1,
+                       coalition = EXCLUDED.coalition`,
+        [constituencyKey, candidateName, normalizedParty || "", coalition]
+      );
       
       await client.query('COMMIT');
       console.log('Transaction committed successfully');
@@ -356,20 +581,19 @@ app.get("/api/votes/constituency/:key", ensureOrigin, async (req, res) => {
   try {
     const { key } = req.params;
     const result = await votePool.query(
-      `SELECT candidate_name, party, COUNT(*) as vote_count 
-       FROM constituency_votes 
-       WHERE constituency_key = $1 
-       GROUP BY candidate_name, party 
+      `SELECT candidate_name, party, vote_count
+       FROM constituency_candidate_counts
+       WHERE constituency_key = $1
        ORDER BY vote_count DESC`,
       [key]
     );
-    
+
     const votes = {};
     result.rows.forEach(row => {
       const label = `${row.candidate_name} (${row.party || 'স্বতন্ত্র'})`;
       votes[label] = parseInt(row.vote_count, 10);
     });
-    
+
     return res.json({ constituency: key, votes });
   } catch (error) {
     console.error("Error fetching constituency votes:", error);
@@ -381,12 +605,11 @@ app.get("/api/votes/constituency/:key", ensureOrigin, async (req, res) => {
 app.get("/api/votes/all", ensureOrigin, async (req, res) => {
   try {
     const result = await votePool.query(
-      `SELECT constituency_key, candidate_name, party, COUNT(*) as vote_count 
-       FROM constituency_votes 
-       GROUP BY constituency_key, candidate_name, party 
+      `SELECT constituency_key, candidate_name, party, vote_count
+       FROM constituency_candidate_counts
        ORDER BY constituency_key, vote_count DESC`
     );
-    
+
     const votesByConstituency = {};
     result.rows.forEach(row => {
       const key = row.constituency_key;
@@ -396,7 +619,7 @@ app.get("/api/votes/all", ensureOrigin, async (req, res) => {
       const label = `${row.candidate_name} (${row.party || 'স্বতন্ত্র'})`;
       votesByConstituency[key][label] = parseInt(row.vote_count, 10);
     });
-    
+
     return res.json({ votes: votesByConstituency });
   } catch (error) {
     console.error("Error fetching all votes:", error);
@@ -421,9 +644,18 @@ app.post("/api/referendum/submit", ensureOrigin, ensureVoteAuth, voteLimiter, as
       return res.status(409).json({ error: "already_voted" });
     }
     
+    const votedAt = Date.now();
     await votePool.query(
       "INSERT INTO referendum_votes (vote, voted_at, fingerprint_hash) VALUES ($1, $2, $3)",
-      [vote, Date.now(), fingerprintHash]
+      [vote, votedAt, fingerprintHash]
+    );
+
+    await votePool.query(
+      `INSERT INTO referendum_counts (vote, vote_count)
+       VALUES ($1, 1)
+       ON CONFLICT (vote)
+       DO UPDATE SET vote_count = referendum_counts.vote_count + 1`,
+      [vote]
     );
     
     return res.json({ ok: true });
@@ -437,14 +669,14 @@ app.post("/api/referendum/submit", ensureOrigin, ensureVoteAuth, voteLimiter, as
 app.get("/api/referendum/counts", ensureOrigin, async (req, res) => {
   try {
     const result = await votePool.query(
-      `SELECT vote, COUNT(*) as count FROM referendum_votes GROUP BY vote`
+      `SELECT vote, vote_count as count FROM referendum_counts`
     );
-    
+
     const counts = { yes: 0, no: 0 };
     result.rows.forEach(row => {
       counts[row.vote] = parseInt(row.count, 10);
     });
-    
+
     return res.json(counts);
   } catch (error) {
     console.error("Error fetching referendum counts:", error);
@@ -453,145 +685,155 @@ app.get("/api/referendum/counts", ensureOrigin, async (req, res) => {
 });
 
 // ========================================
-// ADMIN ROUTES
+// ADMIN ROUTES (Google allowlist only)
 // ========================================
 
-// Admin login
-app.post('/api/admin/login', async (req, res) => {
-  const { username, password } = req.body;
-  
+app.get("/api/admin/me", ensureOrigin, ensureAdmin, (req, res) => {
+  res.json({ ok: true, email: getUserEmails(req.user)[0] || null });
+});
+
+app.get("/api/admin/constituency", ensureOrigin, ensureAdmin, async (req, res) => {
   try {
-    // Hardcoded admin credentials (CHANGE THESE!)
-    if (username === 'admin' && password === 'CannotWorkWithThis5!') {
-      const token = crypto
-        .createHmac('sha256', SESSION_SECRET)
-        .update(`${username}-${Date.now()}`)  // ✅ Fixed - parentheses around backticks
-        .digest('hex');
-      
-      return res.json({ token });
+    const constituencyKey = String(req.query.constituencyKey || "").trim();
+    if (!constituencyKey) {
+      return res.status(400).json({ error: "constituency_required" });
     }
-    
-    res.status(401).json({ error: 'Invalid credentials' });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// Middleware to verify admin token
-const authenticateAdmin = (req, res, next) => {
-  const token = req.headers.authorization?.split(' ')[1];
-  if (!token) return res.status(401).json({ error: 'No token provided' });
-  
-  // Simple token validation (you should enhance this)
-  if (token.length > 10) {
-    next();
-  } else {
-    res.status(401).json({ error: 'Invalid token' });
-  }
-};
-
-// Get statistics
-app.get('/api/admin/stats', ensureOrigin, authenticateAdmin, async (req, res) => {
-  try {
-    const constituencyCount = await votePool.query('SELECT COUNT(DISTINCT constituency_key) FROM constituency_votes');
-    const referendumCount = await votePool.query('SELECT COUNT(*) FROM referendum_votes');
-    const totalVotes = await votePool.query('SELECT COUNT(*) FROM constituency_votes');
-    
-    res.json({
-      totalConstituencies: parseInt(constituencyCount.rows[0].count),
-      totalReferendums: parseInt(referendumCount.rows[0].count),
-      totalVotesCast: parseInt(totalVotes.rows[0].count || 0)
-    });
-  } catch (error) {
-    console.error('Stats error:', error);
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// Get constituency votes with pagination
-app.get('/api/admin/constituency-votes', ensureOrigin, authenticateAdmin, async (req, res) => {
-  const { page = 1, limit = 50, search = '' } = req.query;
-  const offset = (page - 1) * limit;
-  
-  try {
     const result = await votePool.query(
-      `SELECT constituency_key, candidate_name, party, COUNT(*) as vote_count, 
-              MAX(voted_at) as last_vote_at
-       FROM constituency_votes 
-       WHERE candidate_name ILIKE $1 OR party ILIKE $1 OR constituency_key ILIKE $1
-       GROUP BY constituency_key, candidate_name, party
-       ORDER BY vote_count DESC 
-       LIMIT $2 OFFSET $3`,
-      [`%${search}%`, limit, offset]
+      `SELECT candidate_name, party, coalition, vote_count
+       FROM constituency_candidate_counts
+       WHERE constituency_key = $1
+       ORDER BY vote_count DESC`,
+      [constituencyKey]
     );
-    
-    const countResult = await votePool.query(
-      `SELECT COUNT(DISTINCT (constituency_key, candidate_name, party)) 
-       FROM constituency_votes 
-       WHERE candidate_name ILIKE $1 OR party ILIKE $1 OR constituency_key ILIKE $1`,
-      [`%${search}%`]
-    );
-    
-    res.json({
-      data: result.rows,
-      total: parseInt(countResult.rows[0].count),
-      page: parseInt(page),
-      totalPages: Math.ceil(countResult.rows[0].count / limit)
-    });
+    res.json({ constituencyKey, rows: result.rows });
   } catch (error) {
-    console.error('Constituency votes error:', error);
-    res.status(500).json({ error: error.message });
+    console.error("Admin constituency error:", error);
+    res.status(500).json({ error: "fetch_failed" });
   }
 });
 
-// Get referendum votes
-app.get('/api/admin/referendum-votes', ensureOrigin, authenticateAdmin, async (req, res) => {
+app.post("/api/admin/candidate-count", ensureOrigin, ensureAdmin, async (req, res) => {
   try {
-    const result = await votePool.query(
-      `SELECT vote, COUNT(*) as count FROM referendum_votes GROUP BY vote`
-    );
-    
-    const votes = { yes: 0, no: 0 };
-    result.rows.forEach(row => {
-      votes[row.vote] = parseInt(row.count, 10);
-    });
-    
-    res.json(votes);
-  } catch (error) {
-    console.error('Referendum votes error:', error);
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// Get vote locks
-app.get('/api/admin/vote-locks', ensureOrigin, authenticateAdmin, async (req, res) => {
-  try {
-    const result = await votePool.query(
-      `SELECT fingerprint_hash, voted_at, ip_hash, ua_hash 
-       FROM vote_locks 
-       ORDER BY voted_at DESC 
-       LIMIT 100`
-    );
-    res.json(result.rows);
-  } catch (error) {
-    console.error('Vote locks error:', error);
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// Delete constituency vote (example admin action)
-app.delete('/api/admin/constituency-votes/:constituency/:candidate', ensureOrigin, authenticateAdmin, async (req, res) => {
-  const { constituency, candidate } = req.params;
-  
-  try {
+    const { constituencyKey, candidateName, party, count } = req.body || {};
+    if (!constituencyKey || !candidateName) {
+      return res.status(400).json({ error: "missing_fields" });
+    }
+    const voteCount = Number(count);
+    if (!Number.isFinite(voteCount) || voteCount < 0) {
+      return res.status(400).json({ error: "invalid_count" });
+    }
+    const normalizedParty = normalizePartyName(party || "");
+    const coalition = getCoalitionLabel(normalizedParty);
     await votePool.query(
-      'DELETE FROM constituency_votes WHERE constituency_key = $1 AND candidate_name = $2',
-      [constituency, candidate]
+      `INSERT INTO constituency_candidate_counts
+        (constituency_key, candidate_name, party, coalition, vote_count)
+       VALUES ($1, $2, $3, $4, $5)
+       ON CONFLICT (constituency_key, candidate_name, party)
+       DO UPDATE SET vote_count = EXCLUDED.vote_count,
+                     coalition = EXCLUDED.coalition`,
+      [constituencyKey, candidateName, normalizedParty, coalition, voteCount]
     );
-    res.json({ success: true });
+    res.json({ ok: true });
   } catch (error) {
-    console.error('Delete vote error:', error);
-    res.status(500).json({ error: error.message });
+    console.error("Admin candidate count error:", error);
+    res.status(500).json({ error: "update_failed" });
+  }
+});
+
+app.delete("/api/admin/candidate-count", ensureOrigin, ensureAdmin, async (req, res) => {
+  try {
+    const { constituencyKey, candidateName, party } = req.body || {};
+    if (!constituencyKey || !candidateName) {
+      return res.status(400).json({ error: "missing_fields" });
+    }
+    const normalizedParty = normalizePartyName(party || "");
+    await votePool.query(
+      `DELETE FROM constituency_candidate_counts
+       WHERE constituency_key = $1 AND candidate_name = $2 AND party = $3`,
+      [constituencyKey, candidateName, normalizedParty]
+    );
+    res.json({ ok: true });
+  } catch (error) {
+    console.error("Admin candidate delete error:", error);
+    res.status(500).json({ error: "delete_failed" });
+  }
+});
+
+app.post("/api/admin/referendum-count", ensureOrigin, ensureAdmin, async (req, res) => {
+  try {
+    const { vote, count } = req.body || {};
+    if (!["yes", "no"].includes(vote)) {
+      return res.status(400).json({ error: "invalid_vote" });
+    }
+    const voteCount = Number(count);
+    if (!Number.isFinite(voteCount) || voteCount < 0) {
+      return res.status(400).json({ error: "invalid_count" });
+    }
+    await votePool.query(
+      `INSERT INTO referendum_counts (vote, vote_count)
+       VALUES ($1, $2)
+       ON CONFLICT (vote)
+       DO UPDATE SET vote_count = EXCLUDED.vote_count`,
+      [vote, voteCount]
+    );
+    res.json({ ok: true });
+  } catch (error) {
+    console.error("Admin referendum count error:", error);
+    res.status(500).json({ error: "update_failed" });
+  }
+});
+
+app.post("/api/admin/rebuild-counts", ensureOrigin, ensureAdmin, async (req, res) => {
+  try {
+    await votePool.query("BEGIN");
+
+    await votePool.query("TRUNCATE constituency_candidate_counts");
+
+    await votePool.query(
+      `INSERT INTO constituency_candidate_counts (constituency_key, candidate_name, party, coalition, vote_count)
+       SELECT constituency_key,
+              candidate_name,
+              COALESCE(party, '') AS party,
+              '' AS coalition,
+              COUNT(*) AS vote_count
+       FROM constituency_votes
+       GROUP BY constituency_key, candidate_name, COALESCE(party, '')`
+    );
+
+    const rows = await votePool.query(
+      `SELECT constituency_key, candidate_name, party FROM constituency_candidate_counts`
+    );
+
+    for (const row of rows.rows) {
+      const normalizedParty = normalizePartyName(row.party || "");
+      const coalition = getCoalitionLabel(normalizedParty);
+      await votePool.query(
+        `UPDATE constituency_candidate_counts
+         SET coalition = $1
+         WHERE constituency_key = $2 AND candidate_name = $3 AND party = $4`,
+        [coalition, row.constituency_key, row.candidate_name, row.party]
+      );
+    }
+
+    await votePool.query("TRUNCATE referendum_counts");
+    await votePool.query(
+      `INSERT INTO referendum_counts (vote, vote_count)
+       SELECT vote, COUNT(*) AS vote_count
+       FROM referendum_votes
+       GROUP BY vote`
+    );
+    await votePool.query(
+      `INSERT INTO referendum_counts (vote, vote_count)
+       VALUES ('yes', 0), ('no', 0)
+       ON CONFLICT (vote) DO NOTHING`
+    );
+
+    await votePool.query("COMMIT");
+    res.json({ ok: true });
+  } catch (error) {
+    await votePool.query("ROLLBACK");
+    console.error("Admin rebuild error:", error);
+    res.status(500).json({ error: "rebuild_failed" });
   }
 });
 
@@ -695,6 +937,7 @@ app.get("/api/files/exists", ensureOrigin, async (req, res) => {
 app.get("/health", (req, res) => res.json({ ok: true }));
 
 ensureVoteTable()
+  .then(() => backfillCountsIfEmpty())
   .then(() => {
     app.listen(PORT, () => {
       console.log(`Backend listening on ${PORT}`);
