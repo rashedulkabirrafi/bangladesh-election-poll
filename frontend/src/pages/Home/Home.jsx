@@ -569,7 +569,9 @@ const Home = () => {
         <div className="card homepage-hero">
           <div className="header centered">
             <h1 className="headline">বাংলাদেশ নির্বাচন জরিপ ২০২৬</h1>
-            <p className="subtitle-large">একটি ডিজিটাল ভোট কেন্দ্র</p>
+            <button onClick={() => setStep('select')} className="btn btn-large btn-white-green btn-pulse-green btn-menu-effect">
+              <span className="btn-text-pulse">আপনার আসনে ভোট দিন</span>
+            </button>
           </div>
         </div>
 
@@ -835,9 +837,9 @@ const Home = () => {
             <div className="cta-content">
               <h2 className="cta-title">আপনার মতামত আমাদের কাছে গুরুত্বপূর্ণ!</h2>
               <p className="cta-subtitle">এই জরিপে অংশগ্রহণ করুন এবং আপনার আসনের পছন্দের প্রার্থীকে ভোট দিন</p>
-              <button onClick={() => setStep('select')} className="btn btn-large btn-pulse-green btn-menu-effect">
-                <span className="btn-text-pulse">আপনার আসনে ভোট দিন</span>
-              </button>
+              <div className="btn btn-large btn-pulse-green btn-menu-effect cta-static-line">
+                <span className="btn-text-pulse">আপনার ভোট দরকার, গঠন করতে সরকার।</span>
+              </div>
             </div>
           </div>
           <div className="stats-grid">

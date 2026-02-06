@@ -990,9 +990,28 @@ body {
   display: block;
 }
 
+.btn-white-green {
+  background: #ffffff;
+  color: #1f8f4f;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+.btn-white-green:hover:not(:disabled) {
+  background: #dff5ea;
+  color: #0f6a36;
+}
+
 .btn-large:hover:not(:disabled) {
   transform: translateY(-3px);
   box-shadow: 0 15px 40px rgba(31, 143, 79, 0.35);
+}
+
+.cta-static-line {
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .btn-large:active:not(:disabled) {

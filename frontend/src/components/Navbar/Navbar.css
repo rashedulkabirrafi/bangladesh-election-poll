@@ -40,7 +40,13 @@
 }
 
 .logo-icon {
-  font-size: 24px;
+  font-size: clamp(18px, 4.5vw, 24px);
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(20px, 5vw, 26px);
+  height: clamp(20px, 5vw, 26px);
 }
 
 .navbar-menu-desktop {
@@ -200,6 +206,6 @@
   }
 
   .logo-icon {
-    font-size: 20px;
+    font-size: clamp(16px, 5vw, 20px);
   }
 }

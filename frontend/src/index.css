@@ -112,9 +112,14 @@ button {
 }
 
 .App__footer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  padding: 16px 12px 24px;
+  padding: 14px 12px;
   font-size: 0.9rem;
+  font-family: "Gilroy", "Noto Serif Bengali", sans-serif;
   color: #5b6b78;
   border-top: 1px solid rgba(29, 43, 54, 0.08);
   background-color: #f3f6f9;

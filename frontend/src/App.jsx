@@ -7,7 +7,7 @@ function App() {
       <main className="App__content">
         <Home />
       </main>
-      <footer className="App__footer">All rights reserved © CAP Ltd</footer>
+      <footer className="App__footer">A public opinion research conducted by CAP Ltd (all rights reserved)</footer>
     </div>
   );
 }
