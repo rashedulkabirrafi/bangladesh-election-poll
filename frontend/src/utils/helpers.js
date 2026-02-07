@@ -181,6 +181,19 @@ export const partyGroups = {
   }
 };
 
+export const getCoalitionLabel = (party = '') => {
+  const normalized = normalizePartyName(party || '');
+  if (!normalized) return 'স্বতন্ত্র';
+  for (const group of Object.values(partyGroups)) {
+    for (const name of group.parties || []) {
+      if (normalizePartyName(name) === normalized) {
+        return group.label;
+      }
+    }
+  }
+  return 'অন্যান্য দলসমূহ';
+};
+
 export const extractPartyFromLabel = (label = '') => {
   const match = label.match(/\(([^)]+)\)\s*$/);
   return match ? match[1].trim() : '';

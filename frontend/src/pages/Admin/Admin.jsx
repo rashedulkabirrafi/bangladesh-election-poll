@@ -2,7 +2,12 @@ import React, { useMemo, useState, useEffect } from 'react';
 import './Admin.css';
 import constituencyData from '../../assets/constituencies.json';
 import candidatesData from '../../assets/candidates_new.json';
-import { makeKey, normalizeConstituencyName, getApiBase } from '../../utils/helpers';
+import {
+  makeKey,
+  normalizeConstituencyName,
+  getApiBase,
+  getCoalitionLabel
+} from '../../utils/helpers';
 
 const Admin = ({ onBack }) => {
   const [selectedDivision, setSelectedDivision] = useState('');
@@ -79,7 +84,7 @@ const Admin = ({ onBack }) => {
       rowMap.set(key, {
         candidateName: row.candidate_name,
         party,
-        coalition: row.coalition || '',
+        coalition: getCoalitionLabel(party),
         count: row.vote_count,
         inputValue: row.vote_count
       });
@@ -92,7 +97,7 @@ const Admin = ({ onBack }) => {
         rowMap.set(key, {
           candidateName: candidate.name,
           party,
-          coalition: '',
+          coalition: getCoalitionLabel(party),
           count: 0,
           inputValue: 0
         });
@@ -324,7 +329,7 @@ const Admin = ({ onBack }) => {
                 <div className="admin-row" key={`${row.candidateName}-${row.party}`}>
                   <div>{row.candidateName}</div>
                   <div>{row.party || 'স্বতন্ত্র'}</div>
-                  <div>{row.coalition || 'অন্যান্য দলসমূহ'}</div>
+                  <div>{getCoalitionLabel(row.party)}</div>
                   <div>
                     <input
                       type="number"
