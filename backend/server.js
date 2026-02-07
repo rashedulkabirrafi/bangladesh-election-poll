@@ -760,6 +760,28 @@ app.get("/api/admin/constituency", ensureOrigin, ensureAdmin, async (req, res) =
        ORDER BY vote_count DESC`,
       [constituencyKey]
     );
+    const rows = (result.rows || []).map((row) => {
+      const nextCoalition = getCoalitionLabel(row.party || "");
+      return {
+        ...row,
+        coalition: nextCoalition,
+      };
+    });
+    const updates = (result.rows || []).filter((row, index) => {
+      const nextCoalition = rows[index]?.coalition || "";
+      return row.coalition !== nextCoalition;
+    });
+    if (updates.length > 0) {
+      for (const row of updates) {
+        const nextCoalition = getCoalitionLabel(row.party || "");
+        await votePool.query(
+          `UPDATE constituency_candidate_counts
+           SET coalition = $1
+           WHERE constituency_key = $2 AND candidate_name = $3 AND party = $4`,
+          [nextCoalition, constituencyKey, row.candidate_name, row.party]
+        );
+      }
+    }
     const refResult = await votePool.query(
       `SELECT vote, vote_count
        FROM constituency_referendum_counts
@@ -770,7 +792,7 @@ app.get("/api/admin/constituency", ensureOrigin, ensureAdmin, async (req, res) =
     (refResult.rows || []).forEach((row) => {
       referendum[row.vote] = Number(row.vote_count) || 0;
     });
-    res.json({ constituencyKey, rows: result.rows, referendum });
+    res.json({ constituencyKey, rows, referendum });
   } catch (error) {
     console.error("Admin constituency error:", error);
     res.status(500).json({ error: "fetch_failed" });
