@@ -4,7 +4,7 @@ import './PartiesAndCoalitions.css';
 export default function PartiesAndCoalitions() {
   const coalitionsData = {
     bnpAlliance: {
-      label: 'বাংলাদেশ জাতীয়তাবাদী দল ও তার সর্মথিত প্রার্থী',
+      label: 'বিএনপি জোট',
       color: '#0087DC',
       parties: [
         {
