@@ -847,9 +847,9 @@ const Home = () => {
             <div className="cta-content">
               <h2 className="cta-title">আপনার মতামত আমাদের কাছে গুরুত্বপূর্ণ!</h2>
               <p className="cta-subtitle">এই জরিপে অংশগ্রহণ করুন এবং আপনার আসনের পছন্দের প্রার্থীকে ভোট দিন</p>
-              <div className="btn btn-large btn-pulse-green btn-menu-effect cta-static-line">
+              <button onClick={() => setStep('select')} className="btn btn-large btn-pulse-green btn-menu-effect cta-static-line">
                 <span className="btn-text-pulse">আপনার ভোট দরকার, গঠন করতে সরকার।</span>
-              </div>
+              </button>
             </div>
           </div>
           <div className="stats-grid">
