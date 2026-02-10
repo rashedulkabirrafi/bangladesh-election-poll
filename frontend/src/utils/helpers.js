@@ -303,6 +303,30 @@ export const generateFingerprint = () => {
   return btoa(JSON.stringify(fingerprint));
 };
 
+const generateRandomId = () => {
+  if (window.crypto && window.crypto.randomUUID) {
+    return window.crypto.randomUUID();
+  }
+  if (window.crypto && window.crypto.getRandomValues) {
+    const bytes = new Uint8Array(16);
+    window.crypto.getRandomValues(bytes);
+    return Array.from(bytes).map((b) => b.toString(16).padStart(2, '0')).join('');
+  }
+  return `${Date.now()}_${Math.random().toString(16).slice(2)}`;
+};
+
+export const getOrCreateDeviceId = () => {
+  try {
+    const stored = localStorage.getItem('device_id');
+    if (stored) return stored;
+    const fresh = generateRandomId();
+    localStorage.setItem('device_id', fresh);
+    return fresh;
+  } catch (error) {
+    return generateRandomId();
+  }
+};
+
 export const hashFingerprint = async (value) => {
   try {
     if (window.crypto && window.crypto.subtle) {

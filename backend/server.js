@@ -181,6 +181,44 @@ const voteLimiter = rateLimit({
 const voteTokenSecret = VOTE_TOKEN_SECRET || SESSION_SECRET;
 const voteTokenTtlMs = Math.max(60_000, Number(VOTE_TOKEN_TTL_MS) || 300_000);
 const GLOBAL_REFERENDUM_KEY = "__GLOBAL__";
+const DEVICE_COOKIE_NAME = "device_id";
+const deviceCookieOptions = {
+  httpOnly: true,
+  sameSite: isProd ? "none" : "lax",
+  secure: isProd,
+  maxAge: 1000 * 60 * 60 * 24 * 365,
+};
+
+const parseCookies = (cookieHeader) => {
+  const cookies = {};
+  if (!cookieHeader) return cookies;
+  cookieHeader.split(";").forEach((part) => {
+    const [rawKey, ...rest] = part.trim().split("=");
+    if (!rawKey) return;
+    const key = decodeURIComponent(rawKey);
+    const value = decodeURIComponent(rest.join("=") || "");
+    cookies[key] = value;
+  });
+  return cookies;
+};
+
+const resolveDeviceId = (req, res) => {
+  const cookies = parseCookies(req.headers.cookie || "");
+  let deviceId = cookies[DEVICE_COOKIE_NAME];
+  if (!deviceId && typeof req.body?.deviceId === "string") {
+    deviceId = req.body.deviceId.trim();
+  }
+  if (!deviceId && typeof req.get("x-device-id") === "string") {
+    deviceId = req.get("x-device-id").trim();
+  }
+  if (!deviceId) {
+    deviceId = crypto.randomUUID();
+  }
+  if (cookies[DEVICE_COOKIE_NAME] !== deviceId) {
+    res.cookie(DEVICE_COOKIE_NAME, deviceId, deviceCookieOptions);
+  }
+  return deviceId;
+};
 
 const partyGroups = [
   {
@@ -330,6 +368,15 @@ const ensureVoteTable = async () => {
       ua_hash TEXT
     );
     CREATE INDEX IF NOT EXISTS idx_vote_locks_voted_at ON vote_locks(voted_at);
+
+    CREATE TABLE IF NOT EXISTS device_locks (
+      device_id TEXT PRIMARY KEY,
+      voted_at BIGINT NOT NULL,
+      fingerprint_hash TEXT,
+      ip_hash TEXT,
+      ua_hash TEXT
+    );
+    CREATE INDEX IF NOT EXISTS idx_device_locks_voted_at ON device_locks(voted_at);
     
     CREATE TABLE IF NOT EXISTS constituency_votes (
       id SERIAL PRIMARY KEY,
@@ -359,6 +406,8 @@ const ensureVoteTable = async () => {
 
     ALTER TABLE referendum_votes
       ADD COLUMN IF NOT EXISTS constituency_key TEXT;
+    ALTER TABLE referendum_votes
+      ADD COLUMN IF NOT EXISTS device_id TEXT;
 
     CREATE TABLE IF NOT EXISTS constituency_referendum_counts (
       constituency_key TEXT NOT NULL,
@@ -543,8 +592,12 @@ app.get("/api/me", ensureAuth, (req, res) => {
 
 app.post("/api/vote/init", ensureOrigin, ensureVoteAuth, voteLimiter, async (req, res) => {
   const { fingerprintHash } = req.body || {};
+  const deviceId = resolveDeviceId(req, res);
   if (!fingerprintHash || typeof fingerprintHash !== "string") {
     return res.status(400).json({ error: "Invalid fingerprint" });
+  }
+  if (!deviceId || typeof deviceId !== "string") {
+    return res.status(400).json({ error: "Invalid device" });
   }
   try {
     const result = await votePool.query(
@@ -552,12 +605,19 @@ app.post("/api/vote/init", ensureOrigin, ensureVoteAuth, voteLimiter, async (req
       [fingerprintHash]
     );
     if (result.rowCount > 0) {
-      return res.json({ allowed: false, reason: "already_voted" });
+      return res.json({ allowed: false, reason: "already_voted", deviceId });
+    }
+    const deviceResult = await votePool.query(
+      "SELECT device_id FROM device_locks WHERE device_id = $1",
+      [deviceId]
+    );
+    if (deviceResult.rowCount > 0) {
+      return res.json({ allowed: false, reason: "already_voted", deviceId });
     }
     const ipHash = hashValue(getClientIp(req));
     const uaHash = hashValue(req.get("user-agent") || "");
     const token = createVoteToken(fingerprintHash, ipHash, uaHash);
-    return res.json({ allowed: true, token, expiresInMs: voteTokenTtlMs });
+    return res.json({ allowed: true, token, expiresInMs: voteTokenTtlMs, deviceId });
   } catch (error) {
     console.error("Vote init error:", error);
     return res.status(500).json({ error: "vote_init_failed" });
@@ -566,11 +626,15 @@ app.post("/api/vote/init", ensureOrigin, ensureVoteAuth, voteLimiter, async (req
 
 app.post("/api/vote/submit", ensureOrigin, ensureVoteAuth, voteLimiter, async (req, res) => {
   const { fingerprintHash, token, constituencyKey, candidateName, party } = req.body || {};
+  const deviceId = resolveDeviceId(req, res);
   if (!fingerprintHash || typeof fingerprintHash !== "string" || !token) {
     return res.status(400).json({ error: "Invalid request" });
   }
   if (!constituencyKey || !candidateName) {
     return res.status(400).json({ error: "Missing vote data" });
+  }
+  if (!deviceId || typeof deviceId !== "string") {
+    return res.status(400).json({ error: "Invalid device" });
   }
   try {
     const existing = await votePool.query(
@@ -578,6 +642,13 @@ app.post("/api/vote/submit", ensureOrigin, ensureVoteAuth, voteLimiter, async (r
       [fingerprintHash]
     );
     if (existing.rowCount > 0) {
+      return res.status(409).json({ error: "already_voted" });
+    }
+    const deviceExisting = await votePool.query(
+      "SELECT device_id FROM device_locks WHERE device_id = $1",
+      [deviceId]
+    );
+    if (deviceExisting.rowCount > 0) {
       return res.status(409).json({ error: "already_voted" });
     }
 
@@ -601,6 +672,12 @@ app.post("/api/vote/submit", ensureOrigin, ensureVoteAuth, voteLimiter, async (r
         [fingerprintHash, votedAt, ipHash, uaHash]
       );
       console.log('Vote lock inserted successfully');
+
+      await client.query(
+        "INSERT INTO device_locks (device_id, voted_at, fingerprint_hash, ip_hash, ua_hash) VALUES ($1, $2, $3, $4, $5)",
+        [deviceId, votedAt, fingerprintHash, ipHash, uaHash]
+      );
+      console.log('Device lock inserted successfully');
       
       const normalizedParty = normalizePartyName(party || "");
       const coalition = getCoalitionLabel(normalizedParty);
@@ -693,8 +770,12 @@ app.get("/api/votes/all", ensureOrigin, async (req, res) => {
 // Submit referendum vote
 app.post("/api/referendum/submit", ensureOrigin, ensureVoteAuth, voteLimiter, async (req, res) => {
   const { fingerprintHash, vote } = req.body || {};
+  const deviceId = resolveDeviceId(req, res);
   if (!fingerprintHash || !vote || !['yes', 'no'].includes(vote)) {
     return res.status(400).json({ error: "Invalid request" });
+  }
+  if (!deviceId || typeof deviceId !== "string") {
+    return res.status(400).json({ error: "Invalid device" });
   }
   
   try {
@@ -706,12 +787,19 @@ app.post("/api/referendum/submit", ensureOrigin, ensureVoteAuth, voteLimiter, as
     if (existing.rowCount > 0) {
       return res.status(409).json({ error: "already_voted" });
     }
+    const existingDevice = await votePool.query(
+      "SELECT id FROM referendum_votes WHERE device_id = $1",
+      [deviceId]
+    );
+    if (existingDevice.rowCount > 0) {
+      return res.status(409).json({ error: "already_voted" });
+    }
     
     const votedAt = Date.now();
     const constituencyKey = req.body?.constituencyKey || GLOBAL_REFERENDUM_KEY;
     await votePool.query(
-      "INSERT INTO referendum_votes (vote, voted_at, fingerprint_hash, constituency_key) VALUES ($1, $2, $3, $4)",
-      [vote, votedAt, fingerprintHash, constituencyKey]
+      "INSERT INTO referendum_votes (vote, voted_at, fingerprint_hash, constituency_key, device_id) VALUES ($1, $2, $3, $4, $5)",
+      [vote, votedAt, fingerprintHash, constituencyKey, deviceId]
     );
 
     await votePool.query(

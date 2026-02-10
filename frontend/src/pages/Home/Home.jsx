@@ -22,6 +22,7 @@ import {
   calculateProportionalSeats,
   generateFingerprint,
   hashFingerprint,
+  getOrCreateDeviceId,
   getApiBase,
   toBengaliNumber,
   sortCandidatesByBengali
@@ -60,6 +61,7 @@ const Home = () => {
   const [votes, setVotes] = useState({});
   const [fingerprint, setFingerprint] = useState('');
   const [fingerprintHash, setFingerprintHash] = useState('');
+  const [deviceId, setDeviceId] = useState('');
   const [voteToken, setVoteToken] = useState('');
   const [blocked, setBlocked] = useState(false);
   const [votedCandidate, setVotedCandidate] = useState(null);
@@ -198,6 +200,8 @@ const Home = () => {
 
     const fp = generateFingerprint();
     setFingerprint(fp);
+    const devId = getOrCreateDeviceId();
+    setDeviceId(devId);
 
     let active = true;
     const initVoteLock = async () => {
@@ -210,7 +214,7 @@ const Home = () => {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
-          body: JSON.stringify({ fingerprintHash: hash })
+          body: JSON.stringify({ fingerprintHash: hash, deviceId: devId })
         });
 
         const data = await response.json().catch(() => ({}));
@@ -228,6 +232,10 @@ const Home = () => {
         }
 
         setVoteToken(data.token || '');
+        if (data.deviceId && data.deviceId !== devId) {
+          localStorage.setItem('device_id', data.deviceId);
+          setDeviceId(data.deviceId);
+        }
       } catch (error) {
         if (!active) return;
         setError('ডিভাইস যাচাই করা যায়নি।');
@@ -279,7 +287,7 @@ const Home = () => {
       return;
     }
 
-    if (!fingerprintHash || !voteToken) {
+    if (!fingerprintHash || !voteToken || !deviceId) {
       setError('ডিভাইস যাচাই সম্পন্ন হয়নি। পরে আবার চেষ্টা করুন।');
       return;
     }
@@ -291,6 +299,7 @@ const Home = () => {
         credentials: 'include',
         body: JSON.stringify({ 
           fingerprintHash, 
+          deviceId,
           token: voteToken,
           constituencyKey: selectedConstituency.key,
           candidateName: selectedCandidate.name,
@@ -346,6 +355,7 @@ const Home = () => {
         credentials: 'include',
         body: JSON.stringify({
           fingerprintHash,
+          deviceId,
           vote,
           constituencyKey: selectedConstituency?.key || null
         })
