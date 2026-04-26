@@ -28,6 +28,7 @@ dist-ssr
 .env
 .env.local
 .env.production
+cloudflare-backend/.dev.vars
 
 # Large candidate data folders (stored in Cloudflare R2 instead)
 backend/public/candidatess/

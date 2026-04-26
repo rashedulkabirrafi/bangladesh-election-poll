@@ -1,0 +1,6122 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ede7de">
+  <link rel="icon" type="image/svg+xml" href="images/netraintractvlogo.svg">
+  <link rel="preconnect" href="https://use.typekit.net" crossorigin="">
+  <title>Bangladesh’s 2026 Election Results — Margins and Turnout by Union</title>
+  <meta name="description" content="Explore Bangladesh Election 2026 results down to every union. This interactive map covers 39,761 geolocated polling stations and shows winner margins and voter turnout by union, upazila and district.">
+  <meta name="keywords" content="Bangladesh election 2026, union map, election results, voter turnout, turnout map, margin map, polling stations, Netra News interactive, constituency map, upazila, district">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="canonical" href="https://interactive.netra.news/bangladesh-election-2026-map/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Netra News Interactives">
+  <meta property="og:locale" content="en_BD">
+  <meta property="og:title" content="Bangladesh’s 2026 Election Results — Margins and Turnout by Union">
+  <meta property="og:description" content="Union-level Bangladesh Election 2026 interactive map with winner margins and voter turnout, searchable by union, upazila and district.">
+  <meta property="og:url" content="https://interactive.netra.news/bangladesh-election-2026-map/">
+  <meta property="og:image" content="images/bangladesh-election-map.webp">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="article:published_time" content="2026-03-07T00:00:00+06:00">
+  <meta property="article:modified_time" content="2026-03-11T00:00:00+06:00">
+  <meta property="article:section" content="Elections">
+  <meta property="article:tag" content="Bangladesh election 2026">
+  <meta property="article:tag" content="interactive map">
+  <meta property="article:tag" content="voter turnout">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Bangladesh’s 2026 Election Results — Margins and Turnout by Union">
+  <meta name="twitter:description" content="Interactive union-level Bangladesh Election 2026 map with winner margins and turnout from Netra News Interactives.">
+  <meta name="twitter:image" content="https://interactive.netra.news/bangladesh-election-2026-map/bangladesh-election-map.webp">
+  <link rel="stylesheet" href="css/ngq3ctm.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    "headline": "Bangladesh’s 2026 Election Results — Margins and Turnout by Union",
+    "description": "Interactive Bangladesh Election 2026 map with union-level winner margins and voter turnout. Covers 39,761 geolocated polling stations across 5,034 unions.",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://interactive.netra.news/bangladesh-election-2026-map/"
+    },
+    "url": "https://interactive.netra.news/bangladesh-election-2026-map/",
+    "datePublished": "2026-03-07",
+    "dateModified": "2026-03-11",
+    "inLanguage": "en",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://interactive.netra.news/bangladesh-election-2026-map/bangladesh-election-map.webp",
+      "width": 1200,
+      "height": 630
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Netra News",
+      "url": "https://netra.news/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://interactive.netra.news/bangladesh-election-2026-map/netraintractvlogo.svg"
+      }
+    },
+    "articleSection": "Elections",
+    "keywords": ["Bangladesh election 2026", "union map", "election results", "voter turnout", "polling stations", "interactive map", "constituency results"],
+    "isAccessibleForFree": true,
+    "about": {
+      "@type": "Event",
+      "name": "Bangladesh General Election 2026",
+      "startDate": "2026-02-27",
+      "location": {
+        "@type": "Country",
+        "name": "Bangladesh"
+      }
+    },
+    "spatialCoverage": {
+      "@type": "Country",
+      "name": "Bangladesh",
+      "identifier": "BD"
+    }
+  }
+  </script>
+  <style>
+    :root {
+      --bg-page: #ede7de;
+      --ink-0: #1e140a;
+      --ink-1: #5a4838;
+      --ink-2: #8a7868;
+      --card: rgba(255, 255, 254, 0.94);
+      --card-border: rgba(60, 55, 50, 0.18);
+      --card-text: #1e140a;
+      --card-muted: #7a6858;
+      --chip-bg: rgba(60, 55, 50, 0.07);
+      --chip-border: rgba(60, 55, 50, 0.25);
+      --chip-text: #5a4838;
+      --map-bg: #ddd5c8;
+      --map-stroke: rgba(245, 244, 242, 0.76);
+      --hover-stroke: #1e140a;
+
+      --bnp-light: #9fd9ff;
+      --bnp-dark: #006cc9;
+      --ind-light: #ffd99d;
+      --ind-dark: #dc7c00;
+      --jam-light: #ffb2cc;
+      --jam-dark: #cf255f;
+      --oth-light: #d9c0ff;
+      --oth-dark: #6a2bd8;
+      --font-sans: "museo-sans", "Segoe UI", sans-serif;
+      --font-serif: "utopia-std-caption", "utopia-std-headline", "utopia-std", Georgia, serif;
+      --mono: "ibm-plex-mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: var(--bg-page);
+      color: var(--ink-0);
+      font-family: var(--font-sans);
+    }
+
+    .app {
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      position: absolute;
+      top: 50px;
+      left: 40px;
+      width: 338px;
+      max-height: calc(100% - 90px);
+      padding: 24px 24px 20px;
+      background: rgba(255, 255, 254, 0.94);
+      backdrop-filter: blur(22px) saturate(1.15);
+      border: 1px solid rgba(60, 55, 50, 0.18);
+      border-radius: 10px;
+      color: var(--ink-0);
+      display: grid;
+      align-content: start;
+      gap: 13px;
+      overflow-y: auto;
+      z-index: 20;
+      box-shadow:
+        0 8px 40px rgba(30, 25, 20, 0.10),
+        0 1px 0 rgba(255, 255, 255, 0.75) inset,
+        0 -1px 0 rgba(60, 55, 50, 0.06) inset;
+    }
+
+    .sidebar-bottom {
+      display: grid;
+      gap: 10px;
+    }
+
+    .logo-slot {
+      border-radius: 4px;
+      min-height: 28px;
+      padding: 0;
+      display: grid;
+      justify-items: start;
+      margin-bottom: 4px;
+      cursor: pointer !important;
+    }
+
+    .logo-slot a {
+      display: inline-block;
+      line-height: 0;
+      cursor: pointer !important;
+    }
+
+    .logo-slot img {
+      width: auto;
+      max-width: 210px;
+      max-height: 30px;
+      object-fit: contain;
+      display: block;
+      filter: brightness(0) saturate(0);
+      opacity: 1;
+      cursor: pointer !important;
+      -webkit-user-drag: none;
+      user-select: none;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      line-height: calc(35 / 34);
+      letter-spacing: 0;
+      font-weight: 700;
+      color: var(--ink-0);
+    }
+
+    h1 span {
+      display: block;
+    }
+
+    .credit {
+      margin: 0;
+      color: var(--ink-1);
+      font-size: 0.875rem;
+      line-height: calc(20 / 15);
+      letter-spacing: 0.02em;
+      font-weight: 500;
+    }
+
+    .credit a {
+      color: var(--ink-0);
+      text-wrap: nowrap;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 2px;
+    }
+
+    .stamp {
+      margin: 0;
+      color: var(--ink-2);
+      font-size: 0.81rem;
+      line-height: 1.35;
+      letter-spacing: 0.025em;
+      font-weight: 500;
+    }
+
+    .action-row {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin-top: 2px;
+      margin-bottom: 2px;
+    }
+
+    .action-icon-btn {
+      appearance: none;
+      width: 34px;
+      height: 34px;
+      border-radius: 6px;
+      border: 1px solid rgba(60, 55, 50, 0.20);
+      background: rgba(248, 248, 247, 0.7);
+      color: var(--ink-1);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: background 130ms ease, border-color 130ms ease, transform 130ms ease;
+    }
+
+    .action-icon-btn:hover {
+      background: rgba(244, 244, 243, 0.95);
+      border-color: rgba(60, 55, 50, 0.40);
+      transform: translateY(-1px);
+    }
+
+    .action-icon-btn:active {
+      transform: translateY(0);
+    }
+
+    .action-icon-btn svg {
+      width: 17px;
+      height: 17px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.75;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .action-icon-btn .fill {
+      fill: currentColor;
+      stroke: none;
+    }
+
+    .action-icon-btn.copied {
+      background: rgba(100, 160, 130, 0.18);
+      border-color: rgba(80, 155, 120, 0.5);
+    }
+
+    #infoBtn {
+      display: none;
+    }
+
+    .mobile-notes-popup {
+      display: none;
+    }
+
+    .search-block {
+      display: grid;
+      gap: 0;
+      margin-top: 1px;
+    }
+
+    .drilldown-panel {
+      display: grid;
+      gap: 16px;
+      padding: 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(60, 55, 50, 0.16);
+      background: rgba(255, 255, 254, 0.98);
+      box-shadow: 0 14px 40px rgba(30, 25, 20, 0.12);
+    }
+
+    .drilldown-panel-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+
+    .drilldown-title {
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--ink-0);
+    }
+
+    .drilldown-subtitle {
+      margin: 4px 0 0;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--ink-2);
+    }
+
+    .drilldown-steps {
+      display: grid;
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+
+    .drilldown-step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(60, 55, 50, 0.1);
+      background: #ffffff;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    }
+
+    .drilldown-step:hover:not(.disabled) {
+      border-color: rgba(31, 143, 79, 0.3);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .drilldown-step.active {
+      border-color: #1f8f4f;
+      background: rgba(31, 143, 79, 0.02);
+      box-shadow: 0 4px 16px rgba(31, 143, 79, 0.1);
+    }
+
+    .drilldown-step.disabled {
+      opacity: 0.45;
+      cursor: default;
+      background: #fdfdfd;
+      box-shadow: none;
+    }
+
+    .drilldown-step-number {
+      flex: 0 0 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #f1f3f5;
+      color: #64748b;
+      font: 700 0.65rem var(--font-sans);
+      border: 1px solid rgba(60, 55, 50, 0.08);
+    }
+
+    .drilldown-step.active .drilldown-step-number {
+      background: #1f8f4f;
+      color: white;
+      border-color: #1f8f4f;
+    }
+
+    .drilldown-step.selected .drilldown-step-number {
+      background: #10b981;
+      color: white;
+      border-color: #10b981;
+    }
+
+    .drilldown-step-content {
+      display: flex;
+      flex-direction: column;
+      gap: 0px;
+    }
+
+    .drilldown-step-label {
+      font-size: 0.58rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: #94a3b8;
+      line-height: 1.05;
+    }
+
+    .drilldown-step.active .drilldown-step-label {
+      color: #1f8f4f;
+    }
+
+    .drilldown-step-value {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #334155;
+      line-height: 1.15;
+    }
+
+    .drilldown-step.active .drilldown-step-value {
+      color: #1f8f4f;
+    }
+
+    .drilldown-step.selected .drilldown-step-value {
+      color: #1e293b;
+    }
+
+    .drilldown-step-select {
+      width: 100%;
+      background: transparent;
+      border: none;
+      font-family: inherit;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #334155;
+      padding: 0 20px 0 0;
+      margin: 0;
+      cursor: pointer;
+      outline: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'%3E%3C/path%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right center;
+    }
+
+    .drilldown-step.active .drilldown-step-select {
+      color: #1f8f4f;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%231f8f4f' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'%3E%3C/path%3E%3C/svg%3E");
+    }
+
+    .drilldown-step.disabled .drilldown-step-select {
+      cursor: default;
+    }
+
+    .drilldown-back-btn {
+      flex: 0 0 auto;
+      border: 1px solid rgba(60, 55, 50, 0.16);
+      background: rgba(255, 255, 254, 0.96);
+      color: var(--ink-1);
+      border-radius: 999px;
+      padding: 7px 11px;
+      font: 700 0.78rem/1 var(--font-sans);
+      cursor: pointer;
+      transition: background-color 120ms ease, border-color 120ms ease, transform 120ms ease;
+    }
+
+    .drilldown-back-btn:hover {
+      background: rgba(60, 55, 50, 0.06);
+      border-color: rgba(60, 55, 50, 0.28);
+      transform: translateY(-1px);
+    }
+
+    .drilldown-path {
+      margin: 0;
+      color: var(--ink-2);
+      font: 600 0.84rem/1.45 var(--font-sans);
+    }
+
+    .drilldown-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .drilldown-item {
+      border: 1px solid rgba(60, 55, 50, 0.12);
+      background: linear-gradient(180deg, rgba(255, 255, 254, 0.98), rgba(248, 246, 242, 0.98));
+      color: var(--ink-0);
+      border-radius: 12px;
+      padding: 11px 12px;
+      text-align: left;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(30, 25, 20, 0.05);
+      transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+    }
+
+    .drilldown-item:hover {
+      transform: translateY(-1px);
+      border-color: rgba(60, 55, 50, 0.24);
+      box-shadow: 0 10px 22px rgba(30, 25, 20, 0.09);
+    }
+
+    .drilldown-item-label {
+      display: block;
+      font: 700 0.92rem/1.25 var(--font-sans);
+      margin-bottom: 4px;
+    }
+
+    .drilldown-item-meta {
+      display: block;
+      color: var(--ink-2);
+      font: 600 0.74rem/1.25 var(--font-sans);
+    }
+
+    .drilldown-item.active {
+      border-color: rgba(64, 102, 86, 0.45);
+      box-shadow: 0 10px 22px rgba(64, 102, 86, 0.14);
+    }
+
+    .drilldown-empty {
+      grid-column: 1 / -1;
+      padding: 12px;
+      color: var(--ink-2);
+      font: 600 0.84rem/1.45 var(--font-sans);
+      text-align: center;
+      border-radius: 10px;
+      background: rgba(60, 55, 50, 0.04);
+    }
+
+    .search-dock {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      z-index: 9;
+      width: min(240px, calc(100% - 32px));
+      display: grid;
+      gap: 8px;
+    }
+
+    .search-filter-select {
+      width: 100%;
+      border: 1px solid rgba(60, 55, 50, 0.24);
+      background: rgba(255, 255, 254, 0.96);
+      color: var(--ink-0);
+      border-radius: 8px;
+      font: 700 0.82rem/1.2 var(--font-sans);
+      padding: 10px 38px 10px 12px;
+      outline: none;
+      box-shadow: 0 6px 18px rgba(30, 25, 20, 0.08);
+    }
+
+    .search-label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .search-wrap {
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      border: 1px solid rgba(60, 55, 50, 0.28);
+      background: rgba(255, 255, 254, 0.98);
+      color: var(--ink-0);
+      border-radius: 6px;
+      font: 500 1.02rem/1.25 var(--font-sans);
+      padding: 11px 13px;
+      outline: none;
+      transition: border-color 120ms ease, box-shadow 120ms ease;
+    }
+
+    .search-input:focus {
+      border-color: rgba(60, 55, 50, 0.55);
+      box-shadow: 0 0 0 3px rgba(60, 55, 50, 0.10);
+    }
+
+    .suggestions {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      right: 0;
+      border-radius: 8px;
+      background: rgba(255, 255, 254, 0.99);
+      border: 1px solid rgba(60, 55, 50, 0.18);
+      box-shadow: 0 20px 40px rgba(30, 25, 20, 0.16);
+      overflow: auto;
+      max-height: 300px;
+      margin: 0;
+      padding: 6px;
+      list-style: none;
+      z-index: 8;
+    }
+
+    .suggestions li {
+      margin: 0;
+    }
+
+    .suggest-btn {
+      width: 100%;
+      text-align: left;
+      border: 0;
+      border-radius: 4px;
+      background: transparent;
+      color: var(--ink-0);
+      display: grid;
+      gap: 2px;
+      padding: 8px 10px;
+      cursor: pointer;
+      font: 500 0.9rem/1.25 var(--font-sans);
+    }
+
+    .suggest-btn:hover {
+      background: rgba(60, 55, 50, 0.06);
+    }
+
+    .suggest-meta {
+      color: var(--ink-2);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+
+    .notes-panel {
+      border: 1px solid rgba(60, 55, 50, 0.16);
+      border-radius: 6px;
+      background: rgba(248, 248, 246, 0.5);
+      overflow: hidden;
+    }
+
+    .notes-panel summary {
+      list-style: none;
+      margin: 0;
+      padding: 9px 11px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font: 700 0.74rem/1 var(--font-sans);
+      text-transform: uppercase;
+      letter-spacing: 0.045em;
+      color: var(--ink-1);
+      font-weight: normal;
+    }
+
+    .notes-panel summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .notes-panel summary::after {
+      content: "+";
+      font: 600 0.85rem/1 var(--font-sans);
+      color: var(--ink-2);
+    }
+
+    .notes-panel[open] summary::after {
+      content: "−";
+    }
+
+    .notes-body {
+      border-top: 1px solid rgba(60, 55, 50, 0.10);
+      padding: 9px 11px 11px;
+    }
+
+    .notes-panel p {
+      margin: 0;
+      color: var(--ink-2);
+      font: 400 0.72rem/1.45 var(--mono);
+      letter-spacing: 0.005em;
+    }
+
+    .notes-panel p a {
+      color: var(--ink-1);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 2px;
+    }
+
+    .notes-panel p a:hover {
+      color: var(--ink-0);
+    }
+
+    .loading-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      pointer-events: none;
+    }
+
+    .loading-overlay.hidden {
+      opacity: 0;
+      transition: opacity 400ms ease;
+      pointer-events: none;
+    }
+
+    .loading-overlay.gone { display: none; }
+
+    .loading-spinner {
+      width: 28px;
+      height: 28px;
+      border: 2.5px solid rgba(60, 55, 50, 0.12);
+      border-top-color: var(--ink-1);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-label {
+      font: 500 0.82rem/1 var(--font-sans);
+      color: var(--ink-2);
+      letter-spacing: 0.02em;
+    }
+
+    .map-shell {
+      position: relative;
+      height: 100%;
+      overflow: hidden;
+      contain: layout paint;
+      background:
+        radial-gradient(900px 520px at 78% 22%, rgba(245, 244, 240, 0.55), transparent 65%),
+        radial-gradient(800px 600px at 5% 95%, rgba(218, 216, 212, 0.7), transparent 55%),
+        radial-gradient(600px 400px at 55% 70%, rgba(232, 230, 226, 0.35), transparent 60%),
+        var(--map-bg);
+    }
+
+    @media (min-width: 1230px) {
+      .sidebar {
+        top: 80px;
+        left: 80px;
+        width: 368px;
+      }
+
+      h1 {
+        font-size: 2.125rem;
+      }
+    }
+
+    .legend {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      z-index: 2;
+      width: min(280px, calc(100% - 32px));
+      border: 1px solid rgba(60, 55, 50, 0.18);
+      border-radius: 8px;
+      background: rgba(255, 255, 254, 0.93);
+      backdrop-filter: blur(18px) saturate(1.15);
+      padding: 12px;
+      display: grid;
+      gap: 7px;
+      box-shadow:
+        0 8px 28px rgba(30, 25, 20, 0.10),
+        0 1px 0 rgba(255, 255, 255, 0.7) inset;
+    }
+
+    .legend-title {
+      color: var(--ink-0);
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .legend-note {
+      color: var(--ink-1);
+      font-size: 0.7rem;
+      line-height: 1.35;
+      margin-bottom: 2px;
+    }
+
+    .legend-bins {
+      color: var(--ink-2);
+      font-size: 0.63rem;
+      line-height: 1.28;
+      letter-spacing: 0.01em;
+      margin-bottom: 2px;
+    }
+
+    .legend-item {
+      display: grid;
+      gap: 4px;
+      color: var(--ink-0);
+      font-size: 0.76rem;
+      font-weight: 600;
+    }
+
+    .legend-party {
+      line-height: 1;
+    }
+
+    .legend-scale {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 2px;
+    }
+
+    .legend-step {
+      height: 9px;
+      border-radius: 2px;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.07) inset;
+    }
+
+    .map-toggle {
+      position: absolute;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 8;
+      display: none;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid rgba(60, 55, 50, 0.22);
+      border-radius: 7px;
+      overflow: hidden;
+      background: rgba(255, 255, 254, 0.93);
+      backdrop-filter: blur(18px) saturate(1.15);
+      box-shadow:
+        0 4px 18px rgba(30, 25, 20, 0.12),
+        0 1px 0 rgba(255, 255, 255, 0.7) inset;
+    }
+
+    .map-toggle.visible {
+      display: grid;
+    }
+
+    .map-toggle-btn {
+      appearance: none;
+      border: 0;
+      padding: 8px 22px;
+      font: 700 0.78rem/1 var(--font-sans);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      cursor: pointer;
+      background: transparent;
+      color: var(--ink-2);
+      transition: background 120ms ease, color 120ms ease;
+      white-space: nowrap;
+    }
+
+    .map-toggle-btn:hover {
+      color: var(--ink-1);
+    }
+
+    .map-toggle-btn.active {
+      background: var(--ink-0);
+      color: rgba(255, 255, 254, 0.93);
+      cursor: default;
+    }
+
+    .legend-summary {
+      display: grid;
+      gap: 1px;
+      border-top: 1px solid rgba(60, 55, 50, 0.12);
+      padding-top: 6px;
+      margin-top: 2px;
+    }
+
+    .legend-stat {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      line-height: 1.25;
+      color: var(--ink-1);
+    }
+
+    .legend-stat-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      flex: 0 0 auto;
+    }
+
+    .legend-stat-label {
+      flex: 1;
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .legend-stat-count {
+      font-variant-numeric: tabular-nums;
+      font-weight: 600;
+      color: var(--ink-0);
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      left: 30px;
+      width: 100%;
+      height: 100%;
+      transform-origin: 0 0;
+      will-change: transform;
+      display: block;
+      background: transparent;
+      cursor: grab;
+      touch-action: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    #map path.union {
+      stroke: var(--map-stroke);
+      stroke-width: var(--map-sw, 0.44);
+      fill-rule: evenodd;
+      shape-rendering: geometricPrecision;
+      transition: opacity 90ms ease, stroke-width 90ms ease;
+      cursor: inherit;
+    }
+
+    #map.is-dragging {
+      cursor: grabbing;
+    }
+
+    #map.is-dragging path.union {
+      transition: none;
+      shape-rendering: optimizeSpeed;
+    }
+
+    #map path.union.dimmed {
+      opacity: 1;
+    }
+
+    #map path.union.selected {
+      stroke-width: var(--map-sw, 0.44);
+      stroke: var(--map-stroke);
+      opacity: 1;
+    }
+
+    #map path.union.selected.active {
+      stroke-width: var(--map-sw-act, 1.18);
+    }
+
+    #map path.union.active {
+      stroke: var(--hover-stroke);
+      stroke-width: var(--map-sw-act, 1.18);
+      opacity: 1;
+    }
+
+    .map-label-layer {
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .map-label {
+      text-anchor: middle;
+      paint-order: stroke;
+      stroke-linejoin: round;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .map-label--district {
+      fill: rgba(40, 25, 10, 0.52);
+      stroke: rgba(248, 247, 244, 0.9);
+      stroke-width: 0.75;
+      font: 700 8.2px/1 var(--font-sans);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .map-label--selection {
+      fill: rgba(30, 20, 10, 0.42);
+      stroke: rgba(248, 247, 244, 0.82);
+      stroke-width: 1.2;
+      font-family: var(--font-serif);
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0.01em;
+    }
+
+    .map-controls {
+      position: absolute;
+      right: 16px;
+      bottom: 16px;
+      display: grid;
+      gap: 10px;
+      justify-items: end;
+      z-index: 8;
+    }
+
+    .map-controls button {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      border: 1px solid rgba(60, 55, 50, 0.20);
+      background: rgba(255, 255, 254, 0.95);
+      color: var(--ink-0);
+      font: 700 1.15rem/1 var(--font-sans);
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(30, 25, 20, 0.12);
+      transition: background 120ms ease, transform 120ms ease;
+    }
+
+    .map-controls button:hover {
+      background: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    #zoomInBtn,
+    #zoomOutBtn {
+      justify-self: end;
+    }
+
+    #resetMapBtn {
+      width: auto;
+      min-width: 88px;
+      height: 34px;
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: var(--ink-0);
+      border: 1px solid var(--ink-0);
+      border-radius: 6px;
+      color: rgba(255, 255, 254, 0.93);
+      margin-top: 6px;
+      box-shadow: 0 4px 16px rgba(30, 20, 10, 0.3);
+      transition: background 130ms ease, transform 130ms ease, box-shadow 130ms ease;
+    }
+
+    #resetMapBtn svg {
+      width: 12px;
+      height: 12px;
+      flex: 0 0 auto;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    #resetMapBtn:hover {
+      background: #3a2a1a;
+      border-color: #3a2a1a;
+      color: #fff;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(30, 20, 10, 0.38);
+    }
+
+    .tooltip {
+      position: fixed;
+      z-index: 40;
+      min-width: 420px;
+      max-width: 650px;
+      background: rgba(255, 255, 254, 0.99);
+      color: #2a1e14;
+      border: 1px solid rgba(60, 55, 50, 0.16);
+      border-radius: 8px;
+      box-shadow: 0 20px 50px rgba(30, 25, 20, 0.18);
+      padding: 14px 16px;
+      pointer-events: none;
+      display: none;
+      line-height: 1.3;
+    }
+
+    .mobile-tooltip {
+      display: none;
+    }
+
+    .tt-title {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: 1.95rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      color: #1e140a;
+    }
+
+    .tt-sub {
+      margin: 1px 0 3px;
+      color: #6a5848;
+      font-size: 0.88rem;
+      font-weight: 500;
+    }
+
+    .tt-const {
+      margin: 0 0 8px;
+      color: #7a6858;
+      font-size: 0.76rem;
+      line-height: 1.28;
+      font-weight: 600;
+    }
+
+    .tt-head-row {
+      display: grid;
+      grid-template-columns: 1fr 150px;
+      gap: 14px;
+      align-items: end;
+      padding: 4px 0 5px;
+      border-bottom: 1px solid rgba(60, 55, 50, 0.10);
+    }
+
+    .tt-head {
+      display: grid;
+      grid-template-columns: 108px 70px;
+      gap: 8px;
+      justify-content: end;
+      font-size: 0.72rem;
+      color: #8a7868;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .tt-head span {
+      text-align: right;
+    }
+
+    .tt-wrap {
+      display: grid;
+      grid-template-columns: 1fr 150px;
+      gap: 14px;
+      align-items: stretch;
+      margin-top: 2px;
+    }
+
+    .tt-rows {
+      display: grid;
+    }
+
+    .tt-row {
+      display: grid;
+      grid-template-columns: 1fr 108px 70px;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(60, 55, 50, 0.08);
+      font-size: 0.9rem;
+    }
+
+    .tt-cand {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .tt-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      flex: 0 0 auto;
+    }
+
+    .tt-name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 600;
+      color: #2a1e14;
+    }
+
+    .tt-val,
+    .tt-pct {
+      text-align: right;
+      color: #5a4838;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .tt-margin {
+      border-left: 1px solid rgba(60, 55, 50, 0.12);
+      padding-left: 12px;
+      display: grid;
+      align-content: center;
+      gap: 4px;
+    }
+
+    .tt-margin-title {
+      color: #8a7868;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .tt-margin-value {
+      font-family: var(--font-serif);
+      color: #1e140a;
+      font-size: 2.2rem;
+      line-height: 0.95;
+      letter-spacing: 0.01em;
+    }
+
+    .tt-margin-winner {
+      color: #3a2e24;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .tt-foot {
+      margin-top: 8px;
+      color: #8a7868;
+      font-size: 0.76rem;
+    }
+
+    @media (max-width: 1030px) {
+      #map path.union {
+        stroke-width: var(--map-sw, 0.36);
+        /* No CSS transition on touch — immediate state changes, no hover effects */
+        transition: none;
+      }
+
+      .app {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+        position: relative;
+      }
+
+      .map-shell {
+        padding-left: 0;
+        /* Drop the 3 large radial gradients — solid bg is enough on small screens */
+        background: var(--map-bg);
+      }
+
+      .sidebar {
+        position: absolute;
+        inset: 0;
+        width: auto;
+        max-height: none;
+        background: transparent;
+        backdrop-filter: none;
+        border: 0;
+        border-radius: 0;
+        padding: 0;
+        overflow: visible;
+        display: block;
+        pointer-events: none;
+        z-index: 5;
+        box-shadow: none;
+      }
+
+      .search-block {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        gap: 0;
+        pointer-events: auto;
+      }
+
+      .drilldown-panel {
+        position: absolute;
+        left: 10px;
+        right: 10px;
+        top: 126px;
+        pointer-events: auto;
+        padding: 12px;
+      }
+
+      .drilldown-grid {
+        grid-template-columns: 1fr;
+        max-height: min(32vh, 320px);
+        overflow: auto;
+      }
+
+      .search-label {
+        display: none;
+      }
+
+      .search-input {
+        font-size: 1.04rem;
+        padding: 13px 14px;
+        background: rgba(249, 251, 253, 0.97);
+      }
+
+      .suggestions {
+        position: fixed;
+        top: 68px;
+        left: 10px;
+        right: 10px;
+        max-height: min(48vh, 340px);
+      }
+
+      .sidebar-bottom {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 16px 14px 12px;
+        gap: 7px;
+        pointer-events: auto;
+        background: linear-gradient(
+          180deg,
+          rgba(18, 24, 31, 0) 0%,
+          rgba(18, 24, 31, 0.68) 48%,
+          rgba(18, 24, 31, 0.92) 100%
+        );
+        transition: opacity 170ms ease, transform 170ms ease;
+      }
+
+      body.mobile-bottom-hidden .sidebar-bottom {
+        opacity: 0;
+        transform: translateY(16px);
+        pointer-events: none;
+      }
+
+      .logo-slot {
+        display: grid;
+      }
+
+      .logo-slot img {
+        filter: brightness(0) invert(1);
+        opacity: 0.92;
+      }
+
+      .sidebar-bottom h1 {
+        margin: 0;
+        font-size: clamp(2rem, 9vw, 3.35rem);
+        color: #eef2f5;
+        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.42);
+      }
+
+      .sidebar-bottom .credit,
+      .sidebar-bottom .stamp {
+        color: #d5e1ea;
+        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+      }
+
+      .sidebar-bottom .credit a {
+        color: #f0f5fa;
+      }
+
+      .action-icon-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        border: 1px solid rgba(236, 244, 250, 0.32);
+        background: rgba(246, 250, 254, 0.17);
+        color: #eff5fa;
+      }
+
+      .notes-panel {
+        display: none;
+      }
+
+      .mobile-tooltip {
+        position: fixed;
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        z-index: 13;
+        display: block;
+        background: rgba(255, 255, 254, 0.98);
+        border: 1px solid rgba(60, 55, 50, 0.18);
+        border-radius: 8px;
+        box-shadow: 0 14px 34px rgba(30, 25, 20, 0.2);
+        padding: 10px 12px;
+        pointer-events: none;
+      }
+
+      .mobile-tooltip[hidden] {
+        display: none;
+      }
+
+      .mtt-loc {
+        margin: 0 0 8px;
+        color: #2a1e14;
+        font: 600 0.88rem/1.25 var(--font-sans);
+      }
+
+      .mtt-wrap {
+        display: grid;
+        grid-template-columns: 1fr 94px;
+        gap: 10px;
+        align-items: start;
+      }
+
+      .mtt-head,
+      .mtt-row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .mtt-head {
+        color: #8a7868;
+        font: 600 0.66rem/1 var(--font-sans);
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        padding-bottom: 4px;
+        border-bottom: 1px solid rgba(60, 55, 50, 0.12);
+      }
+
+      .mtt-row {
+        padding: 5px 0;
+        border-bottom: 1px solid rgba(60, 55, 50, 0.08);
+      }
+
+      .mtt-row:last-child {
+        border-bottom: 0;
+      }
+
+      .mtt-cand {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        min-width: 0;
+      }
+
+      .mtt-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        flex: 0 0 auto;
+      }
+
+      .mtt-name {
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: #2a1e14;
+        font: 600 0.82rem/1.15 var(--font-sans);
+      }
+
+      .mtt-votes {
+        color: #5a4838;
+        font: 600 0.92rem/1 var(--font-sans);
+        font-variant-numeric: tabular-nums;
+      }
+
+      .mtt-margin {
+        border-left: 1px solid rgba(60, 55, 50, 0.12);
+        padding-left: 9px;
+        display: grid;
+        gap: 4px;
+        align-content: start;
+      }
+
+      .mtt-margin-title {
+        color: #8a7868;
+        font: 700 0.62rem/1 var(--font-sans);
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .mtt-margin-value {
+        font-family: var(--font-serif);
+        font-size: 1.7rem;
+        line-height: 0.95;
+        letter-spacing: 0.01em;
+      }
+
+      #infoBtn {
+        display: grid;
+      }
+
+      .mobile-notes-popup {
+        position: absolute;
+        left: 14px;
+        right: 14px;
+        bottom: calc(100% + 10px);
+        z-index: 14;
+        display: grid;
+        gap: 8px;
+        padding: 10px 11px;
+        border-radius: 7px;
+        border: 1px solid rgba(236, 244, 250, 0.36);
+        background: rgba(18, 24, 31, 0.94);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28);
+        pointer-events: auto;
+      }
+
+      .mobile-notes-popup[hidden] {
+        display: none;
+      }
+
+      .mobile-notes-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .mobile-notes-title {
+        margin: 0;
+        font: 700 0.72rem/1 var(--font-sans);
+        letter-spacing: 0.045em;
+        text-transform: uppercase;
+        color: #eef4fa;
+      }
+
+      .mobile-notes-close {
+        appearance: none;
+        width: 24px;
+        height: 24px;
+        border-radius: 4px;
+        border: 1px solid rgba(236, 244, 250, 0.34);
+        background: rgba(246, 250, 254, 0.08);
+        color: #f1f6fa;
+        font: 700 0.9rem/1 var(--font-sans);
+        cursor: pointer;
+      }
+
+      .mobile-notes-content {
+        margin: 0;
+        color: #d8e3eb;
+        font: 400 0.71rem/1.42 var(--mono);
+        letter-spacing: 0.006em;
+      }
+
+      .mobile-notes-content a {
+        color: #f0f5fa;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 2px;
+      }
+
+      .legend {
+        top: 104px;
+        right: 10px;
+        width: auto;
+        max-width: 155px;
+        padding: 7px 9px;
+        gap: 3px;
+        border-radius: 6px;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        box-shadow: 0 2px 10px rgba(30, 25, 20, 0.10);
+      }
+
+      .legend-title { display: none; }
+      .legend-bins { display: none; }
+      .legend-summary { display: none; }
+
+      .legend-note {
+        font-size: 0.58rem;
+        margin-bottom: 0;
+        line-height: 1.25;
+      }
+
+      .legend-item {
+        gap: 2px;
+        font-size: 0.58rem;
+      }
+
+      .legend-step {
+        height: 5px;
+      }
+
+      .legend-party {
+        font-size: 0.56rem;
+      }
+
+      .map-toggle {
+        top: 62px;
+        left: 10px;
+        transform: none;
+        border-radius: 6px;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
+
+      .map-toggle-btn {
+        padding: 6px 14px;
+        font-size: 0.68rem;
+      }
+
+      .map-controls {
+        right: 10px;
+        bottom: 10px;
+        gap: 12px;
+        transition: bottom 140ms ease;
+      }
+
+      .search-dock {
+        top: 10px;
+        left: 10px;
+        width: min(320px, calc(100% - 20px));
+        gap: 6px;
+      }
+
+      .search-filter-select {
+        padding: 9px 34px 9px 10px;
+        font-size: 0.74rem;
+      }
+
+      body.mobile-tooltip-visible .map-controls {
+        bottom: 178px;
+      }
+
+      .map-label--district {
+        font-size: 7.4px;
+      }
+
+      .map-label--selection {
+        font-size: 13px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .legend {
+        max-width: 135px;
+        padding: 6px 8px;
+      }
+
+      .sidebar-bottom {
+        padding: 12px 10px 9px;
+      }
+
+      .sidebar-bottom h1 {
+        font-size: clamp(1.65rem, 11vw, 2.5rem);
+      }
+
+      .mobile-notes-popup {
+        left: 10px;
+        right: 10px;
+        bottom: calc(100% + 8px);
+      }
+
+      .tooltip {
+        min-width: 290px;
+        max-width: calc(100vw - 16px);
+      }
+
+      .mtt-wrap {
+        grid-template-columns: 1fr 84px;
+      }
+
+      .mtt-margin-value {
+        font-size: 1.52rem;
+      }
+
+      body.mobile-tooltip-visible .map-controls {
+        bottom: 168px;
+      }
+
+      .tt-title {
+        font-size: 1.25rem;
+      }
+
+      .tt-wrap {
+        grid-template-columns: 1fr;
+      }
+
+      .tt-head-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      .tt-head-spacer {
+        display: none;
+      }
+
+      .tt-head {
+        grid-template-columns: 92px 58px;
+      }
+
+      .tt-row {
+        grid-template-columns: 1fr 92px 58px;
+      }
+
+      .map-label--district {
+        font-size: 7px;
+      }
+
+      .map-label--selection {
+        font-size: 12px;
+      }
+
+      .tt-margin {
+        border-left: 0;
+        border-top: 1px solid rgba(60, 55, 50, 0.12);
+        padding-left: 0;
+        padding-top: 7px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <article class="sidebar" id="sidebar" hidden="" style="display: none !important;" aria-hidden="true">
+      <header class="sidebar-bottom" id="mobileBottom">
+        <nav class="action-row" aria-label="Share and info">
+          <button id="facebookBtn" class="action-icon-btn" type="button" aria-label="Share on Facebook" title="Share on Facebook">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path class="fill" d="M13.6 21v-7h2.4l.4-2.8h-2.8v-1.75c0-.77.37-1.52 1.56-1.52H16.5V5.22S15.43 5 14.4 5c-2.3 0-3.8 1.4-3.8 3.93V11.2H8v2.8h2.6V21h3z"></path>
+            </svg>
+          </button>
+          <button id="xShareBtn" class="action-icon-btn" type="button" aria-label="Share on X" title="Share on X">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path class="fill" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+            </svg>
+          </button>
+          <button id="xBtn" class="action-icon-btn" type="button" aria-label="Share on WhatsApp" title="Share on WhatsApp">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path class="fill" d="M12 2.5C6.75 2.5 2.5 6.75 2.5 12c0 1.72.46 3.33 1.26 4.72L2 22l5.42-1.72A9.46 9.46 0 0 0 12 21.5c5.25 0 9.5-4.25 9.5-9.5S17.25 2.5 12 2.5zm4.62 13.55c-.21.6-.85 1.1-1.52 1.25-.4.09-.93.16-2.68-.57-2.23-.95-3.68-3.2-3.79-3.35-.11-.15-.9-1.2-.9-2.28 0-1.09.57-1.63.77-1.85.2-.22.44-.27.59-.27h.41c.14 0 .31-.06.49.37.18.44.62 1.52.67 1.63.05.11.09.24.02.36s-.1.21-.21.33l-.3.34c-.1.1-.21.22-.09.42.12.2.54.88 1.16 1.43.8.71 1.46.92 1.66 1.02.2.1.31.08.43-.05.12-.14.52-.6.65-.81.14-.2.28-.17.48-.1.2.07 1.26.59 1.48.7.22.1.35.16.4.24.05.1.05.56-.16 1.14z"></path>
+            </svg>
+          </button>
+          <button id="shareBtn" class="action-icon-btn" type="button" aria-label="Copy or share link" title="Copy or share link">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 4.5v9" stroke-linecap="round"></path>
+              <path d="M8.5 8L12 4.5 15.5 8" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M8 13.5H6a1 1 0 0 0-1 1V18a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5a1 1 0 0 0-1-1h-2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </button>
+          <button id="infoBtn" class="action-icon-btn" type="button" aria-label="Show notes" aria-expanded="false" title="Show notes">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="8.3"></circle>
+              <path d="M12 11.1v5.1"></path>
+              <circle class="fill" cx="12" cy="8.2" r="1.08"></circle>
+            </svg>
+          </button>
+        </nav>
+
+        <div id="mobileNotesPopup" class="mobile-notes-popup" hidden="">
+          <div class="mobile-notes-head">
+            <h3 class="mobile-notes-title">Notes</h3>
+            <button id="mobileNotesCloseBtn" class="mobile-notes-close" type="button" aria-label="Close notes">×</button>
+          </div>
+          <p id="mobileNotesPopupBody" class="mobile-notes-content"></p>
+        </div>
+
+        <footer hidden>
+          <h2 id="notesHeading" class="sr-only">Notes and Data Coverage</h2>
+          <details class="notes-panel" id="notesPanel" aria-labelledby="notesHeading">
+            <summary>Notes</summary>
+            <div class="notes-body">
+              <p id="notesSourceText">
+                Three constituencies were suspended due to candidate death or court disputes. Of 42,779 polling stations nationwide, we could geolocate 39,761 (2,603 were not geolocated). Vote counts come from <a href="https://103.183.38.66:81/" target="_blank" rel="noopener noreferrer">Election Commission publications</a>, while polling station locations were sourced from a now-defunct EC website. Union boundary data comes from <a href="https://www.geoboundaries.org/" target="_blank" rel="noopener noreferrer nofollow">geoBoundaries</a> under a CC-BY 4.0 license. Union linkage is polygon-based and may be inaccurate in rare cases; some unions may span multiple constituencies.
+              </p>
+            </div>
+          </details>
+        </footer>
+      </header>
+
+    </article>
+
+    <main class="map-shell">
+      <div class="search-dock">
+        <label class="search-label" for="searchFilterSelect">Search filter</label>
+        <select id="searchFilterSelect" class="search-filter-select" aria-label="Search filter" style="display: none;">
+          <option value="all">সব ধরনের ফলাফল</option>
+          <option value="division">বিভাগ</option>
+          <option value="district">জেলা</option>
+          <option value="constituency">আসন</option>
+          <option value="union">ইউনিয়ন</option>
+        </select>
+        <div class="search-block" style="display: none;">
+          <label class="search-label" for="searchInput">Search by division, district, constituency or union</label>
+          <div class="search-wrap">
+            <input id="searchInput" class="search-input" type="text" autocomplete="off" placeholder="বিভাগ, জেলা, আসন বা ইউনিয়ন খুঁজুন">
+            <ul id="suggestions" class="suggestions" hidden=""></ul>
+          </div>
+        </div>
+        <section class="drilldown-panel" id="drilldownPanel" aria-label="Location drilldown">
+          <div class="drilldown-panel-head" style="margin-bottom: 12px;">
+            <div>
+              <p class="drilldown-kicker" style="display: none;">ফিল্টার</p>
+              <h2 class="drilldown-title" style="font-size: 0.88rem; color: #1d2b36;">বিভাগ, জেলা ও আসন নির্বাচন করুন</h2>
+            </div>
+            <button type="button" class="drilldown-back-btn" id="drilldownBackBtn">পেছনে</button>
+          </div>
+          <p class="drilldown-path" id="drilldownPath">প্রথমে একটি বিভাগ নির্বাচন করুন।</p>
+          <div class="drilldown-steps" id="drilldownSteps"></div>
+          <div class="drilldown-grid" id="drilldownGrid"></div>
+        </section>
+      </div>
+      <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <span id="loadingLabel" class="loading-label">Loading map\u2026</span>
+      </div>
+      <svg id="map" role="img" aria-labelledby="mapTitle mapDesc">
+        <title id="mapTitle">Bangladesh union election map</title>
+        <desc id="mapDesc">Interactive choropleth map showing Bangladesh 2026 election results by union, colored by winning party with shade intensity representing win margin or voter turnout.</desc>
+      </svg>
+      <div id="mapToggle" class="map-toggle" role="tablist" aria-label="Map mode"></div>
+      <section id="legend" class="legend" aria-label="Result palette"></section>
+
+      <div class="map-controls">
+        <button id="zoomInBtn" type="button" aria-label="Zoom in">+</button>
+        <button id="zoomOutBtn" type="button" aria-label="Zoom out">−</button>
+        <button id="resetMapBtn" type="button" aria-label="Reset map view" title="Reset to default view">
+          <svg viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M13.5 8A5.5 5.5 0 1 1 10 3"></path>
+            <path d="M9.5 1h2.5v2.5"></path>
+          </svg>
+          Reset
+        </button>
+      </div>
+    </main>
+  </div>
+
+  <aside id="tooltip" class="tooltip"></aside>
+  <aside id="mobileTooltip" class="mobile-tooltip" hidden=""></aside>
+
+  <script type="text/javascript">
+    const QUERY_PARAMS = new URLSearchParams(window.location.search);
+    const VIEW_LEVEL = QUERY_PARAMS.get("level") === "constituency" ? "constituency" : "union";
+    const AREA_LABEL_SINGULAR = VIEW_LEVEL === "constituency" ? "constituency" : "union";
+    const AREA_LABEL_PLURAL = VIEW_LEVEL === "constituency" ? "constituencies" : "unions";
+    const AREA_LABEL_VISIBLE_SINGULAR = VIEW_LEVEL === "constituency" ? "আসন" : "ইউনিয়ন";
+    const AREA_LABEL_VISIBLE_PLURAL = VIEW_LEVEL === "constituency" ? "আসন" : "ইউনিয়ন";
+    const DATA_DATE = "April 2026";
+    const MAP_TITLE = VIEW_LEVEL === "constituency"
+      ? "Bangladesh's 2026 Election Results — Margins and Turnout by Constituency"
+      : "Bangladesh's 2026 Election Results — Margins and Turnout by Union";
+    const INLINE_DICT_FILE = "./dict/inline-data.b64";
+    const INLINE_DICT_FILE_TOUCH = "./dict/inline-data-touch.b64";
+    const INLINE_CONSTITUENCY_DICT_FILE = "./dict/inline-constituency-data.b64";
+    const CSV_FILES = [
+      "./dict/alliance_level_data_merged.csv",
+      "./dict/alliance_level_data.csv",
+      "./alliance_level_data.csv"
+    ];
+
+    const PARTY_KEYS = [
+      "BNP-led alliance",
+      "Independent",
+      "Jamaat-led alliance",
+      "Other party"
+    ];
+
+    const PARTY_LABELS = {
+      "BNP-led alliance": "বিএনপি-নেতৃত্বাধীন জোট",
+      "Independent": "স্বতন্ত্র",
+      "Jamaat-led alliance": "জামায়াত-নেতৃত্বাধীন জোট",
+      "Other party": "অন্যান্য দল"
+    };
+
+    const MARGIN_SHADE_STOPS = [0.08, 0.27, 0.46, 0.68, 1];
+    const TURNOUT_SHADE_STOPS = [0.08, 0.27, 0.46, 0.68, 1];
+    const MARGIN_SCALE_RANGE = { min: 0, max: 40 };
+    const TURNOUT_SCALE_RANGE = { min: 40, max: 80 };
+
+    const PARTY_PALETTES = {
+      "BNP-led alliance": {
+        light: getCss("--bnp-light"),
+        dark: getCss("--bnp-dark")
+      },
+      "Independent": {
+        light: getCss("--ind-light"),
+        dark: getCss("--ind-dark")
+      },
+      "Jamaat-led alliance": {
+        light: getCss("--jam-light"),
+        dark: getCss("--jam-dark")
+      },
+      "Other party": {
+        light: getCss("--oth-light"),
+        dark: getCss("--oth-dark")
+      }
+    };
+
+    const SEARCH_TYPE_LABEL = {
+      division: "বিভাগ",
+      union: "ইউনিয়ন",
+      upazila: "উপজেলা",
+      district: "জেলা",
+      constituency: "আসন"
+    };
+
+    const ZOOM_BUTTON_FACTOR_IN = 0.86;
+    const ZOOM_BUTTON_FACTOR_OUT = 1.16;
+    const ZOOM_BUTTON_DURATION = 240;
+    const ZOOM_FOCUS_DURATION = 260;
+    const PHONE_DEFAULT_ZOOM_FACTOR = 0.34;
+    const TOUCH_DEFAULT_ZOOM_FACTOR = 0.34;
+    const DRAG_THRESHOLD_PX = 3;
+    const ui = {
+      map: document.getElementById("map"),
+      tooltip: document.getElementById("tooltip"),
+      mobileTooltip: document.getElementById("mobileTooltip"),
+      sidebar: document.getElementById("sidebar"),
+      mobileBottom: document.getElementById("mobileBottom"),
+      mapToggle: document.getElementById("mapToggle"),
+      legend: document.getElementById("legend"),
+      notesPanel: document.getElementById("notesPanel"),
+      notesSourceText: document.getElementById("notesSourceText"),
+      searchInput: document.getElementById("searchInput"),
+      suggestions: document.getElementById("suggestions"),
+      drilldownPanel: document.getElementById("drilldownPanel"),
+      drilldownGrid: document.getElementById("drilldownGrid"),
+      drilldownPath: document.getElementById("drilldownPath"),
+      drilldownBackBtn: document.getElementById("drilldownBackBtn"),
+      facebookBtn: document.getElementById("facebookBtn"),
+      xShareBtn: document.getElementById("xShareBtn"),
+      xBtn: document.getElementById("xBtn"),
+      shareBtn: document.getElementById("shareBtn"),
+      infoBtn: document.getElementById("infoBtn"),
+      mobileNotesPopup: document.getElementById("mobileNotesPopup"),
+      mobileNotesCloseBtn: document.getElementById("mobileNotesCloseBtn"),
+      mobileNotesPopupBody: document.getElementById("mobileNotesPopupBody"),
+      zoomInBtn: document.getElementById("zoomInBtn"),
+      zoomOutBtn: document.getElementById("zoomOutBtn"),
+      resetMapBtn: document.getElementById("resetMapBtn")
+    };
+
+    // Keep a reference to the original DOM parent so we can portal it on mobile
+    const suggestionPortalParent = ui.suggestions.parentNode;
+
+    const appState = {
+      mapMode: "margin",
+      unions: [],
+      unionByKey: new Map(),
+      pathByKey: new Map(),
+      labelLayer: null,
+      districtAnchors: [],
+      bounds: null,
+      baseViewBox: null,
+      currentViewBox: null,
+      viewAnimationId: null,
+      selectedKeys: new Set(),
+      currentSelection: null,
+      searchEntries: [],
+      visibleSuggestions: [],
+      searchFilter: "all",
+      drilldown: {
+        division: "",
+        district: "",
+        constituency: ""
+      },
+      marginScale: null,
+      turnoutScale: null,
+      isDraggingMap: false,
+      dragStartX: 0,
+      dragStartY: 0,
+      dragStartViewBox: null,
+      dragMoved: false,
+      suppressNextClick: false,
+      mobileBottomLocked: false,
+      touchId: null,
+      pinchActive: false,
+      pinchTouchIdA: null,
+      pinchTouchIdB: null,
+      pinchLastDistance: 0,
+      viewBoxRafId: null,
+      queuedViewBox: null,
+      wheelRafId: null,
+      wheelFactor: 1,
+      wheelPointX: 0,
+      wheelPointY: 0,
+      touchDataSimplified: false,
+      projector: null,
+      touchVisibilityLastTs: 0,
+      dragRect: null,
+      pinchRect: null,
+      committedViewBox: null,
+      sharpCommitTimer: null
+    };
+
+    let activePath = null;
+    let tooltipMoveRafId = null;
+    let queuedTooltipPoint = null;
+    let labelRenderTimer = null;
+    let lastViewportWidth = window.innerWidth || 0;
+    let lastViewportHeight = window.innerHeight || 0;
+    const SVG_NS = "http://www.w3.org/2000/svg";
+
+    initLegend();
+    bindUi();
+    queueInitialDataLoad();
+    syncMobileBottomVisibility();
+
+    window.addEventListener(
+      "resize",
+      debounce(() => {
+        const viewportWidth = window.innerWidth || 0;
+        const viewportHeight = window.innerHeight || 0;
+        const widthDelta = Math.abs(viewportWidth - lastViewportWidth);
+        const heightDelta = Math.abs(viewportHeight - lastViewportHeight);
+        const shouldRerender = !isTouchLikeDevice() || widthDelta > 12;
+
+        if (shouldRerender) {
+          renderMap();
+        } else if (heightDelta > 0) {
+          // Soft keyboard / browser chrome height shifts on touch devices.
+          scheduleLabelRender(90);
+        }
+
+        updateOverlayPositions();
+        lastViewportWidth = viewportWidth;
+        lastViewportHeight = viewportHeight;
+        syncMobileBottomVisibility();
+      }, 150)
+    );
+
+    function bindUi() {
+      hydrateMobileNotesContent();
+      syncSearchFilterSelect();
+      renderDrilldownPanel();
+
+      const searchFilterSelect = document.getElementById("searchFilterSelect");
+      if (searchFilterSelect) {
+        searchFilterSelect.addEventListener("change", () => {
+          appState.searchFilter = searchFilterSelect.value || "all";
+          syncSearchFilterSelect();
+          showSuggestions(ui.searchInput.value);
+        });
+      }
+
+      if (ui.drilldownBackBtn) {
+        ui.drilldownBackBtn.addEventListener("click", () => {
+          if (!appState.drilldown.division) {
+            return;
+          }
+          if (appState.drilldown.constituency) {
+            setDrilldownPath({
+              division: appState.drilldown.division,
+              district: appState.drilldown.district
+            });
+            return;
+          }
+          if (appState.drilldown.district) {
+            setDrilldownPath({ division: appState.drilldown.division });
+            return;
+          }
+          // If only division is set, clear it to go back to division selection
+          setDrilldownPath({});
+        });
+      }
+
+      ui.searchInput.addEventListener("input", () => {
+        const query = normalizeSearch(ui.searchInput.value);
+        showSuggestions(ui.searchInput.value);
+        if (isNarrowScreen()) {
+          hideMobileBottomUntilReset();
+          return;
+        }
+        if (query) {
+          setMobileBottomHidden(true);
+        } else if (!appState.currentSelection) {
+          setMobileBottomHidden(false);
+        }
+      });
+
+      ui.searchInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" && appState.visibleSuggestions.length > 0) {
+          event.preventDefault();
+          selectSuggestion(appState.visibleSuggestions[0]);
+        }
+        if (event.key === "Escape") {
+          hideSuggestions();
+        }
+      });
+
+      ui.searchInput.addEventListener("focus", () => {
+        hideMobileBottomUntilReset();
+      });
+
+      document.addEventListener("click", (event) => {
+        const inside = event.target.closest(".search-wrap");
+        if (!inside) {
+          hideSuggestions();
+        }
+        if (!ui.mobileNotesPopup || ui.mobileNotesPopup.hidden) {
+          return;
+        }
+        const inNotesPopup = event.target.closest("#mobileNotesPopup");
+        const onInfoButton = event.target.closest("#infoBtn");
+        if (!inNotesPopup && !onInfoButton) {
+          setMobileNotesPopupOpen(false);
+        }
+      });
+
+      ui.resetMapBtn.addEventListener("click", () => {
+        ui.searchInput.value = "";
+        hideSuggestions();
+        setMobileNotesPopupOpen(false);
+        appState.mobileBottomLocked = false;
+        resetDrilldownState();
+        resetView(true);
+        setMobileBottomHidden(false);
+      });
+
+      ui.facebookBtn.addEventListener("click", shareToFacebook);
+      ui.xShareBtn.addEventListener("click", shareToX);
+      ui.xBtn.addEventListener("click", shareToWhatsApp);
+      ui.shareBtn.addEventListener("click", sharePage);
+      if (ui.infoBtn) {
+        ui.infoBtn.addEventListener("click", (event) => {
+          event.preventDefault();
+          setMobileNotesPopupOpen(ui.mobileNotesPopup ? ui.mobileNotesPopup.hidden : false);
+        });
+      }
+      if (ui.mobileNotesCloseBtn) {
+        ui.mobileNotesCloseBtn.addEventListener("click", (event) => {
+          event.preventDefault();
+          setMobileNotesPopupOpen(false);
+        });
+      }
+
+      ui.zoomInBtn.addEventListener("click", () => {
+        zoomBy(ZOOM_BUTTON_FACTOR_IN, true, ZOOM_BUTTON_DURATION);
+      });
+
+      ui.zoomOutBtn.addEventListener("click", () => {
+        zoomBy(ZOOM_BUTTON_FACTOR_OUT, true, ZOOM_BUTTON_DURATION);
+      });
+
+      if (!isTouchLikeDevice()) {
+        ui.map.addEventListener("mousemove", onMapMouseMove);
+        ui.map.addEventListener("mouseleave", onMapMouseLeave);
+      }
+      if (isTouchLikeDevice()) {
+        ui.map.addEventListener("touchstart", onMapTouchStart, { passive: true });
+        ui.map.addEventListener("touchmove", onMapTouchMove, { passive: false });
+        ui.map.addEventListener("touchend", onMapTouchEnd, { passive: false });
+        ui.map.addEventListener("touchcancel", onMapTouchCancel, { passive: false });
+      }
+      ui.map.addEventListener("mousedown", onMapMouseDown);
+      ui.map.addEventListener("dragstart", (event) => event.preventDefault());
+      ui.map.addEventListener("click", onMapClick);
+      ui.map.addEventListener("wheel", onMapWheel, { passive: false });
+      window.addEventListener("mousemove", onWindowMouseMove);
+      window.addEventListener("mouseup", onWindowMouseUp);
+    }
+
+    function hydrateMobileNotesContent() {
+      if (!ui.mobileNotesPopupBody || !ui.notesSourceText) {
+        return;
+      }
+      ui.mobileNotesPopupBody.innerHTML = ui.notesSourceText.innerHTML;
+    }
+
+    function setMobileNotesPopupOpen(open) {
+      if (!ui.mobileNotesPopup || !ui.infoBtn) {
+        return;
+      }
+      const shouldOpen = Boolean(open) && isNarrowScreen();
+      ui.mobileNotesPopup.hidden = !shouldOpen;
+      ui.infoBtn.setAttribute("aria-expanded", shouldOpen ? "true" : "false");
+      if (!shouldOpen) {
+        ui.mobileNotesPopup.scrollTop = 0;
+      }
+    }
+
+    function queueInitialDataLoad() {
+      setStatus("Preparing map interface...");
+      setLoadingLabel("Preparing map\u2026");
+
+      const start = () => {
+        if (window.requestIdleCallback) {
+          window.requestIdleCallback(
+            () => {
+              loadDefaultCsv();
+            },
+            { timeout: isNarrowScreen() ? 300 : 100 }
+          );
+          return;
+        }
+        setTimeout(() => loadDefaultCsv(), isNarrowScreen() ? 50 : 16);
+      };
+
+      // Ensure first paint happens before heavy decode/parse work.
+      requestAnimationFrame(() => requestAnimationFrame(start));
+    }
+
+    function initLegend() {
+      renderMapToggle();
+      if (appState.mapMode === "turnout") {
+        renderTurnoutLegend();
+      } else {
+        renderMarginLegend();
+      }
+      updateOverlayPositions();
+    }
+
+    function switchMapMode(mode) {
+      if (mode === appState.mapMode) {
+        return;
+      }
+      appState.mapMode = mode;
+
+      if (mode === "turnout") {
+        applyTurnoutColorScale(appState.unions, appState.turnoutScale, TURNOUT_SHADE_STOPS);
+      } else {
+        applyVictoryColorScale(appState.unions, appState.marginScale, MARGIN_SHADE_STOPS);
+      }
+
+      for (const union of appState.unions) {
+        const path = appState.pathByKey.get(union.key);
+        if (path) {
+          path.setAttribute("fill", union.color);
+        }
+      }
+
+      initLegend();
+    }
+
+    function renderMapToggle() {
+      if (!ui.mapToggle) {
+        return;
+      }
+      if (appState.unions.length === 0) {
+        ui.mapToggle.classList.remove("visible");
+        return;
+      }
+      ui.mapToggle.innerHTML = "";
+      var marginBtn = document.createElement("button");
+      marginBtn.className = "map-toggle-btn" + (appState.mapMode === "margin" ? " active" : "");
+      marginBtn.type = "button";
+      marginBtn.textContent = "ব্যবধান";
+      marginBtn.setAttribute("role", "tab");
+      marginBtn.setAttribute("aria-selected", appState.mapMode === "margin" ? "true" : "false");
+      marginBtn.addEventListener("click", function() { switchMapMode("margin"); });
+      var turnoutBtn = document.createElement("button");
+      turnoutBtn.className = "map-toggle-btn" + (appState.mapMode === "turnout" ? " active" : "");
+      turnoutBtn.type = "button";
+      turnoutBtn.textContent = "উপস্থিতি";
+      turnoutBtn.setAttribute("role", "tab");
+      turnoutBtn.setAttribute("aria-selected", appState.mapMode === "turnout" ? "true" : "false");
+      turnoutBtn.addEventListener("click", function() { switchMapMode("turnout"); });
+      ui.mapToggle.appendChild(marginBtn);
+      ui.mapToggle.appendChild(turnoutBtn);
+      ui.mapToggle.classList.add("visible");
+    }
+
+    function updateOverlayPositions() {
+      if (!ui.mapToggle) {
+        return;
+      }
+
+      if (isNarrowScreen()) {
+        ui.mapToggle.style.left = "";
+        ui.mapToggle.style.right = "";
+        ui.mapToggle.style.top = "";
+        ui.mapToggle.style.transform = "";
+        return;
+      }
+
+      const mapShell = ui.map ? ui.map.parentElement : null;
+      if (!mapShell) {
+        return;
+      }
+
+      const mapRect = mapShell.getBoundingClientRect();
+      const toggleRect = ui.mapToggle.getBoundingClientRect();
+      if (!mapRect.width || !toggleRect.width) {
+        return;
+      }
+
+      const gutter = 20;
+      const sidebarRect = ui.sidebar ? ui.sidebar.getBoundingClientRect() : null;
+      const legendRect = ui.legend ? ui.legend.getBoundingClientRect() : null;
+      const leftBlocked = sidebarRect ? clamp(sidebarRect.right - mapRect.left + gutter, 0, mapRect.width) : gutter;
+      const rightBlocked = legendRect ? clamp(legendRect.left - mapRect.left - gutter, 0, mapRect.width) : (mapRect.width - gutter);
+      const minCenter = leftBlocked + toggleRect.width / 2;
+      const maxCenter = rightBlocked - toggleRect.width / 2;
+
+      ui.mapToggle.style.top = "16px";
+      ui.mapToggle.style.right = "auto";
+
+      if (maxCenter >= minCenter) {
+        const preferredCenter = mapRect.width / 2;
+        const resolvedCenter = clamp(preferredCenter, minCenter, maxCenter);
+        ui.mapToggle.style.left = resolvedCenter + "px";
+        ui.mapToggle.style.transform = "translateX(-50%)";
+        return;
+      }
+
+      if (sidebarRect) {
+        const fallbackLeft = clamp(sidebarRect.right - mapRect.left + gutter, gutter, Math.max(gutter, mapRect.width - toggleRect.width - gutter));
+        const fallbackTop = clamp(sidebarRect.bottom - mapRect.top + gutter, 16, Math.max(16, mapRect.height - toggleRect.height - gutter));
+        ui.mapToggle.style.left = fallbackLeft + "px";
+        ui.mapToggle.style.top = fallbackTop + "px";
+        ui.mapToggle.style.transform = "none";
+        return;
+      }
+
+      ui.mapToggle.style.left = "50%";
+      ui.mapToggle.style.transform = "translateX(-50%)";
+    }
+
+    function buildLegendSummary() {
+      if (appState.unions.length === 0) {
+        return null;
+      }
+      const winCounts = {};
+      for (const party of PARTY_KEYS) {
+        winCounts[party] = 0;
+      }
+      for (const union of appState.unions) {
+        winCounts[union.winner] = (winCounts[union.winner] || 0) + 1;
+      }
+      const SHORT_LABELS = {
+        "BNP-led alliance": "বিএনপি-নেতৃত্বাধীন",
+        "Independent": "স্বতন্ত্র",
+        "Jamaat-led alliance": "জামায়াত-নেতৃত্বাধীন",
+        "Other party": "অন্যান্য"
+      };
+      const summaryEl = document.createElement("div");
+      summaryEl.className = "legend-summary";
+      for (const party of PARTY_KEYS) {
+        const palette = PARTY_PALETTES[party];
+        const stat = document.createElement("div");
+        stat.className = "legend-stat";
+        stat.innerHTML =
+          '<span class="legend-stat-dot" style="background:' + palette.dark + ';"></span>' +
+          '<span class="legend-stat-label">' + escapeHtml(SHORT_LABELS[party]) + "</span>" +
+          '<span class="legend-stat-count">' + formatNumber(winCounts[party]) + " " + AREA_LABEL_VISIBLE_PLURAL + "</span>";
+        summaryEl.appendChild(stat);
+      }
+      return summaryEl;
+    }
+
+    function renderPartyScales(shadeStops) {
+      const stops = Array.isArray(shadeStops) && shadeStops.length ? shadeStops : TURNOUT_SHADE_STOPS;
+      const fragment = document.createDocumentFragment();
+      for (const party of PARTY_KEYS) {
+        const palette = PARTY_PALETTES[party];
+        const item = document.createElement("div");
+        item.className = "legend-item";
+        const scale = stops
+          .map((stop) => {
+            const stepColor = interpolateHex(palette.light, palette.dark, stop);
+            return '<span class="legend-step" style="background:' + stepColor + ';"></span>';
+          })
+          .join("");
+        item.innerHTML =
+          '<span class="legend-party">' + escapeHtml(PARTY_LABELS[party] || party) + "</span>" +
+          '<span class="legend-scale">' + scale + "</span>";
+        fragment.appendChild(item);
+      }
+      return fragment;
+    }
+
+    function renderMarginLegend() {
+      ui.legend.innerHTML = "";
+
+      const title = document.createElement("div");
+      title.className = "legend-title";
+      title.textContent = VIEW_LEVEL === "constituency" ? "আসনভিত্তিক জয়ের ব্যবধান" : "জয়ের ব্যবধান";
+      ui.legend.appendChild(title);
+
+      const note = document.createElement("div");
+      note.className = "legend-note";
+      note.textContent = "বিজয়ী পক্ষ অনুযায়ী রঙ। বিজয়ী ও রানার-আপের ব্যবধান অনুযায়ী গাঢ়তা।";
+      ui.legend.appendChild(note);
+
+      const bins = document.createElement("div");
+      bins.className = "legend-bins";
+      const labels = appState.marginScale && appState.marginScale.labels
+        ? appState.marginScale.labels
+        : [];
+      bins.textContent =
+        "ব্যবধানের ধাপ (" +
+        formatRangeValue(MARGIN_SCALE_RANGE.min, 1) +
+        "\u2013" +
+        formatRangeValue(MARGIN_SCALE_RANGE.max, 1) +
+        " পয়েন্ট): " +
+        labels.join(" | ");
+      ui.legend.appendChild(bins);
+
+      ui.legend.appendChild(renderPartyScales(MARGIN_SHADE_STOPS));
+
+      const summary = buildLegendSummary();
+      if (summary) {
+        ui.legend.appendChild(summary);
+      }
+    }
+
+    function renderTurnoutLegend() {
+      ui.legend.innerHTML = "";
+
+      const title = document.createElement("div");
+      title.className = "legend-title";
+      title.textContent = VIEW_LEVEL === "constituency" ? "আসনভিত্তিক ভোটার উপস্থিতি" : "ভোটার উপস্থিতি";
+      ui.legend.appendChild(title);
+
+      const note = document.createElement("div");
+      note.className = "legend-note";
+      note.textContent = "বিজয়ী পক্ষ অনুযায়ী রঙ। বৈধ ভোট বনাম নিবন্ধিত ভোটারের অনুপাত অনুযায়ী গাঢ়তা।";
+      ui.legend.appendChild(note);
+
+      const bins = document.createElement("div");
+      bins.className = "legend-bins";
+      const labels = appState.turnoutScale && appState.turnoutScale.labels
+        ? appState.turnoutScale.labels
+        : [];
+      bins.textContent =
+        "উপস্থিতির ধাপ (" +
+        formatRangeValue(TURNOUT_SCALE_RANGE.min, 1) +
+        "\u2013" +
+        formatRangeValue(TURNOUT_SCALE_RANGE.max, 1) +
+        "%): " +
+        labels.join(" | ");
+      ui.legend.appendChild(bins);
+
+      ui.legend.appendChild(renderPartyScales(TURNOUT_SHADE_STOPS));
+
+      const summary = buildLegendSummary();
+      if (summary) {
+        ui.legend.appendChild(summary);
+      }
+    }
+
+    function setLoadingLabel(text) {
+      const el = document.getElementById("loadingLabel");
+      if (el) el.textContent = text;
+    }
+
+    function hideLoadingOverlay() {
+      const overlay = document.getElementById("loadingOverlay");
+      if (!overlay) return;
+      overlay.classList.add("hidden");
+      overlay.addEventListener("transitionend", () => overlay.classList.add("gone"), { once: true });
+    }
+
+    async function loadDefaultCsv() {
+      // Fast path: external prebuilt base64 dict keeps HTML tiny for faster first paint.
+      setLoadingLabel("Loading map data\u2026");
+      const dictCandidates = VIEW_LEVEL === "constituency"
+        ? [INLINE_CONSTITUENCY_DICT_FILE]
+        : (isTouchLikeDevice()
+          ? [INLINE_DICT_FILE_TOUCH, INLINE_DICT_FILE]
+          : [INLINE_DICT_FILE]);
+
+      for (const dictFile of dictCandidates) {
+        try {
+          const dictResp = await fetch(dictFile, { cache: "no-cache" });
+          if (!dictResp.ok) {
+            continue;
+          }
+          const base64 = await dictResp.text();
+          if (base64 && base64.trim()) {
+            await loadInlineData(base64, {
+              touchSimplified: dictFile === INLINE_DICT_FILE_TOUCH
+            });
+            return;
+          }
+        } catch (error) {
+          console.warn("Dict file unavailable (" + dictFile + "), trying fallback:", error);
+        }
+      }
+
+      // Fallback: check legacy global variable
+      if (typeof _INLINE_DATA !== "undefined") {
+        try {
+          await loadInlineData(_INLINE_DATA, { touchSimplified: false });
+          return;
+        } catch (error) {
+          console.warn("Inline data variable unavailable, trying CSV:", error);
+        }
+      }
+      setStatus("Loading source CSV...");
+      setLoadingLabel("Fetching data\u2026");
+      for (const csvFile of CSV_FILES) {
+        try {
+          const response = await fetch(csvFile, { cache: "no-store" });
+          if (!response.ok) {
+            continue;
+          }
+          const buf = await response.arrayBuffer();
+          const csvText = new TextDecoder("utf-8").decode(buf);
+          await buildMapFromCsv(csvText, csvFile);
+          return;
+        } catch (error) {
+          console.warn("CSV fallback failed (" + csvFile + "):", error);
+        }
+      }
+      setStatus("Could not load CSV.");
+    }
+
+    // Runs atob() + JSON.parse() inside an inline Web Worker so the main thread
+    // stays free (spinner animates, touches respond) during the heavy decode phase.
+    // Falls back to synchronous decode if Workers or Blob URLs are unavailable.
+    function decodeBase64WithWorker(base64) {
+      return new Promise(function(resolve, reject) {
+        // We use TextDecoder to correctly handle UTF-8 characters (like Bengali)
+        // that are packed into the Base64 binary string.
+        var src =
+          "self.onmessage=function(e){" +
+            "try{" +
+              "var bin = atob(String(e.data).trim());" +
+              "var buf = new Uint8Array(bin.length);" +
+              "for(var i=0; i<bin.length; i++) buf[i] = bin.charCodeAt(i);" +
+              "var json = new TextDecoder('utf-8').decode(buf);" +
+              "self.postMessage({ok:true,data:JSON.parse(json)});" +
+            "}catch(ex){" +
+              "self.postMessage({ok:false,err:String(ex.message||ex)});" +
+            "}" +
+          "};";
+
+        function syncDecode(b64) {
+          try {
+            var bin = atob(String(b64).trim());
+            var buf = new Uint8Array(bin.length);
+            for (var i = 0; i < bin.length; i++) buf[i] = bin.charCodeAt(i);
+            var json = new TextDecoder('utf-8').decode(buf);
+            return JSON.parse(json);
+          } catch (e) {
+            // Very old browser fallback (may garble Bengali but avoids crash)
+            return JSON.parse(atob(String(b64).trim()));
+          }
+        }
+
+        var worker;
+        try {
+          var blob = new Blob([src], { type: "text/javascript" });
+          var blobUrl = URL.createObjectURL(blob);
+          worker = new Worker(blobUrl);
+          URL.revokeObjectURL(blobUrl);
+        } catch (_) {
+          // Workers blocked by CSP or unsupported — fall back to sync
+          try { resolve(syncDecode(base64)); } catch (ex) { reject(ex); }
+          return;
+        }
+
+        worker.onmessage = function(e) {
+          worker.terminate();
+          if (e.data.ok) { resolve(e.data.data); } else { reject(new Error(e.data.err)); }
+        };
+        worker.onerror = function() {
+          worker.terminate();
+          // Worker crashed — fall back to sync
+          try { resolve(syncDecode(base64)); } catch (ex) { reject(ex); }
+        };
+
+        worker.postMessage(base64);
+      });
+    }
+
+    async function loadInlineData(base64, options) {
+      setStatus("Loading data...");
+      setLoadingLabel("Decoding data\u2026");
+      await nextFrame(); // let the label paint before worker starts
+      const raw = await decodeBase64WithWorker(base64); // off main thread
+      appState.touchDataSimplified = Boolean(options && options.touchSimplified);
+
+      setLoadingLabel("Processing " + AREA_LABEL_PLURAL + "\u2026");
+      await nextFrame();
+      const finalized = VIEW_LEVEL === "constituency"
+        ? finalizePreparedConstituencies(raw)
+        : finalizePreparedUnions(raw);
+      appState.unions          = finalized.unions;
+      appState.unionByKey      = new Map(finalized.unions.map((u) => [u.key, u]));
+      appState.bounds          = computeGeoBounds(finalized.unions);
+      appState.searchEntries   = buildSearchEntries(finalized.unions);
+      appState.marginScale     = finalized.marginScale;
+      appState.turnoutScale    = finalized.turnoutScale;
+      appState.currentSelection = null;
+      appState.selectedKeys    = new Set();
+      initLegend();
+      resetDrilldownState();
+
+      setLoadingLabel("Rendering map\u2026");
+      await nextFrame();
+      await renderMap();
+      setStatus("Map ready.");
+      hideLoadingOverlay();
+      schedulePrewarmTouchPathStrings();
+    }
+
+    async function buildMapFromCsv(csvText, sourceLabel) {
+      setStatus("Parsing " + sourceLabel + "...");
+      await nextFrame();
+
+      const parsed = VIEW_LEVEL === "constituency"
+        ? await aggregateConstituencyData(csvText)
+        : await aggregateUnionData(csvText);
+      const finalized = VIEW_LEVEL === "constituency"
+        ? finalizeConstituencies(parsed.constituencyMap)
+        : finalizeUnions(parsed.unionMap);
+
+      appState.unions = finalized.unions;
+      appState.unionByKey = new Map(finalized.unions.map((union) => [union.key, union]));
+      appState.bounds = computeGeoBounds(finalized.unions);
+      appState.searchEntries = buildSearchEntries(finalized.unions);
+      appState.marginScale = finalized.marginScale;
+      appState.turnoutScale = finalized.turnoutScale;
+      appState.touchDataSimplified = false;
+      appState.currentSelection = null;
+      appState.selectedKeys = new Set();
+
+      initLegend();
+      resetDrilldownState();
+      setLoadingLabel("Rendering map\u2026");
+      await nextFrame();
+      await renderMap();
+
+      setStatus("Map ready.");
+      hideLoadingOverlay();
+      schedulePrewarmTouchPathStrings();
+    }
+
+    async function aggregateUnionData(csvText) {
+      const unionMap = new Map();
+      let headers = null;
+      let rowCount = 0;
+      let lastProgressPaint = 0;
+
+      await parseCsvAsync(
+        csvText,
+        (row) => {
+          if (!headers) {
+            headers = row.map((name, index) => normalizeHeader(name, index));
+            return;
+          }
+
+          if (row.length === 1 && row[0] === "") {
+            return;
+          }
+
+          rowCount += 1;
+          const record = rowToRecord(row, headers);
+
+          const unionName = safeTrim(record.Union);
+          const upazila = safeTrim(record.Upazila);
+          const district = safeTrim(record.District);
+          const geometryText = safeTrim(record.geometry);
+
+          if (!unionName || !geometryText) {
+            return;
+          }
+
+          const key = district + "||" + upazila + "||" + unionName;
+          let union = unionMap.get(key);
+          if (!union) {
+            union = {
+              key,
+              division: safeTrim(record.division),
+              union: unionName,
+              upazila,
+              district,
+              totals: blankTotals(),
+              centerIds: new Set(),
+              constituencyNames: new Set(),
+              total_voters: 0,
+              valid_votes: 0,
+              geometry: null
+            };
+            unionMap.set(key, union);
+          }
+
+          const centerId = safeTrim(record.center_id);
+          if (centerId) {
+            union.centerIds.add(centerId);
+          }
+
+          const constituencyName = safeTrim(
+            record.constituency_name_en || record.constituency_name
+          );
+          if (constituencyName) {
+            union.constituencyNames.add(constituencyName);
+          }
+
+          for (const party of PARTY_KEYS) {
+            const value = toNumber(record[party]);
+            union.totals[party] += value;
+          }
+
+          union.total_voters += toNumber(record.total_voters);
+          union.valid_votes += toNumber(record.valid_votes);
+
+          if (!union.geometry) {
+            const parsedGeometry = parseGeometry(geometryText);
+            if (parsedGeometry) {
+              union.geometry = parsedGeometry;
+            }
+          }
+        },
+        (progress) => {
+          const now = Date.now();
+          if (now - lastProgressPaint < 170 && !progress.done) {
+            return;
+          }
+          lastProgressPaint = now;
+          const pct = ((progress.index / progress.total) * 100).toFixed(1);
+          setStatus(
+            "Parsing CSV " + pct + "% (" + rowCount.toLocaleString("en-US") + " rows)"
+          );
+        }
+      );
+
+      return { unionMap, rowCount };
+    }
+
+    function finalizePreparedUnions(raw) {
+      const unionMap = new Map();
+      for (const item of raw) {
+        const totalVoters = toNumber(item.total_voters != null ? item.total_voters : item.totalVoters);
+        const validVotes = toNumber(item.valid_votes != null ? item.valid_votes : item.validVotes);
+        unionMap.set(item.key, {
+          key:               item.key,
+          division:          item.division || "",
+          union:             item.union,
+          upazila:           item.upazila,
+          district:          item.district,
+          totals:            item.totals,
+          centerIds:         { size: item.centerCount },
+          constituencyNames: new Set(item.constituencyNames),
+          total_voters:      totalVoters,
+          valid_votes:       validVotes,
+          geometry:          item.geometry,
+          supplement:        item.supplement || "",
+          supplement_note:   item.supplement_note || ""
+        });
+      }
+      return finalizeUnions(unionMap);
+    }
+
+    function finalizePreparedConstituencies(raw) {
+      const constituencyMap = new Map();
+      for (const item of raw) {
+        const constituency = safeTrim(item.constituency);
+        if (!constituency || !item.geometry) {
+          continue;
+        }
+        const totals = blankTotals();
+        for (const party of PARTY_KEYS) {
+          totals[party] = toNumber(item.totals && item.totals[party]);
+        }
+        constituencyMap.set(item.key || constituency, {
+          key: item.key || constituency,
+          constituency,
+          division: item.division || "",
+          districts: new Set(Array.isArray(item.districts) ? item.districts : []),
+          upazilas: new Set(Array.isArray(item.upazilas) ? item.upazilas : []),
+          totals,
+          centerIds: { size: toNumber(item.centerCount) },
+          unionKeys: { size: toNumber(item.unionCount) },
+          total_voters: toNumber(item.total_voters != null ? item.total_voters : item.totalVoters),
+          valid_votes: toNumber(item.valid_votes != null ? item.valid_votes : item.validVotes),
+          geometry: item.geometry
+        });
+      }
+      return finalizeConstituencies(constituencyMap);
+    }
+
+    async function aggregateConstituencyData(csvText) {
+      const constituencyMap = new Map();
+      let headers = null;
+      let rowCount = 0;
+      let lastProgressPaint = 0;
+
+      await parseCsvAsync(
+        csvText,
+        (row) => {
+          if (!headers) {
+            headers = row.map((name, index) => normalizeHeader(name, index));
+            return;
+          }
+
+          if (row.length === 1 && row[0] === "") {
+            return;
+          }
+
+          rowCount += 1;
+          const record = rowToRecord(row, headers);
+          const constituencyName = safeTrim(record.constituency_name_en || record.constituency_name);
+          const geometryText = safeTrim(record.geometry);
+          if (!constituencyName || !geometryText) {
+            return;
+          }
+
+          let constituency = constituencyMap.get(constituencyName);
+          if (!constituency) {
+            constituency = {
+              key: constituencyName,
+              constituency: constituencyName,
+              division: safeTrim(record.division),
+              districts: new Set(),
+              upazilas: new Set(),
+              totals: blankTotals(),
+              centerIds: new Set(),
+              unionKeys: new Set(),
+              total_voters: 0,
+              valid_votes: 0,
+              geometryParts: []
+            };
+            constituencyMap.set(constituencyName, constituency);
+          }
+
+          const district = safeTrim(record.District);
+          const upazila = safeTrim(record.Upazila);
+          const unionName = safeTrim(record.Union);
+          const centerId = safeTrim(record.center_id);
+
+          if (district) constituency.districts.add(district);
+          if (upazila) constituency.upazilas.add(upazila);
+          if (centerId) constituency.centerIds.add(centerId);
+
+          for (const party of PARTY_KEYS) {
+            constituency.totals[party] += toNumber(record[party]);
+          }
+
+          constituency.total_voters += toNumber(record.total_voters);
+          constituency.valid_votes += toNumber(record.valid_votes);
+
+          const unionKey = district + "||" + upazila + "||" + unionName;
+          if (unionName && !constituency.unionKeys.has(unionKey)) {
+            constituency.unionKeys.add(unionKey);
+            const parsedGeometry = parseGeometry(geometryText);
+            if (parsedGeometry) {
+              const parts = geometryToMultiPolygonCoordinates(parsedGeometry);
+              for (const part of parts) {
+                constituency.geometryParts.push(part);
+              }
+            }
+          }
+        },
+        (progress) => {
+          const now = Date.now();
+          if (now - lastProgressPaint < 170 && !progress.done) {
+            return;
+          }
+          lastProgressPaint = now;
+          const pct = ((progress.index / progress.total) * 100).toFixed(1);
+          setStatus(
+            "Parsing CSV " + pct + "% (" + rowCount.toLocaleString("en-US") + " rows)"
+          );
+        }
+      );
+
+      return { constituencyMap, rowCount };
+    }
+
+    function finalizeUnions(unionMap) {
+      const unions = [];
+
+      for (const union of unionMap.values()) {
+        if (!union.geometry) {
+          continue;
+        }
+
+        const winner = winnerFor(union.totals);
+        const leadInfo = leadInfoFor(union.totals, winner);
+        const constituencyNames = Array.from(union.constituencyNames).sort();
+        const winnerVotes = union.totals[winner] || 0;
+        const totalVoters = toNumber(union.total_voters);
+        const validVotes = toNumber(union.valid_votes);
+        unions.push({
+          key: union.key,
+          division: union.division || "",
+          union: union.union,
+          upazila: union.upazila,
+          district: union.district,
+          constituencyNames,
+          constituencyLabel: constituencyNames.join(" | "),
+          totals: union.totals,
+          centerCount: union.centerIds.size,
+          geometry: union.geometry,
+          winner,
+          winnerVotes,
+          runnerUp: leadInfo.runnerUp,
+          leadVotes: leadInfo.leadVotes,
+          marginPp: leadInfo.marginPp,
+          totalVoters,
+          validVotes,
+          turnoutPct: totalVoters > 0 ? (validVotes / totalVoters) * 100 : 0,
+          supplement: union.supplement || "",
+          supplementNote: union.supplement_note || "",
+          marginBucket: 0,
+          intensity: 0,
+          color: PARTY_PALETTES[winner].light,
+          screenBounds: null,
+          touchPathD: null
+        });
+      }
+
+      const marginScale = buildEqualIntervalScale(
+        unions.map((union) => union.marginPp),
+        {
+          suffix: " pp",
+          digits: 1,
+          bucketCount: MARGIN_SHADE_STOPS.length,
+          rangeMin: MARGIN_SCALE_RANGE.min,
+          rangeMax: MARGIN_SCALE_RANGE.max
+        }
+      );
+      const turnoutScale = buildEqualIntervalScale(
+        unions.map((union) => union.turnoutPct),
+        {
+          suffix: "%",
+          digits: 1,
+          bucketCount: TURNOUT_SHADE_STOPS.length,
+          rangeMin: TURNOUT_SCALE_RANGE.min,
+          rangeMax: TURNOUT_SCALE_RANGE.max
+        }
+      );
+      applyVictoryColorScale(unions, marginScale, MARGIN_SHADE_STOPS);
+      return { unions, marginScale, turnoutScale };
+    }
+
+    function finalizeConstituencies(constituencyMap) {
+      const unions = [];
+
+      for (const constituency of constituencyMap.values()) {
+        const geometry = constituency.geometry || geometryFromParts(constituency.geometryParts || []);
+        if (!geometry) {
+          continue;
+        }
+
+        const winner = winnerFor(constituency.totals);
+        const leadInfo = leadInfoFor(constituency.totals, winner);
+        const districtNames = Array.from(constituency.districts || []).sort();
+        const upazilaNames = Array.from(constituency.upazilas || []).sort();
+        const winnerVotes = constituency.totals[winner] || 0;
+        const totalVoters = toNumber(constituency.total_voters);
+        const validVotes = toNumber(constituency.valid_votes);
+
+        unions.push({
+          key: constituency.key,
+          division: constituency.division || "",
+          union: constituency.constituency,
+          upazila: upazilaNames.join(" | "),
+          district: districtNames.join(" | "),
+          districtNames,
+          upazilaNames,
+          constituencyNames: [constituency.constituency],
+          constituencyLabel: constituency.constituency,
+          totals: constituency.totals,
+          centerCount: constituency.centerIds ? constituency.centerIds.size : toNumber(constituency.centerCount),
+          unionCount: constituency.unionKeys ? constituency.unionKeys.size : toNumber(constituency.unionCount),
+          geometry,
+          winner,
+          winnerVotes,
+          runnerUp: leadInfo.runnerUp,
+          leadVotes: leadInfo.leadVotes,
+          marginPp: leadInfo.marginPp,
+          totalVoters,
+          validVotes,
+          turnoutPct: totalVoters > 0 ? (validVotes / totalVoters) * 100 : 0,
+          supplement: "",
+          supplementNote: "",
+          marginBucket: 0,
+          intensity: 0,
+          color: PARTY_PALETTES[winner].light,
+          screenBounds: null,
+          touchPathD: null,
+          areaType: "constituency"
+        });
+      }
+
+      const marginScale = buildEqualIntervalScale(
+        unions.map((union) => union.marginPp),
+        {
+          suffix: " pp",
+          digits: 1,
+          bucketCount: MARGIN_SHADE_STOPS.length,
+          rangeMin: MARGIN_SCALE_RANGE.min,
+          rangeMax: MARGIN_SCALE_RANGE.max
+        }
+      );
+      const turnoutScale = buildEqualIntervalScale(
+        unions.map((union) => union.turnoutPct),
+        {
+          suffix: "%",
+          digits: 1,
+          bucketCount: TURNOUT_SHADE_STOPS.length,
+          rangeMin: TURNOUT_SCALE_RANGE.min,
+          rangeMax: TURNOUT_SCALE_RANGE.max
+        }
+      );
+      applyVictoryColorScale(unions, marginScale, MARGIN_SHADE_STOPS);
+      return { unions, marginScale, turnoutScale };
+    }
+
+    function geometryToMultiPolygonCoordinates(geometry) {
+      if (!geometry || !geometry.type || !geometry.coordinates) {
+        return [];
+      }
+      if (geometry.type === "Polygon") {
+        return [geometry.coordinates];
+      }
+      if (geometry.type === "MultiPolygon") {
+        return geometry.coordinates;
+      }
+      return [];
+    }
+
+    function geometryFromParts(parts) {
+      if (!Array.isArray(parts) || parts.length === 0) {
+        return null;
+      }
+      if (parts.length === 1) {
+        return { type: "Polygon", coordinates: parts[0] };
+      }
+      return { type: "MultiPolygon", coordinates: parts };
+    }
+
+    function applyVictoryColorScale(unions, marginScale, marginShadeStops) {
+      const shadeStops = Array.isArray(marginShadeStops) && marginShadeStops.length
+        ? marginShadeStops
+        : MARGIN_SHADE_STOPS;
+      const scale = marginScale || buildEqualIntervalScale(
+        unions.map((union) => union.marginPp),
+        {
+          suffix: " pp",
+          digits: 1,
+          bucketCount: shadeStops.length,
+          rangeMin: MARGIN_SCALE_RANGE.min,
+          rangeMax: MARGIN_SCALE_RANGE.max
+        }
+      );
+      for (const union of unions) {
+        const palette = PARTY_PALETTES[union.winner];
+        const bucket = bucketIndexFor(union.marginPp, scale);
+        const shadeStop = shadeStops[bucket];
+        union.marginBucket = bucket;
+        union.intensity = shadeStop;
+        union.color = interpolateHex(palette.light, palette.dark, shadeStop);
+      }
+    }
+
+    function applyTurnoutColorScale(unions, turnoutScale, turnoutShadeStops) {
+      const shadeStops = Array.isArray(turnoutShadeStops) && turnoutShadeStops.length
+        ? turnoutShadeStops
+        : TURNOUT_SHADE_STOPS;
+      const scale = turnoutScale || buildEqualIntervalScale(
+        unions.map((union) => union.turnoutPct),
+        {
+          suffix: "%",
+          digits: 1,
+          bucketCount: shadeStops.length,
+          rangeMin: TURNOUT_SCALE_RANGE.min,
+          rangeMax: TURNOUT_SCALE_RANGE.max
+        }
+      );
+      for (const union of unions) {
+        const palette = PARTY_PALETTES[union.winner];
+        const bucket = bucketIndexFor(union.turnoutPct, scale);
+        const shadeStop = shadeStops[bucket];
+        union.marginBucket = bucket;
+        union.intensity = shadeStop;
+        union.color = interpolateHex(palette.light, palette.dark, shadeStop);
+      }
+    }
+
+    function bucketIndexFor(value, scale) {
+      if (!scale || !Number.isFinite(scale.min) || !Number.isFinite(scale.max)) {
+        return 0;
+      }
+      if (scale.max <= scale.min || !Number.isFinite(scale.step) || scale.step <= 0) {
+        return 0;
+      }
+      const numeric = Number.isFinite(value) ? value : scale.min;
+      const index = Math.floor((numeric - scale.min) / scale.step);
+      return clamp(index, 0, scale.bucketCount - 1);
+    }
+
+    function labelForValue(value, scale) {
+      if (!scale || !Array.isArray(scale.labels) || scale.labels.length === 0) {
+        return "N/A";
+      }
+      return scale.labels[bucketIndexFor(value, scale)] || "N/A";
+    }
+
+    function buildEqualIntervalScale(values, options) {
+      const opts = options || {};
+      const suffix = safeTrim(opts.suffix);
+      const digits = Number.isFinite(opts.digits) ? Math.max(0, opts.digits) : 1;
+      const bucketCount = Number.isFinite(opts.bucketCount)
+        ? Math.max(1, Math.floor(opts.bucketCount))
+        : 5;
+      let observedMin = Infinity;
+      let observedMax = -Infinity;
+
+      for (const raw of values) {
+        const value = Number(raw);
+        if (!Number.isFinite(value)) {
+          continue;
+        }
+        if (value < observedMin) observedMin = value;
+        if (value > observedMax) observedMax = value;
+      }
+
+      if (!Number.isFinite(observedMin)) observedMin = 0;
+      if (!Number.isFinite(observedMax)) observedMax = observedMin;
+
+      let min = Number.isFinite(opts.rangeMin) ? Number(opts.rangeMin) : observedMin;
+      let max = Number.isFinite(opts.rangeMax) ? Number(opts.rangeMax) : observedMax;
+
+      if (!Number.isFinite(min)) min = observedMin;
+      if (!Number.isFinite(max)) max = observedMax;
+      if (max <= min) {
+        max = min + 1;
+      }
+
+      const span = Math.max(0, max - min);
+      const step = span > 0 ? span / bucketCount : 1;
+      const labels = [];
+      const clippedLow = observedMin < min;
+      const clippedHigh = observedMax > max;
+
+      for (let i = 0; i < bucketCount; i += 1) {
+        const start = min + step * i;
+        const end = i === bucketCount - 1 ? max : min + step * (i + 1);
+        let label =
+          formatRangeValue(start, digits) +
+          "\u2013" +
+          formatRangeValue(end, digits) +
+          suffix;
+
+        if (i === 0 && clippedLow) {
+          label = "\u2264" + formatRangeValue(end, digits) + suffix;
+        } else if (i === bucketCount - 1 && clippedHigh) {
+          label = "\u2265" + formatRangeValue(start, digits) + suffix;
+        }
+        labels.push(label);
+      }
+
+      return {
+        min,
+        max,
+        step,
+        bucketCount,
+        labels,
+        observedMin,
+        observedMax,
+        clippedLow,
+        clippedHigh
+      };
+    }
+
+    function buildSearchEntries(unions) {
+      if (VIEW_LEVEL === "constituency") {
+        return buildConstituencySearchEntries(unions);
+      }
+
+      const entries = [];
+      const divisionMap = new Map();
+      const upazilaMap = new Map();
+      const districtMap = new Map();
+      const constituencyMap = new Map();
+
+      for (const union of unions) {
+        entries.push({
+          type: "union",
+          label: union.union + ", " + union.upazila + ", " + union.district,
+          keys: [union.key],
+          unionCount: 1,
+          search: normalizeSearch(union.union + " " + union.upazila + " " + union.district + " " + (union.division || ""))
+        });
+
+        if (union.division) {
+          let divisionEntry = divisionMap.get(union.division);
+          if (!divisionEntry) {
+            divisionEntry = {
+              type: "division",
+              label: union.division,
+              keys: [],
+              unionCount: 0,
+              search: normalizeSearch(union.division)
+            };
+            divisionMap.set(union.division, divisionEntry);
+          }
+          divisionEntry.keys.push(union.key);
+          divisionEntry.unionCount += 1;
+        }
+
+        const upazilaKey = union.district + "||" + union.upazila;
+        let upazilaEntry = upazilaMap.get(upazilaKey);
+        if (!upazilaEntry) {
+          upazilaEntry = {
+            type: "upazila",
+            label: union.upazila + ", " + union.district,
+            keys: [],
+            unionCount: 0,
+            search: normalizeSearch(union.upazila + " " + union.district)
+          };
+          upazilaMap.set(upazilaKey, upazilaEntry);
+        }
+        upazilaEntry.keys.push(union.key);
+        upazilaEntry.unionCount += 1;
+
+        let districtEntry = districtMap.get(union.district);
+        if (!districtEntry) {
+          districtEntry = {
+            type: "district",
+            label: union.district,
+            keys: [],
+            unionCount: 0,
+            search: normalizeSearch(union.district)
+          };
+          districtMap.set(union.district, districtEntry);
+        }
+        districtEntry.keys.push(union.key);
+        districtEntry.unionCount += 1;
+
+        for (const constName of union.constituencyNames) {
+          let constEntry = constituencyMap.get(constName);
+          if (!constEntry) {
+            constEntry = {
+              type: "constituency",
+              label: constName,
+              keys: [],
+              unionCount: 0,
+              search: normalizeSearch(constName)
+            };
+            constituencyMap.set(constName, constEntry);
+          }
+          constEntry.keys.push(union.key);
+          constEntry.unionCount += 1;
+        }
+      }
+
+      for (const entry of divisionMap.values()) {
+        entries.push(entry);
+      }
+      for (const entry of upazilaMap.values()) {
+        entries.push(entry);
+      }
+      for (const entry of districtMap.values()) {
+        entries.push(entry);
+      }
+      for (const entry of constituencyMap.values()) {
+        entries.push(entry);
+      }
+
+      return entries;
+    }
+
+    function buildConstituencySearchEntries(unions) {
+      const entries = [];
+      const divisionMap = new Map();
+      const districtMap = new Map();
+
+      for (const union of unions) {
+        entries.push({
+          type: "constituency",
+          label: union.constituencyLabel,
+          keys: [union.key],
+          unionCount: union.unionCount || 0,
+          search: normalizeSearch(
+            union.constituencyLabel + " " + (union.districtNames || []).join(" ") + " " + (union.division || "")
+          )
+        });
+
+        if (union.division) {
+          let divisionEntry = divisionMap.get(union.division);
+          if (!divisionEntry) {
+            divisionEntry = {
+              type: "division",
+              label: union.division,
+              keys: [],
+              unionCount: 0,
+              search: normalizeSearch(union.division)
+            };
+            divisionMap.set(union.division, divisionEntry);
+          }
+          divisionEntry.keys.push(union.key);
+          divisionEntry.unionCount += 1;
+        }
+
+        for (const districtName of union.districtNames || []) {
+          let districtEntry = districtMap.get(districtName);
+          if (!districtEntry) {
+            districtEntry = {
+              type: "district",
+              label: districtName,
+              keys: [],
+              unionCount: 0,
+              search: normalizeSearch(districtName)
+            };
+            districtMap.set(districtName, districtEntry);
+          }
+          districtEntry.keys.push(union.key);
+          districtEntry.unionCount += 1;
+        }
+      }
+
+      for (const entry of divisionMap.values()) {
+        entries.push(entry);
+      }
+      for (const entry of districtMap.values()) {
+        entries.push(entry);
+      }
+
+      return entries;
+    }
+
+    function showSuggestions(rawQuery) {
+      const query = normalizeSearch(rawQuery);
+      if (!query) {
+        hideSuggestions();
+        return;
+      }
+
+      const matches = findMatches(query, appState.searchEntries, 10);
+      appState.visibleSuggestions = matches;
+      renderSuggestions(matches);
+    }
+
+    function findMatches(query, entries, limit) {
+      const tokens = query.split(" ").filter(Boolean);
+      const typeRank = { union: 0, upazila: 1, constituency: 1.5, district: 2, division: 2.3 };
+      const ranked = [];
+
+      for (const entry of entries) {
+        if (appState.searchFilter !== "all" && entry.type !== appState.searchFilter) {
+          continue;
+        }
+        if (!tokens.every((token) => entry.search.includes(token))) {
+          continue;
+        }
+
+        let score = 2;
+        if (entry.search.startsWith(query)) {
+          score = 0;
+        } else if (entry.search.includes(query)) {
+          score = 1;
+        }
+
+        score += typeRank[entry.type] * 0.12;
+        score += Math.min(0.35, entry.label.length / 200);
+
+        ranked.push({ entry, score });
+      }
+
+      ranked.sort((a, b) => a.score - b.score);
+      return ranked.slice(0, limit).map((item) => item.entry);
+    }
+
+    function renderSuggestions(matches) {
+      ui.suggestions.innerHTML = "";
+      if (matches.length === 0) {
+        hideSuggestions();
+        return;
+      }
+
+      for (const entry of matches) {
+        const li = document.createElement("li");
+        const button = document.createElement("button");
+        button.className = "suggest-btn";
+        button.type = "button";
+
+        const metaLabel =
+          SEARCH_TYPE_LABEL[entry.type] +
+          " • " +
+          entry.unionCount.toLocaleString("en-US") +
+          " " + AREA_LABEL_VISIBLE_PLURAL;
+
+        button.innerHTML =
+          "<span>" + escapeHtml(entry.label) + "</span>" +
+          '<span class="suggest-meta">' + escapeHtml(metaLabel) + "</span>";
+
+        button.addEventListener("click", () => {
+          selectSuggestion(entry);
+        });
+
+        li.appendChild(button);
+        ui.suggestions.appendChild(li);
+      }
+
+      ui.suggestions.hidden = false;
+
+      // Portal to <body> on all screen sizes — sidebar has overflow-y:auto on desktop
+      // and overflow:hidden on mobile, both of which clip absolute children
+      const rect = ui.searchInput.getBoundingClientRect();
+      document.body.appendChild(ui.suggestions);
+      Object.assign(ui.suggestions.style, {
+        position: "fixed",
+        top:      (rect.bottom + 6) + "px",
+        left:     rect.left + "px",
+        width:    rect.width + "px",
+        right:    "auto",
+        zIndex:   "9999"
+      });
+    }
+
+    function selectSuggestion(entry) {
+      ui.searchInput.value = entry.label;
+      hideSuggestions();
+      hideMobileBottomUntilReset();
+      const isSingleUnion = entry && Array.isArray(entry.keys) && entry.keys.length === 1;
+      hideMobileTooltip();
+      const resolvedUnion = entry && Array.isArray(entry.keys) && entry.keys.length > 0
+        ? getUnionByKey(entry.keys[0])
+        : null;
+      if (resolvedUnion) {
+        if (entry.type === "division") {
+          setDrilldownPath({ division: resolvedUnion.division || entry.label });
+        } else if (entry.type === "district") {
+          setDrilldownPath({
+            division: resolvedUnion.division || "",
+            district: entry.label
+          });
+        } else if (entry.type === "constituency") {
+          setDrilldownPath({
+            division: resolvedUnion.division || "",
+            district: resolvedUnion.district || "",
+            constituency: entry.label
+          });
+        } else {
+          setDrilldownPath({
+            division: resolvedUnion.division || "",
+            district: resolvedUnion.district || "",
+            constituency: getUnionConstituencyName(resolvedUnion)
+          });
+        }
+      }
+      if (!isNarrowScreen() && !isTouchLikeDevice()) {
+        focusEntry(entry, true, false, { gentle: true, minBaseFraction: 0.24, maxStepIn: 0.9 });
+        if (isSingleUnion) {
+          // Show immediately so selection is obvious, then re-anchor after camera settle.
+          showTooltipForEntry(entry, false);
+          showTooltipForEntry(entry, true);
+        }
+        return;
+      }
+      appState.currentSelection = entry;
+      applySelection(entry.keys || []);
+      hideTooltip();
+      if (isSingleUnion) {
+        showTooltipForEntry(entry, false);
+      }
+      setStatus("Selected " + entry.label);
+    }
+
+    function hideSuggestions() {
+      appState.visibleSuggestions = [];
+      ui.suggestions.hidden = true;
+      ui.suggestions.innerHTML = "";
+      // Return from portal and clear inline styles
+      if (ui.suggestions.parentNode !== suggestionPortalParent) {
+        suggestionPortalParent.appendChild(ui.suggestions);
+      }
+      Object.assign(ui.suggestions.style, {
+        position: "", top: "", left: "", width: "", right: "", zIndex: ""
+      });
+    }
+
+    function syncSearchFilterSelect() {
+      const searchFilterSelect = document.getElementById("searchFilterSelect");
+      if (searchFilterSelect) {
+        searchFilterSelect.value = appState.searchFilter;
+      }
+    }
+
+    function getUnionByKey(key) {
+      if (!key) {
+        return null;
+      }
+      return appState.unionByKey.get(key) || null;
+    }
+
+    function getUnionConstituencyName(union) {
+      if (!union) {
+        return "";
+      }
+      if (union.constituencyLabel) {
+        return union.constituencyLabel;
+      }
+      if (Array.isArray(union.constituencyNames) && union.constituencyNames.length > 0) {
+        return union.constituencyNames[0];
+      }
+      return "";
+    }
+
+    function matchesConstituency(union, constituency) {
+      if (!union || !constituency) {
+        return false;
+      }
+      if (getUnionConstituencyName(union) === constituency) {
+        return true;
+      }
+      return Array.isArray(union.constituencyNames) && union.constituencyNames.includes(constituency);
+    }
+
+    function countMatchingUnions(predicate) {
+      let total = 0;
+      for (const union of appState.unions) {
+        if (predicate(union)) {
+          total += 1;
+        }
+      }
+      return total;
+    }
+
+    function getDrilldownLevel() {
+      if (!appState.drilldown.division) {
+        return "division";
+      }
+      if (!appState.drilldown.district) {
+        return "district";
+      }
+      if (!appState.drilldown.constituency) {
+        return "constituency";
+      }
+      return "union";
+    }
+
+    function getDrilldownPathLabel() {
+      const parts = [];
+      if (appState.drilldown.division) parts.push(appState.drilldown.division);
+      if (appState.drilldown.district) parts.push(appState.drilldown.district);
+      if (appState.drilldown.constituency) parts.push(appState.drilldown.constituency);
+      return parts.join(" · ");
+    }
+
+    function collectDrilldownKeys() {
+      const keys = [];
+      for (const union of appState.unions) {
+        if (appState.drilldown.division && union.division !== appState.drilldown.division) {
+          continue;
+        }
+        if (appState.drilldown.district && union.district !== appState.drilldown.district) {
+          continue;
+        }
+        if (appState.drilldown.constituency && !matchesConstituency(union, appState.drilldown.constituency)) {
+          continue;
+        }
+        keys.push(union.key);
+      }
+      return keys;
+    }
+
+    function syncDrilldownSelection() {
+      const keys = collectDrilldownKeys();
+      const level = getDrilldownLevel();
+      appState.currentSelection = {
+        type: level,
+        label: getDrilldownPathLabel() || (level === "division" ? "বিভাগ" : ""),
+        keys,
+        unionCount: keys.length
+      };
+      
+      // If we are at the top level (division selection), do not highlight the whole map
+      if (level === "division") {
+        applySelection([]);
+      } else {
+        applySelection(keys);
+        if (appState.currentSelection) {
+          focusEntry(appState.currentSelection, true);
+        }
+      }
+    }
+
+    function setDrilldownPath(nextPath) {
+      appState.drilldown = {
+        division: nextPath.division || "",
+        district: nextPath.district || "",
+        constituency: nextPath.constituency || ""
+      };
+      syncDrilldownSelection();
+      renderDrilldownPanel();
+    }
+
+    function resetDrilldownState() {
+      appState.drilldown = {
+        division: "",
+        district: "",
+        constituency: ""
+      };
+      syncDrilldownSelection();
+      renderDrilldownPanel();
+    }
+
+    function getDrilldownOptions() {
+      const level = getDrilldownLevel();
+      if (level === "division") {
+        const map = new Map();
+        for (const union of appState.unions) {
+          if (!union.division || map.has(union.division)) {
+            continue;
+          }
+          map.set(union.division, {
+            label: union.division,
+            meta: "",
+            keys: collectKeysForScope({ division: union.division }),
+            union
+          });
+        }
+        return Array.from(map.values()).sort((a, b) => a.label.localeCompare(b.label));
+      }
+
+      if (level === "district") {
+        const map = new Map();
+        for (const union of appState.unions) {
+          if (union.division !== appState.drilldown.division || !union.district || map.has(union.district)) {
+            continue;
+          }
+          map.set(union.district, {
+            label: union.district,
+            meta: "",
+            keys: collectKeysForScope({ division: union.division, district: union.district }),
+            union
+          });
+        }
+        return Array.from(map.values()).sort((a, b) => a.label.localeCompare(b.label));
+      }
+
+      if (level === "constituency") {
+        const map = new Map();
+        for (const union of appState.unions) {
+          if (union.division !== appState.drilldown.division || union.district !== appState.drilldown.district) {
+            continue;
+          }
+          for (const name of union.constituencyNames || []) {
+            if (!name || map.has(name)) {
+              continue;
+            }
+            map.set(name, {
+              label: name,
+              meta: "",
+              keys: collectKeysForScope({ division: union.division, district: union.district, constituency: name }),
+              union
+            });
+          }
+        }
+        return Array.from(map.values()).sort((a, b) => a.label.localeCompare(b.label));
+      }
+
+      const options = [];
+      for (const union of appState.unions) {
+        if (
+          union.division !== appState.drilldown.division ||
+          union.district !== appState.drilldown.district ||
+          !matchesConstituency(union, appState.drilldown.constituency)
+        ) {
+          continue;
+        }
+        options.push({
+          label: union.union,
+          meta: union.upazila ? `${union.upazila}, ${union.district}` : union.district,
+          keys: [union.key],
+          union
+        });
+      }
+      return options.sort((a, b) => a.label.localeCompare(b.label));
+    }
+
+    function collectKeysForScope(scope) {
+      const keys = [];
+      for (const union of appState.unions) {
+        if (scope.division && union.division !== scope.division) {
+          continue;
+        }
+        if (scope.district && union.district !== scope.district) {
+          continue;
+        }
+        if (scope.constituency && !matchesConstituency(union, scope.constituency)) {
+          continue;
+        }
+        keys.push(union.key);
+      }
+      return keys;
+    }
+
+    function renderDrilldownPanel() {
+      if (!ui.drilldownGrid || !ui.drilldownBackBtn) {
+        return;
+      }
+
+      const level = getDrilldownLevel();
+      const stepsContainer = document.getElementById("drilldownSteps");
+      
+      if (stepsContainer) {
+        stepsContainer.innerHTML = "";
+        const steps = [
+          { id: 1, label: "বিভাগ", value: appState.drilldown.division, placeholder: "বিভাগ নির্বাচন করুন", targetLevel: "division" },
+          { id: 2, label: "জেলা", value: appState.drilldown.district, placeholder: "জেলা নির্বাচন করুন", targetLevel: "district" },
+          { id: 3, label: "নির্বাচনী আসন", value: appState.drilldown.constituency, placeholder: "আসন নির্বাচন করুন", targetLevel: "constituency" }
+        ];
+
+        steps.forEach(step => {
+          const stepEl = document.createElement("div");
+          stepEl.className = "drilldown-step";
+          if (level === step.targetLevel) stepEl.classList.add("active");
+          if (step.value) stepEl.classList.add("selected");
+          
+          const isEnabled = (step.id === 1) || 
+                            (step.id === 2 && appState.drilldown.division) || 
+                            (step.id === 3 && appState.drilldown.district);
+
+          if (!isEnabled) stepEl.classList.add("disabled");
+
+          stepEl.innerHTML = `
+            <div class="drilldown-step-number">${step.id}</div>
+            <div class="drilldown-step-content">
+              <span class="drilldown-step-label">${step.label}</span>
+              <select class="drilldown-step-select" ${!isEnabled ? 'disabled' : ''}>
+                <option value="">${step.placeholder}</option>
+              </select>
+            </div>
+          `;
+
+          const select = stepEl.querySelector('select');
+          const options = getOptionsForLevel(step.targetLevel);
+          options.forEach(opt => {
+            const option = document.createElement('option');
+            option.value = opt;
+            option.textContent = opt;
+            if (opt === step.value) option.selected = true;
+            select.appendChild(option);
+          });
+
+          select.addEventListener('change', (e) => {
+            const val = e.target.value;
+            if (step.targetLevel === "division") {
+              setDrilldownPath({ division: val });
+            } else if (step.targetLevel === "district") {
+              setDrilldownPath({ division: appState.drilldown.division, district: val });
+            } else if (step.targetLevel === "constituency") {
+              setDrilldownPath({ division: appState.drilldown.division, district: appState.drilldown.district, constituency: val });
+            }
+          });
+
+          stepsContainer.appendChild(stepEl);
+        });
+      }
+
+      ui.drilldownBackBtn.disabled = level === "division";
+      ui.drilldownGrid.innerHTML = "";
+      // The grid is now only for the final level (unions)
+      if (level === "union") {
+        const options = getDrilldownOptions();
+        for (const option of options) {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "drilldown-item";
+          if (appState.currentSelection && appState.currentSelection.label === option.label) {
+            button.classList.add("active");
+          }
+          button.innerHTML =
+            '<span class="drilldown-item-label">' + escapeHtml(option.label) + '</span>' +
+            '<span class="drilldown-item-meta">' + escapeHtml(option.meta || "") + '</span>';
+          button.addEventListener("click", () => {
+            handleDrilldownSelection(option, level);
+          });
+          ui.drilldownGrid.appendChild(button);
+        }
+      }
+    }
+
+    function getOptionsForLevel(level) {
+      if (level === "division") {
+        const set = new Set();
+        appState.unions.forEach(u => u.division && set.add(u.division));
+        return Array.from(set).sort();
+      }
+      if (level === "district") {
+        const set = new Set();
+        appState.unions.forEach(u => {
+          if (u.division === appState.drilldown.division && u.district) set.add(u.district);
+        });
+        return Array.from(set).sort();
+      }
+      if (level === "constituency") {
+        const set = new Set();
+        appState.unions.forEach(u => {
+          if (u.division === appState.drilldown.division && u.district === appState.drilldown.district) {
+            (u.constituencyNames || []).forEach(name => name && set.add(name));
+          }
+        });
+        return Array.from(set).sort();
+      }
+      return [];
+    }
+
+    function handleDrilldownSelection(option, level) {
+      if (!option || !option.union) {
+        return;
+      }
+
+      ui.searchInput.value = option.label;
+
+      if (level === "division") {
+        setDrilldownPath({ division: option.label });
+        return;
+      }
+      if (level === "district") {
+        setDrilldownPath({ division: option.union.division || "", district: option.label });
+        return;
+      }
+      if (level === "constituency") {
+        setDrilldownPath({
+          division: option.union.division || "",
+          district: option.union.district || "",
+          constituency: option.label
+        });
+        return;
+      }
+
+      setDrilldownPath({
+        division: option.union.division || "",
+        district: option.union.district || "",
+        constituency: getUnionConstituencyName(option.union)
+      });
+      appState.currentSelection = {
+        type: "union",
+        label: option.label,
+        keys: [option.union.key],
+        unionCount: 1
+      };
+      ui.searchInput.value = option.label;
+      hideSuggestions();
+      applySelection([option.union.key]);
+      if (appState.currentSelection) {
+        focusEntry(appState.currentSelection, true);
+      }
+      showTooltipForEntry(appState.currentSelection, false);
+      renderDrilldownPanel();
+    }
+
+    function ensurePathForKey(key) {
+      const existing = appState.pathByKey.get(key);
+      if (existing) {
+        return existing;
+      }
+      if (!isTouchLikeDevice()) {
+        return null;
+      }
+      const union = appState.unionByKey.get(key);
+      return ensureTouchPath(union);
+    }
+
+    function ensureTouchPath(union) {
+      if (!union || !isTouchLikeDevice() || !appState.projector) {
+        return null;
+      }
+
+      let path = appState.pathByKey.get(union.key);
+      if (path) {
+        return path;
+      }
+
+      let built;
+      if (union.touchPathD) {
+        built = { d: union.touchPathD, bounds: union.screenBounds };
+      } else {
+        built = geometryToPathWithBounds(union.geometry, appState.projector, true);
+        if (!built || !built.d) {
+          return null;
+        }
+        union.touchPathD = built.d;
+        if (built.bounds && !union.screenBounds) {
+          union.screenBounds = built.bounds;
+        }
+      }
+
+      path = document.createElementNS(SVG_NS, "path");
+      path.setAttribute("d", built.d);
+      path.setAttribute("fill", union.color);
+      path.setAttribute("class", "union");
+      path.setAttribute("data-key", union.key);
+      path.setAttribute("data-hidden", "0");
+      if (appState.labelLayer && appState.labelLayer.parentNode === ui.map) {
+        ui.map.insertBefore(path, appState.labelLayer);
+      } else {
+        ui.map.appendChild(path);
+      }
+      appState.pathByKey.set(union.key, path);
+      return path;
+    }
+
+    function showTooltipForEntry(entry, deferForAnimation) {
+      if (!entry || !Array.isArray(entry.keys) || entry.keys.length !== 1) {
+        return;
+      }
+      const key = entry.keys[0];
+      const union = appState.unionByKey.get(key);
+      if (!union) {
+        return;
+      }
+
+      const render = () => {
+        const path = ensurePathForKey(key);
+        if (path) {
+          if (activePath && activePath !== path) {
+            activePath.classList.remove("active");
+          }
+          activePath = path;
+          activePath.classList.add("active");
+        }
+
+        showSelectionTooltip(union);
+      };
+
+      if (deferForAnimation) {
+        setTimeout(render, ZOOM_FOCUS_DURATION + 30);
+      } else {
+        render();
+      }
+    }
+
+    function focusEntry(entry, animate, silent, options) {
+      if (!entry || !entry.keys || entry.keys.length === 0) {
+        return;
+      }
+
+      appState.currentSelection = entry;
+      const targetBounds = boundsForKeys(entry.keys);
+      if (!targetBounds || !appState.baseViewBox) {
+        return;
+      }
+
+      const expanded = expandBounds(targetBounds, 0.2);
+      const fitted = fitBoundsToAspect(expanded, appState.baseViewBox.width / appState.baseViewBox.height);
+      let viewWidth = fitted.maxX - fitted.minX;
+      let viewHeight = fitted.maxY - fitted.minY;
+      const opts = options || {};
+      if (opts.gentle && appState.baseViewBox) {
+        const currentBox = appState.currentViewBox || appState.baseViewBox;
+        const minBaseFraction = Number.isFinite(opts.minBaseFraction)
+          ? opts.minBaseFraction
+          : (isNarrowScreen() ? 0.52 : 0.24);
+        const maxStepIn = Number.isFinite(opts.maxStepIn)
+          ? opts.maxStepIn
+          : (isNarrowScreen() ? 0.98 : 0.62);
+        const minWidth = Math.max(
+          appState.baseViewBox.width * minBaseFraction,
+          currentBox.width * maxStepIn
+        );
+        const minHeight = Math.max(
+          appState.baseViewBox.height * minBaseFraction,
+          currentBox.height * maxStepIn
+        );
+        viewWidth = Math.max(viewWidth, minWidth);
+        viewHeight = Math.max(viewHeight, minHeight);
+      }
+      const centerX = (fitted.minX + fitted.maxX) / 2;
+      const centerY = (fitted.minY + fitted.maxY) / 2;
+      const anchorRatioX = focusAnchorRatioX();
+      setViewBox({
+        x: centerX - viewWidth * anchorRatioX,
+        y: centerY - viewHeight * 0.5,
+        width: viewWidth,
+        height: viewHeight
+      }, animate, animate ? ZOOM_FOCUS_DURATION : 0);
+
+      if (entry.type !== "division") {
+        applySelection(entry.keys);
+      }
+      hideMobileBottomUntilReset();
+
+      if (!silent) {
+        setStatus("Focused on " + entry.label);
+      }
+    }
+
+    function resetView(animate) {
+      if (isTouchLikeDevice()) {
+        setPhoneDefaultView(animate);
+        return;
+      }
+      hideTooltip();
+      hideMobileTooltip();
+      appState.currentSelection = null;
+      applySelection([]);
+      if (!appState.baseViewBox) {
+        return;
+      }
+      setViewBox({
+        x: appState.baseViewBox.x,
+        y: appState.baseViewBox.y,
+        width: appState.baseViewBox.width,
+        height: appState.baseViewBox.height
+      }, animate, animate ? ZOOM_FOCUS_DURATION : 0);
+      setStatus("Map ready.");
+      if (!appState.mobileBottomLocked && !normalizeSearch(ui.searchInput.value)) {
+        setMobileBottomHidden(false);
+      }
+    }
+
+    function setPhoneDefaultView(animate) {
+      hideTooltip();
+      hideMobileTooltip();
+      appState.currentSelection = null;
+      applySelection([]);
+      if (!appState.baseViewBox) {
+        return;
+      }
+
+      const target = phoneDefaultViewBox(appState.baseViewBox);
+      if (!target) {
+        return;
+      }
+      setViewBox(target, Boolean(animate), animate ? ZOOM_FOCUS_DURATION : 0);
+      setStatus("Map ready.");
+      if (!appState.mobileBottomLocked && !normalizeSearch(ui.searchInput.value)) {
+        setMobileBottomHidden(false);
+      }
+    }
+
+    function phoneDefaultViewBox(base) {
+      if (!base) {
+        return null;
+      }
+      const factor = isPhoneScreen() ? PHONE_DEFAULT_ZOOM_FACTOR : TOUCH_DEFAULT_ZOOM_FACTOR;
+      const width = base.width * factor;
+      const height = base.height * factor;
+      return {
+        x: base.x + (base.width - width) / 2,
+        y: base.y + (base.height - height) / 2,
+        width,
+        height
+      };
+    }
+
+    function zoomBy(factor, animate, durationMs) {
+      if (!appState.baseViewBox || !appState.currentViewBox) {
+        return;
+      }
+
+      const rect = ui.map.parentElement.getBoundingClientRect();
+      zoomAtPoint(factor, rect.width / 2, rect.height / 2, animate, durationMs);
+    }
+
+    function focusAnchorRatioX() {
+      if (isNarrowScreen()) {
+        return 0.5;
+      }
+
+      const mapRect = ui.map.parentElement.getBoundingClientRect();
+      if (!mapRect.width) {
+        return 0.5;
+      }
+
+      const sidebarRect = ui.sidebar ? ui.sidebar.getBoundingClientRect() : null;
+      if (!sidebarRect) {
+        return 0.5;
+      }
+
+      const overlapRight = Math.min(mapRect.right, sidebarRect.right);
+      const overlapWidth = clamp(overlapRight - mapRect.left, 0, mapRect.width * 0.75);
+      if (overlapWidth <= 0) {
+        return 0.5;
+      }
+
+      const gutterPx = 24;
+      const usableStart = clamp(overlapWidth + gutterPx, 0, mapRect.width * 0.82);
+      const targetScreenX = usableStart + (mapRect.width - usableStart) * 0.5;
+      return clamp(targetScreenX / mapRect.width, 0.5, 0.74);
+    }
+
+    async function renderMap() {
+      ui.map.innerHTML = "";
+      // Re-inject accessible SVG metadata cleared by innerHTML reset
+      var svgTitle = document.createElementNS(SVG_NS, "title");
+      svgTitle.id = "mapTitle";
+      svgTitle.textContent = "Bangladesh union election map";
+      var svgDesc = document.createElementNS(SVG_NS, "desc");
+      svgDesc.id = "mapDesc";
+      svgDesc.textContent = "Interactive choropleth map showing Bangladesh 2026 election results by union, colored by winning party with shade intensity representing win margin or voter turnout.";
+      ui.map.appendChild(svgTitle);
+      ui.map.appendChild(svgDesc);
+      ui.map.classList.remove("is-dragging");
+      hideTooltip();
+      appState.pathByKey = new Map();
+      appState.labelLayer = null;
+      appState.districtAnchors = [];
+      appState.projector = null;
+      appState.touchVisibilityLastTs = 0;
+      appState.isDraggingMap = false;
+      appState.dragStartViewBox = null;
+      appState.dragMoved = false;
+      appState.suppressNextClick = false;
+      appState.touchId = null;
+      appState.pinchActive = false;
+      appState.pinchTouchIdA = null;
+      appState.pinchTouchIdB = null;
+      appState.pinchLastDistance = 0;
+      if (appState.viewBoxRafId) {
+        cancelAnimationFrame(appState.viewBoxRafId);
+        appState.viewBoxRafId = null;
+      }
+      appState.queuedViewBox = null;
+      if (appState.wheelRafId) {
+        cancelAnimationFrame(appState.wheelRafId);
+        appState.wheelRafId = null;
+      }
+      appState.wheelFactor = 1;
+      if (labelRenderTimer) {
+        clearTimeout(labelRenderTimer);
+        labelRenderTimer = null;
+      }
+
+      if (!appState.bounds || appState.unions.length === 0) {
+        return;
+      }
+
+      if (appState.sharpCommitTimer) {
+        clearTimeout(appState.sharpCommitTimer);
+        appState.sharpCommitTimer = null;
+      }
+      appState.committedViewBox = null;
+
+      const mapContainer = ui.map.parentElement;
+      const width = Math.max(420, Math.floor(mapContainer.clientWidth));
+      const height = Math.max(460, Math.floor(mapContainer.clientHeight));
+
+      appState.baseViewBox = { x: 0, y: 0, width, height };
+      const initialViewBox = isTouchLikeDevice()
+        ? phoneDefaultViewBox(appState.baseViewBox)
+        : { ...appState.baseViewBox };
+      appState.currentViewBox = initialViewBox || { ...appState.baseViewBox };
+      applyViewBox(appState.currentViewBox);
+
+      const project = createProjector(appState.bounds, width, height, 22);
+      appState.projector = project;
+      const touchRenderMode = isTouchLikeDevice();
+      const BATCH = touchRenderMode ? 360 : 500;
+      const total = appState.unions.length;
+
+      for (let i = 0; i < total; i += BATCH) {
+        const fragment = document.createDocumentFragment();
+        const end = Math.min(i + BATCH, total);
+
+        for (let j = i; j < end; j++) {
+          const union = appState.unions[j];
+          if (touchRenderMode) {
+            union.screenBounds = geometryToBounds(union.geometry, project);
+            union.touchPathD = null;
+            continue;
+          }
+
+          const built = geometryToPathWithBounds(union.geometry, project, false);
+          if (!built.d || !built.bounds) continue;
+
+          union.screenBounds = built.bounds;
+
+          const path = document.createElementNS(SVG_NS, "path");
+          path.setAttribute("d", built.d);
+          path.setAttribute("fill", union.color);
+          path.setAttribute("class", "union");
+          path.setAttribute("data-key", union.key);
+
+          appState.pathByKey.set(union.key, path);
+          fragment.appendChild(path);
+        }
+
+        if (!touchRenderMode) {
+          ui.map.appendChild(fragment);
+        }
+
+        // Yield to browser so partial map paints progressively
+        const pct = Math.round((end / total) * 100);
+        setLoadingLabel("Rendering map\u2026 " + pct + "%");
+        await nextFrame();
+      }
+
+      const labelLayer = document.createElementNS(SVG_NS, "g");
+      labelLayer.setAttribute("class", "map-label-layer");
+      ui.map.appendChild(labelLayer);
+      appState.labelLayer = labelLayer;
+      appState.districtAnchors = computeDistrictAnchors(appState.unions);
+      updateTouchVisiblePaths(appState.currentViewBox);
+
+      if (appState.currentSelection) {
+        if (isTouchLikeDevice()) {
+          applySelection(appState.currentSelection.keys || []);
+          setStatus("Selected " + appState.currentSelection.label);
+          scheduleLabelRender(110);
+          if (
+            appState.currentSelection.type === "union" &&
+            Array.isArray(appState.currentSelection.keys) &&
+            appState.currentSelection.keys.length === 1
+          ) {
+            showTooltipForEntry(appState.currentSelection, false);
+          }
+        } else {
+          focusEntry(appState.currentSelection, false, true);
+        }
+      } else {
+        appState.currentSelection = null;
+        applySelection([]);
+        setStatus("Map ready.");
+        scheduleLabelRender(110);
+        if (!appState.mobileBottomLocked && !normalizeSearch(ui.searchInput.value)) {
+          setMobileBottomHidden(false);
+        }
+      }
+    }
+
+    function applySelection(keys) {
+      const selected = new Set(keys || []);
+      appState.selectedKeys = selected;
+
+      if (isTouchLikeDevice() && selected.size > 0) {
+        for (const key of selected) {
+          ensurePathForKey(key);
+        }
+      }
+
+      for (const [key, path] of appState.pathByKey) {
+        path.classList.toggle("selected", selected.has(key));
+        path.classList.remove("dimmed");
+      }
+      updateTouchVisiblePaths(appState.currentViewBox);
+    }
+
+    function unionPathFromEventTarget(target) {
+      if (!target || typeof target.closest !== "function") {
+        return null;
+      }
+      const path = target.closest("path.union");
+      if (!path || path.ownerSVGElement !== ui.map) {
+        return null;
+      }
+      return path;
+    }
+
+    function onMapMouseMove(event) {
+      if (appState.isDraggingMap) {
+        return;
+      }
+
+      const path = unionPathFromEventTarget(event.target);
+      if (!path) {
+        hideTooltip();
+        return;
+      }
+
+      const key = path.getAttribute("data-key");
+      const union = appState.unionByKey.get(key);
+      if (!union) {
+        hideTooltip();
+        return;
+      }
+
+      if (activePath !== path) {
+        if (activePath) {
+          activePath.classList.remove("active");
+        }
+        activePath = path;
+        activePath.classList.add("active");
+        showTooltip(event, union);
+        return;
+      }
+
+      queueTooltipMove(event.clientX, event.clientY);
+    }
+
+    function onMapMouseLeave() {
+      if (appState.isDraggingMap) {
+        return;
+      }
+      hideTooltip();
+    }
+
+    function onMapMouseDown(event) {
+      if (isTouchLikeDevice()) {
+        return;
+      }
+      if (event.button !== 0) {
+        return;
+      }
+      if (!appState.baseViewBox || !appState.currentViewBox) {
+        return;
+      }
+
+      appState.isDraggingMap = true;
+      appState.dragStartX = event.clientX;
+      appState.dragStartY = event.clientY;
+      appState.dragStartViewBox = {
+        x: appState.currentViewBox.x,
+        y: appState.currentViewBox.y,
+        width: appState.currentViewBox.width,
+        height: appState.currentViewBox.height
+      };
+      appState.dragMoved = false;
+      ui.map.classList.add("is-dragging");
+      event.preventDefault();
+    }
+
+    function onWindowMouseMove(event) {
+      if (isTouchLikeDevice()) {
+        return;
+      }
+      if (!appState.isDraggingMap || !appState.dragStartViewBox || !appState.baseViewBox) {
+        return;
+      }
+
+      const rect = ui.map.parentElement.getBoundingClientRect();
+      if (rect.width <= 0 || rect.height <= 0) {
+        return;
+      }
+
+      const dx = event.clientX - appState.dragStartX;
+      const dy = event.clientY - appState.dragStartY;
+      if (!appState.dragMoved && (Math.abs(dx) > DRAG_THRESHOLD_PX || Math.abs(dy) > DRAG_THRESHOLD_PX)) {
+        appState.dragMoved = true;
+        hideTooltip();
+      }
+      if (!appState.dragMoved) {
+        return;
+      }
+
+      const unitsPerPxX = appState.dragStartViewBox.width / rect.width;
+      const unitsPerPxY = appState.dragStartViewBox.height / rect.height;
+      const target = {
+        x: appState.dragStartViewBox.x - dx * unitsPerPxX,
+        y: appState.dragStartViewBox.y - dy * unitsPerPxY,
+        width: appState.dragStartViewBox.width,
+        height: appState.dragStartViewBox.height
+      };
+      setViewBoxLive(target);
+    }
+
+    function onWindowMouseUp() {
+      if (isTouchLikeDevice()) {
+        return;
+      }
+      if (!appState.isDraggingMap) {
+        return;
+      }
+
+      const moved = appState.dragMoved;
+      appState.isDraggingMap = false;
+      appState.dragStartViewBox = null;
+      appState.dragMoved = false;
+      ui.map.classList.remove("is-dragging");
+
+      if (moved) {
+        appState.suppressNextClick = true;
+        scheduleLabelRender(80);
+      }
+    }
+
+    function onMapTouchStart(event) {
+      if (event.touches.length > 0) {
+        hideMobileBottomUntilReset();
+      }
+      if (!appState.baseViewBox || !appState.currentViewBox) {
+        return;
+      }
+
+      if (event.touches.length >= 2) {
+        startTouchPinch(event.touches[0], event.touches[1]);
+        appState.suppressNextClick = true;
+        return;
+      }
+
+      if (event.touches.length === 1) {
+        startTouchDrag(event.touches[0]);
+      }
+    }
+
+    function onMapTouchMove(event) {
+      if (appState.pinchActive) {
+        const touchA = findTouchById(event.touches, appState.pinchTouchIdA);
+        const touchB = findTouchById(event.touches, appState.pinchTouchIdB);
+        if (!touchA || !touchB) {
+          return;
+        }
+
+        const rect = appState.pinchRect || ui.map.parentElement.getBoundingClientRect();
+        if (rect.width <= 0 || rect.height <= 0) {
+          return;
+        }
+
+        const distance = touchDistance(touchA, touchB);
+        if (!Number.isFinite(distance) || distance <= 0) {
+          return;
+        }
+
+        const centerX = (touchA.clientX + touchB.clientX) / 2 - rect.left;
+        const centerY = (touchA.clientY + touchB.clientY) / 2 - rect.top;
+        if (appState.pinchLastDistance > 0) {
+          const factor = clamp(appState.pinchLastDistance / distance, 0.72, 1.38);
+          zoomAtPointLive(factor, centerX, centerY);
+          appState.suppressNextClick = true;
+        }
+        appState.pinchLastDistance = distance;
+        hideTooltip();
+        event.preventDefault();
+        return;
+      }
+
+      if (!appState.isDraggingMap || !appState.dragStartViewBox || !appState.baseViewBox) {
+        return;
+      }
+
+      const touch = findTouchById(event.touches, appState.touchId);
+      if (!touch) {
+        return;
+      }
+
+      const rect = appState.dragRect || ui.map.parentElement.getBoundingClientRect();
+      if (rect.width <= 0 || rect.height <= 0) {
+        return;
+      }
+
+      const dx = touch.clientX - appState.dragStartX;
+      const dy = touch.clientY - appState.dragStartY;
+      if (!appState.dragMoved && (Math.abs(dx) > DRAG_THRESHOLD_PX || Math.abs(dy) > DRAG_THRESHOLD_PX)) {
+        appState.dragMoved = true;
+        hideTooltip();
+      }
+      if (!appState.dragMoved) {
+        return;
+      }
+
+      event.preventDefault();
+      const unitsPerPxX = appState.dragStartViewBox.width / rect.width;
+      const unitsPerPxY = appState.dragStartViewBox.height / rect.height;
+      const target = {
+        x: appState.dragStartViewBox.x - dx * unitsPerPxX,
+        y: appState.dragStartViewBox.y - dy * unitsPerPxY,
+        width: appState.dragStartViewBox.width,
+        height: appState.dragStartViewBox.height
+      };
+      setViewBoxLive(target);
+    }
+
+    function onMapTouchEnd(event) {
+      if (appState.pinchActive) {
+        if (event.touches.length >= 2) {
+          startTouchPinch(event.touches[0], event.touches[1]);
+        } else if (event.touches.length === 1) {
+          clearTouchPinchState();
+          startTouchDrag(event.touches[0]);
+        } else {
+          clearTouchPinchState();
+          ui.map.classList.remove("is-dragging");
+          scheduleLabelRender(90);
+          updateTouchVisiblePaths(appState.currentViewBox);
+        }
+        appState.suppressNextClick = true;
+        if (event && typeof event.preventDefault === "function") {
+          event.preventDefault();
+        }
+        return;
+      }
+
+      if (!appState.isDraggingMap) {
+        return;
+      }
+      const ended = findTouchById(event.changedTouches, appState.touchId);
+      if (!ended) {
+        return;
+      }
+      finishMapDrag(event, true);
+    }
+
+    function onMapTouchCancel(event) {
+      if (appState.pinchActive) {
+        clearTouchPinchState();
+        ui.map.classList.remove("is-dragging");
+        scheduleLabelRender(90);
+        updateTouchVisiblePaths(appState.currentViewBox);
+        appState.suppressNextClick = true;
+        if (event && typeof event.preventDefault === "function") {
+          event.preventDefault();
+        }
+      }
+      if (appState.isDraggingMap) {
+        finishMapDrag(event, true);
+      }
+    }
+
+    function finishMapDrag(event, fromTouch) {
+      const moved = appState.dragMoved;
+      appState.isDraggingMap = false;
+      appState.dragStartViewBox = null;
+      appState.dragMoved = false;
+      appState.touchId = null;
+      appState.dragRect = null;
+      ui.map.classList.remove("is-dragging");
+
+      if (moved) {
+        appState.suppressNextClick = true;
+        scheduleLabelRender(80);
+        updateTouchVisiblePaths(appState.currentViewBox);
+        if (fromTouch && event && typeof event.preventDefault === "function") {
+          event.preventDefault();
+        }
+      }
+    }
+
+    function findTouchById(touchList, id) {
+      if (!touchList || typeof touchList.length !== "number") {
+        return null;
+      }
+      for (let i = 0; i < touchList.length; i += 1) {
+        const touch = touchList[i];
+        if (touch && touch.identifier === id) {
+          return touch;
+        }
+      }
+      return null;
+    }
+
+    function startTouchDrag(touch) {
+      if (!touch || !appState.currentViewBox) {
+        return;
+      }
+      appState.touchId = touch.identifier;
+      appState.isDraggingMap = true;
+      appState.dragRect = ui.map.parentElement.getBoundingClientRect();
+      appState.dragStartX = touch.clientX;
+      appState.dragStartY = touch.clientY;
+      appState.dragStartViewBox = {
+        x: appState.currentViewBox.x,
+        y: appState.currentViewBox.y,
+        width: appState.currentViewBox.width,
+        height: appState.currentViewBox.height
+      };
+      appState.dragMoved = false;
+      ui.map.classList.add("is-dragging");
+    }
+
+    function startTouchPinch(touchA, touchB) {
+      if (!touchA || !touchB) {
+        return;
+      }
+      appState.pinchActive = true;
+      appState.pinchRect = ui.map.parentElement.getBoundingClientRect();
+      appState.pinchTouchIdA = touchA.identifier;
+      appState.pinchTouchIdB = touchB.identifier;
+      appState.pinchLastDistance = touchDistance(touchA, touchB);
+      appState.isDraggingMap = false;
+      appState.dragStartViewBox = null;
+      appState.dragMoved = false;
+      appState.touchId = null;
+      ui.map.classList.add("is-dragging");
+      hideTooltip();
+    }
+
+    function clearTouchPinchState() {
+      appState.pinchActive = false;
+      appState.pinchTouchIdA = null;
+      appState.pinchTouchIdB = null;
+      appState.pinchLastDistance = 0;
+      appState.pinchRect = null;
+    }
+
+    function touchDistance(touchA, touchB) {
+      const dx = touchA.clientX - touchB.clientX;
+      const dy = touchA.clientY - touchB.clientY;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    function onMapClick(event) {
+      if (appState.suppressNextClick) {
+        appState.suppressNextClick = false;
+        return;
+      }
+      if (isNarrowScreen()) {
+        hideMobileBottomUntilReset();
+      }
+
+      const path = unionPathFromEventTarget(event.target);
+      if (!path) {
+        hideTooltip();
+        hideMobileTooltip();
+        if (isTouchLikeDevice()) {
+          appState.currentSelection = null;
+          applySelection([]);
+          ui.searchInput.value = "";
+          resetDrilldownState();
+        }
+        return;
+      }
+
+      const union = appState.unionByKey.get(path.getAttribute("data-key"));
+      if (!union) {
+        return;
+      }
+
+      const entry = {
+        type: "union",
+        label: union.union + ", " + union.upazila + ", " + union.district,
+        keys: [union.key],
+        unionCount: 1
+      };
+
+      const currentKey =
+        appState.currentSelection &&
+        appState.currentSelection.type === "union" &&
+        Array.isArray(appState.currentSelection.keys) &&
+        appState.currentSelection.keys.length === 1
+          ? appState.currentSelection.keys[0]
+          : null;
+      if (isTouchLikeDevice() && currentKey === union.key) {
+        hideTooltip();
+        hideMobileTooltip();
+        appState.currentSelection = null;
+        applySelection([]);
+        ui.searchInput.value = "";
+        hideMobileBottomUntilReset();
+        return;
+      }
+
+      ui.searchInput.value = entry.label;
+      hideMobileBottomUntilReset();
+      if (activePath && activePath !== path) {
+        activePath.classList.remove("active");
+      }
+      activePath = path;
+      activePath.classList.add("active");
+      setDrilldownPath({
+        division: union.division || "",
+        district: union.district || "",
+        constituency: getUnionConstituencyName(union)
+      });
+      showSelectionTooltip(union);
+      if (isTouchLikeDevice()) {
+        appState.currentSelection = entry;
+        applySelection(entry.keys);
+        setStatus("Selected " + entry.label);
+      } else {
+        focusEntry(
+          entry,
+          true,
+          false,
+          isNarrowScreen() ? { gentle: true, minBaseFraction: 0.56, maxStepIn: 0.98 } : undefined
+        );
+      }
+    }
+
+    function onMapWheel(event) {
+      if (!appState.baseViewBox || !appState.currentViewBox) {
+        return;
+      }
+
+      event.preventDefault();
+      hideMobileBottomUntilReset();
+
+      const rect = ui.map.parentElement.getBoundingClientRect();
+      appState.wheelPointX = event.clientX - rect.left;
+      appState.wheelPointY = event.clientY - rect.top;
+      appState.wheelFactor *= Math.exp(clamp(normalizeWheelDelta(event), -220, 220) * 0.0014);
+      appState.wheelFactor = clamp(appState.wheelFactor, 0.72, 1.42);
+
+      if (appState.wheelRafId) {
+        return;
+      }
+
+      appState.wheelRafId = requestAnimationFrame(() => {
+        appState.wheelRafId = null;
+        const factor = appState.wheelFactor;
+        appState.wheelFactor = 1;
+        zoomAtPoint(factor, appState.wheelPointX, appState.wheelPointY, false, 0);
+      });
+    }
+
+    function normalizeWheelDelta(event) {
+      let deltaY = Number(event.deltaY) || 0;
+      if (event.deltaMode === 1) {
+        deltaY *= 16;
+      } else if (event.deltaMode === 2) {
+        deltaY *= window.innerHeight;
+      }
+      return deltaY;
+    }
+
+    function computeDistrictAnchors(unions) {
+      const districtMap = new Map();
+
+      for (const union of unions) {
+        const bounds = union && union.screenBounds;
+        if (!bounds) {
+          continue;
+        }
+
+        const width = Math.max(1, bounds.maxX - bounds.minX);
+        const height = Math.max(1, bounds.maxY - bounds.minY);
+        const weight = width * height;
+        const cx = (bounds.minX + bounds.maxX) / 2;
+        const cy = (bounds.minY + bounds.maxY) / 2;
+
+        const districtNames = VIEW_LEVEL === "constituency" &&
+          Array.isArray(union.districtNames) &&
+          union.districtNames.length > 0
+          ? union.districtNames
+          : [union.district];
+
+        for (const districtName of districtNames) {
+          if (!districtName) {
+            continue;
+          }
+
+          let entry = districtMap.get(districtName);
+          if (!entry) {
+            entry = {
+              district: districtName,
+              sumX: 0,
+              sumY: 0,
+              weight: 0,
+              minX: Infinity,
+              maxX: -Infinity,
+              minY: Infinity,
+              maxY: -Infinity
+            };
+            districtMap.set(districtName, entry);
+          }
+
+          entry.sumX += cx * weight;
+          entry.sumY += cy * weight;
+          entry.weight += weight;
+          if (bounds.minX < entry.minX) entry.minX = bounds.minX;
+          if (bounds.maxX > entry.maxX) entry.maxX = bounds.maxX;
+          if (bounds.minY < entry.minY) entry.minY = bounds.minY;
+          if (bounds.maxY > entry.maxY) entry.maxY = bounds.maxY;
+        }
+      }
+
+      const anchors = [];
+      for (const entry of districtMap.values()) {
+        if (!entry.weight) {
+          continue;
+        }
+
+        const spanX = entry.maxX - entry.minX;
+        const spanY = entry.maxY - entry.minY;
+        const minSpanX = VIEW_LEVEL === "constituency" ? 8 : 18;
+        const minSpanY = VIEW_LEVEL === "constituency" ? 5 : 10;
+        if (spanX < minSpanX || spanY < minSpanY) {
+          continue;
+        }
+
+        anchors.push({
+          district: entry.district,
+          x: entry.sumX / entry.weight,
+          y: entry.sumY / entry.weight
+        });
+      }
+
+      return anchors;
+    }
+
+    function renderMapLabels() {
+      if (!appState.labelLayer) {
+        return;
+      }
+
+      appState.labelLayer.innerHTML = "";
+      if (isNarrowScreen()) {
+        return;
+      }
+
+      const selection = appState.currentSelection;
+      if (selection && Array.isArray(selection.keys) && selection.keys.length > 0) {
+        const bounds = boundsForKeys(selection.keys);
+        if (!bounds) {
+          return;
+        }
+        const zoomScale = currentZoomScale();
+        const targetScreenPx = isNarrowScreen() ? 18 : 22;
+        const dynamicSize = clamp(targetScreenPx / zoomScale, 0.7, 16);
+        const labelBoundsWidth = Math.max(1, bounds.maxX - bounds.minX);
+        const text = document.createElementNS(SVG_NS, "text");
+        text.setAttribute("class", "map-label map-label--selection");
+        text.setAttribute("x", ((bounds.minX + bounds.maxX) / 2).toFixed(2));
+        text.setAttribute("y", ((bounds.minY + bounds.maxY) / 2).toFixed(2));
+        text.style.fontSize = dynamicSize.toFixed(3) + "px";
+        text.textContent = selectedEntryName(selection);
+        appState.labelLayer.appendChild(text);
+
+        const maxLabelWidth = Math.max(
+          40,
+          Math.min(labelBoundsWidth * 0.82, appState.currentViewBox.width * 0.78)
+        );
+        const measured = Number(text.getComputedTextLength());
+        if (Number.isFinite(measured) && measured > maxLabelWidth) {
+          text.setAttribute("textLength", maxLabelWidth.toFixed(2));
+          text.setAttribute("lengthAdjust", "spacingAndGlyphs");
+        }
+        return;
+      }
+
+      for (const anchor of appState.districtAnchors) {
+        const text = document.createElementNS(SVG_NS, "text");
+        text.setAttribute("class", "map-label map-label--district");
+        text.setAttribute("x", anchor.x.toFixed(2));
+        text.setAttribute("y", anchor.y.toFixed(2));
+        text.textContent = anchor.district;
+        appState.labelLayer.appendChild(text);
+      }
+    }
+
+    function scheduleLabelRender(delayMs) {
+      if (labelRenderTimer) {
+        clearTimeout(labelRenderTimer);
+        labelRenderTimer = null;
+      }
+
+      const waitMs = Math.max(0, Number(delayMs) || 0);
+      if (waitMs === 0) {
+        renderMapLabels();
+        return;
+      }
+
+      labelRenderTimer = setTimeout(() => {
+        labelRenderTimer = null;
+        renderMapLabels();
+      }, waitMs);
+    }
+
+    function selectedEntryName(entry) {
+      const base = safeTrim((entry.label || "").split(",")[0]);
+      if (!base) {
+        return "";
+      }
+
+      if (entry.type === "division") {
+        return base;
+      }
+      if (entry.type === "union") {
+        return ensureSuffix(base, "Union");
+      }
+      if (entry.type === "upazila") {
+        return ensureSuffix(base, "Upazila");
+      }
+      if (entry.type === "constituency") {
+        return base;
+      }
+      if (entry.type === "district") {
+        return ensureSuffix(base, "District");
+      }
+      return base;
+    }
+
+    function currentZoomScale() {
+      if (!appState.baseViewBox || !appState.currentViewBox) {
+        return 1;
+      }
+      const baseWidth = Math.max(1, appState.baseViewBox.width);
+      const currentWidth = Math.max(1, appState.currentViewBox.width);
+      return baseWidth / currentWidth;
+    }
+
+    function boundsForKeys(keys) {
+      let minX = Infinity;
+      let maxX = -Infinity;
+      let minY = Infinity;
+      let maxY = -Infinity;
+
+      for (const key of keys) {
+        const union = appState.unionByKey.get(key);
+        const b = union && union.screenBounds;
+        if (!b) {
+          continue;
+        }
+        if (b.minX < minX) minX = b.minX;
+        if (b.maxX > maxX) maxX = b.maxX;
+        if (b.minY < minY) minY = b.minY;
+        if (b.maxY > maxY) maxY = b.maxY;
+      }
+
+      if (!Number.isFinite(minX)) {
+        return null;
+      }
+      return { minX, maxX, minY, maxY };
+    }
+
+    function expandBounds(bounds, ratio) {
+      const width = Math.max(1, bounds.maxX - bounds.minX);
+      const height = Math.max(1, bounds.maxY - bounds.minY);
+      const padX = width * ratio;
+      const padY = height * ratio;
+      return {
+        minX: bounds.minX - padX,
+        maxX: bounds.maxX + padX,
+        minY: bounds.minY - padY,
+        maxY: bounds.maxY + padY
+      };
+    }
+
+    function fitBoundsToAspect(bounds, targetAspect) {
+      const cx = (bounds.minX + bounds.maxX) / 2;
+      const cy = (bounds.minY + bounds.maxY) / 2;
+      let width = Math.max(1, bounds.maxX - bounds.minX);
+      let height = Math.max(1, bounds.maxY - bounds.minY);
+
+      const currentAspect = width / height;
+      if (currentAspect > targetAspect) {
+        height = width / targetAspect;
+      } else {
+        width = height * targetAspect;
+      }
+
+      return {
+        minX: cx - width / 2,
+        maxX: cx + width / 2,
+        minY: cy - height / 2,
+        maxY: cy + height / 2
+      };
+    }
+
+    function zoomAtPoint(factor, pointX, pointY, animate, durationMs) {
+      if (!appState.baseViewBox || !appState.currentViewBox) {
+        return;
+      }
+
+      const safeFactor = clamp(factor, 0.4, 2.4);
+      const from = appState.currentViewBox;
+      const rect = ui.map.parentElement.getBoundingClientRect();
+      const viewportWidth = Math.max(1, rect.width);
+      const viewportHeight = Math.max(1, rect.height);
+      const px = clamp(pointX, 0, viewportWidth);
+      const py = clamp(pointY, 0, viewportHeight);
+      const ratioX = px / viewportWidth;
+      const ratioY = py / viewportHeight;
+      const anchorX = from.x + from.width * ratioX;
+      const anchorY = from.y + from.height * ratioY;
+      const nextWidth = from.width * safeFactor;
+      const nextHeight = from.height * safeFactor;
+
+      setViewBox(
+        {
+          x: anchorX - nextWidth * ratioX,
+          y: anchorY - nextHeight * ratioY,
+          width: nextWidth,
+          height: nextHeight
+        },
+        animate,
+        durationMs
+      );
+    }
+
+    function zoomAtPointLive(factor, pointX, pointY) {
+      if (!appState.baseViewBox || !appState.currentViewBox) {
+        return;
+      }
+
+      const safeFactor = clamp(factor, 0.4, 2.4);
+      const from = appState.currentViewBox;
+      const rect = appState.pinchRect || appState.dragRect || ui.map.parentElement.getBoundingClientRect();
+      const viewportWidth = Math.max(1, rect.width);
+      const viewportHeight = Math.max(1, rect.height);
+      const px = clamp(pointX, 0, viewportWidth);
+      const py = clamp(pointY, 0, viewportHeight);
+      const ratioX = px / viewportWidth;
+      const ratioY = py / viewportHeight;
+      const anchorX = from.x + from.width * ratioX;
+      const anchorY = from.y + from.height * ratioY;
+      const nextWidth = from.width * safeFactor;
+      const nextHeight = from.height * safeFactor;
+
+      setViewBoxLive({
+        x: anchorX - nextWidth * ratioX,
+        y: anchorY - nextHeight * ratioY,
+        width: nextWidth,
+        height: nextHeight
+      });
+    }
+
+    function setViewBox(target, animate, durationMs) {
+      if (!appState.baseViewBox) {
+        return;
+      }
+      const clamped = clampViewBox(target, appState.baseViewBox);
+      if (appState.viewBoxRafId) {
+        cancelAnimationFrame(appState.viewBoxRafId);
+        appState.viewBoxRafId = null;
+      }
+      appState.queuedViewBox = null;
+      if (animate) {
+        const ms = clamp(Number(durationMs) || 220, 120, 380);
+        animateViewBox(appState.currentViewBox || appState.baseViewBox, clamped, ms);
+        scheduleLabelRender(ms + 18);
+      } else {
+        if (appState.viewAnimationId) {
+          cancelAnimationFrame(appState.viewAnimationId);
+          appState.viewAnimationId = null;
+        }
+        applyViewBoxLive(clamped);
+        scheduleLabelRender(110);
+      }
+      appState.currentViewBox = clamped;
+    }
+
+    function setViewBoxLive(target) {
+      if (!appState.baseViewBox) {
+        return;
+      }
+      const clamped = clampViewBox(target, appState.baseViewBox);
+      if (appState.viewAnimationId) {
+        cancelAnimationFrame(appState.viewAnimationId);
+        appState.viewAnimationId = null;
+      }
+      appState.currentViewBox = clamped;
+      queueViewBoxApply(clamped);
+    }
+
+    function queueViewBoxApply(viewBox) {
+      appState.queuedViewBox = viewBox;
+      if (appState.viewBoxRafId) {
+        return;
+      }
+      appState.viewBoxRafId = requestAnimationFrame(() => {
+        appState.viewBoxRafId = null;
+        const next = appState.queuedViewBox;
+        appState.queuedViewBox = null;
+        if (next) {
+          applyViewBoxLive(next);
+        }
+      });
+    }
+
+    function clampViewBox(candidate, base) {
+      const minWidth = base.width * 0.035;
+      const minHeight = base.height * 0.035;
+      const width = clamp(candidate.width, minWidth, base.width);
+      const height = clamp(candidate.height, minHeight, base.height);
+      const maxX = base.x + base.width - width;
+      const maxY = base.y + base.height - height;
+      const x = clamp(candidate.x, base.x, maxX);
+      const y = clamp(candidate.y, base.y, maxY);
+      return { x, y, width, height };
+    }
+
+    function animateViewBox(from, to, durationMs) {
+      if (appState.viewAnimationId) {
+        cancelAnimationFrame(appState.viewAnimationId);
+      }
+
+      const start = performance.now();
+      const tick = (now) => {
+        const t = clamp((now - start) / durationMs, 0, 1);
+        const eased = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        const box = {
+          x: lerp(from.x, to.x, eased),
+          y: lerp(from.y, to.y, eased),
+          width: lerp(from.width, to.width, eased),
+          height: lerp(from.height, to.height, eased)
+        };
+        if (t < 1) {
+          applyViewBoxLive(box);
+          appState.viewAnimationId = requestAnimationFrame(tick);
+        } else {
+          appState.viewAnimationId = null;
+          applyViewBox(box); // final frame: sharp SVG re-rasterise
+        }
+      };
+
+      appState.viewAnimationId = requestAnimationFrame(tick);
+    }
+
+    // Sharp commit: sets SVG viewBox (re-rasterises paths at correct resolution)
+    // and resets CSS transform to identity. Used for settled state.
+    function applyViewBox(viewBox) {
+      if (appState.sharpCommitTimer) {
+        clearTimeout(appState.sharpCommitTimer);
+        appState.sharpCommitTimer = null;
+      }
+      ui.map.setAttribute(
+        "viewBox",
+        viewBox.x.toFixed(2) + " " + viewBox.y.toFixed(2) + " " +
+        viewBox.width.toFixed(2) + " " + viewBox.height.toFixed(2)
+      );
+      ui.map.style.transform = "";
+      appState.committedViewBox = { x: viewBox.x, y: viewBox.y, width: viewBox.width, height: viewBox.height };
+      updateStrokeVars(viewBox);
+      updateTouchVisiblePaths(viewBox);
+    }
+
+    // Live motion: applies a CSS transform delta from committedViewBox to viewBox.
+    // GPU-composited — zero repaint cost. Schedules a sharp SVG commit 200 ms after motion stops.
+    function applyViewBoxLive(viewBox) {
+      const committed = appState.committedViewBox;
+      if (!committed) {
+        applyViewBox(viewBox);
+        return;
+      }
+      const containerW = Math.max(1, ui.map.parentElement.clientWidth);
+      const containerH = Math.max(1, ui.map.parentElement.clientHeight);
+      const s = committed.width / Math.max(1, viewBox.width);
+      const tx = -(viewBox.x - committed.x) * containerW / Math.max(1, viewBox.width);
+      const ty = -(viewBox.y - committed.y) * containerH / Math.max(1, viewBox.height);
+      ui.map.style.transform =
+        "translate(" + tx.toFixed(2) + "px," + ty.toFixed(2) + "px) scale(" + s.toFixed(6) + ")";
+      updateStrokeVars(viewBox);
+      scheduleSharpCommit(200);
+      updateTouchVisiblePaths(viewBox);
+    }
+
+    // Updates CSS stroke-width variables so strokes appear visually constant at any zoom level.
+    function updateStrokeVars(viewBox) {
+      const containerW = Math.max(1, ui.map.parentElement.clientWidth);
+      const s = containerW / Math.max(1, viewBox.width);
+      const baseSW = isTouchLikeDevice() ? 0.36 : 0.44;
+      ui.map.style.setProperty("--map-sw", (baseSW / s).toFixed(4));
+      ui.map.style.setProperty("--map-sw-sel", (1.9 / s).toFixed(4));
+      ui.map.style.setProperty("--map-sw-act", (1.18 / s).toFixed(4));
+      ui.map.style.setProperty("--map-sw-selact", (2.25 / s).toFixed(4));
+    }
+
+    function scheduleSharpCommit(delayMs) {
+      if (appState.sharpCommitTimer) {
+        clearTimeout(appState.sharpCommitTimer);
+      }
+      appState.sharpCommitTimer = setTimeout(function() {
+        appState.sharpCommitTimer = null;
+        if (appState.currentViewBox) {
+          applyViewBox(appState.currentViewBox);
+        }
+      }, delayMs);
+    }
+
+    function updateTouchVisiblePaths(viewBox) {
+      if (!isTouchLikeDevice() || !viewBox) {
+        return;
+      }
+
+      const now = performance.now();
+      const moving = appState.isDraggingMap || appState.pinchActive;
+      const animating = Boolean(appState.viewAnimationId);
+      // Throttle: 100ms during drag/pinch, 40ms during programmatic animations, 0 otherwise
+      const skipMs = moving ? 100 : (animating ? 40 : 0);
+      if (skipMs > 0 && now - appState.touchVisibilityLastTs < skipMs) {
+        return;
+      }
+      appState.touchVisibilityLastTs = now;
+
+      const padScale = appState.isDraggingMap || appState.pinchActive ? 0.02 : 0.03;
+      const padX = viewBox.width * padScale;
+      const padY = viewBox.height * padScale;
+      const minX = viewBox.x - padX;
+      const maxX = viewBox.x + viewBox.width + padX;
+      const minY = viewBox.y - padY;
+      const maxY = viewBox.y + viewBox.height + padY;
+      const selected = appState.selectedKeys || new Set();
+      const activeKey = activePath ? activePath.getAttribute("data-key") : null;
+
+      for (const union of appState.unions) {
+        const bounds = union.screenBounds;
+        const inViewport =
+          bounds &&
+          bounds.maxX >= minX &&
+          bounds.minX <= maxX &&
+          bounds.maxY >= minY &&
+          bounds.minY <= maxY;
+        const shouldShow = Boolean(inViewport || selected.has(union.key) || union.key === activeKey);
+        let path = appState.pathByKey.get(union.key);
+
+        if (!path && shouldShow) {
+          path = ensureTouchPath(union);
+        }
+        if (!path) {
+          continue;
+        }
+
+        const isHidden = path.getAttribute("data-hidden") === "1";
+
+        if (shouldShow && isHidden) {
+          path.style.display = "";
+          path.setAttribute("data-hidden", "0");
+        } else if (!shouldShow && !isHidden) {
+          path.style.display = "none";
+          path.setAttribute("data-hidden", "1");
+        }
+      }
+    }
+
+    function showTooltip(event, union) {
+      const totalVotes = PARTY_KEYS.reduce((sum, party) => sum + (union.totals[party] || 0), 0);
+      const rows = PARTY_KEYS.map((party) => {
+        const votes = union.totals[party] || 0;
+        const pct = totalVotes > 0 ? (votes / totalVotes) * 100 : 0;
+        return { party, votes, pct };
+      }).sort((a, b) => b.votes - a.votes);
+
+      const rowsHtml = rows
+        .map((row) => {
+          const dotColor = PARTY_PALETTES[row.party].dark;
+          return (
+            '<div class="tt-row">' +
+              '<div class="tt-cand">' +
+                '<span class="tt-dot" style="background:' + dotColor + ';"></span>' +
+                '<span class="tt-name">' + escapeHtml(PARTY_LABELS[row.party]) + "</span>" +
+              "</div>" +
+              '<span class="tt-val">' + formatNumber(row.votes) + "</span>" +
+              '<span class="tt-pct">' + row.pct.toFixed(1) + "%</span>" +
+            "</div>"
+          );
+        })
+        .join("");
+
+      const marginPp = union.marginPp || 0;
+      const signedMargin = (marginPp >= 0 ? "+" : "") + marginPp.toFixed(1) + "pp";
+      const constituencyText = union.constituencyLabel || "N/A";
+      const runnerUpLabel = PARTY_LABELS[union.runnerUp] || union.runnerUp;
+      const registeredVoters = toNumber(union.totalVoters);
+      const validVotes = toNumber(union.validVotes);
+      const turnoutPct = registeredVoters > 0 ? (validVotes / registeredVoters) * 100 : 0;
+      const turnoutText = registeredVoters > 0 ? turnoutPct.toFixed(1) + "%" : "N/A";
+      const turnoutBucketLabel = labelForValue(turnoutPct, appState.turnoutScale);
+      const noValidVoteCount = Math.max(0, registeredVoters - validVotes);
+      const supplementNote = union.supplementNote
+        ? '<p class="tt-note">' + escapeHtml(union.supplementNote) + "</p>"
+        : "";
+      const titleText = VIEW_LEVEL === "constituency"
+        ? (union.constituencyLabel || union.union || "N/A")
+        : (union.union || "N/A");
+      const subtitleText = VIEW_LEVEL === "constituency"
+        ? ((union.districtNames || []).join(", ") || union.district || "N/A")
+        : (union.upazila + ", " + union.district);
+      const constituencyLine = VIEW_LEVEL === "constituency"
+        ? ""
+        : ('<p class="tt-const">Constituency: ' + escapeHtml(constituencyText) + "</p>");
+      const baseCountLabel = VIEW_LEVEL === "constituency" ? "Unions" : "Centers";
+      const baseCountValue = VIEW_LEVEL === "constituency" ? formatNumber(union.unionCount) : formatNumber(union.centerCount);
+
+      let rightTitle = "Margin";
+      let rightValue = signedMargin;
+      let rightWinner = PARTY_LABELS[union.winner] || union.winner;
+      let footerText =
+        baseCountLabel + ": " +
+        baseCountValue +
+        " | Centers: " +
+        formatNumber(union.centerCount) +
+        " | Total votes: " +
+        formatNumber(totalVotes) +
+        " | Turnout: " +
+        turnoutText +
+        " | Lead vs " +
+        runnerUpLabel +
+        ": " +
+        formatNumber(union.leadVotes) +
+        " (" +
+        marginPp.toFixed(1) +
+        "pp)";
+
+      if (appState.mapMode === "turnout") {
+        rightTitle = "Turnout";
+        rightValue = turnoutText;
+        rightWinner = "Bucket: " + turnoutBucketLabel;
+        footerText =
+          baseCountLabel + ": " +
+          baseCountValue +
+          " | Centers: " +
+          formatNumber(union.centerCount) +
+          " | Registered: " +
+          (registeredVoters > 0 ? formatNumber(registeredVoters) : "N/A") +
+          " | Valid votes: " +
+          formatNumber(validVotes) +
+          " | No valid vote: " +
+          (registeredVoters > 0
+            ? formatNumber(noValidVoteCount) + " (" + (100 - turnoutPct).toFixed(1) + "%)"
+            : "N/A") +
+          " | Valid/Registered: " +
+          (registeredVoters > 0
+            ? formatNumber(validVotes) + " / " + formatNumber(registeredVoters)
+            : "N/A");
+      }
+
+      ui.tooltip.innerHTML =
+        '<p class="tt-title">' + escapeHtml(titleText) + "</p>" +
+        '<p class="tt-sub">' + escapeHtml(subtitleText) + "</p>" +
+        constituencyLine +
+        supplementNote +
+        '<div class="tt-head-row">' +
+          '<div class="tt-head">' +
+            "<span>Votes</span>" +
+            "<span>PCT.</span>" +
+          "</div>" +
+          '<div class="tt-head-spacer"></div>' +
+        "</div>" +
+        '<div class="tt-wrap">' +
+          '<div class="tt-rows">' + rowsHtml + "</div>" +
+          '<div class="tt-margin">' +
+            '<div class="tt-margin-title">' + rightTitle + "</div>" +
+            '<div class="tt-margin-value">' + rightValue + "</div>" +
+            '<div class="tt-margin-winner">' + escapeHtml(rightWinner) + "</div>" +
+          "</div>" +
+        "</div>" +
+        '<div class="tt-foot">' +
+        footerText +
+        "</div>";
+
+      ui.tooltip.style.display = "block";
+      moveTooltip(event);
+    }
+
+    function showSelectionTooltip(union) {
+      if (isNarrowScreen()) {
+        showMobileTooltip(union);
+        return;
+      }
+      const point = tooltipAnchorPointForUnion(union);
+      showTooltip(point, union);
+      moveTooltipAboveBelow(point.clientX, point.clientY);
+    }
+
+    function queueTooltipMove(clientX, clientY) {
+      if (ui.tooltip.style.display !== "block") {
+        return;
+      }
+      queuedTooltipPoint = { clientX, clientY };
+      if (tooltipMoveRafId) {
+        return;
+      }
+      tooltipMoveRafId = requestAnimationFrame(() => {
+        tooltipMoveRafId = null;
+        const point = queuedTooltipPoint;
+        queuedTooltipPoint = null;
+        if (point) {
+          moveTooltip(point);
+        }
+      });
+    }
+
+    function moveTooltip(event) {
+      if (ui.tooltip.style.display !== "block") {
+        return;
+      }
+
+      const gap = 13;
+      const rect = ui.tooltip.getBoundingClientRect();
+      let left = event.clientX + gap;
+      let top = event.clientY + gap;
+
+      if (left + rect.width > window.innerWidth - 8) {
+        left = event.clientX - rect.width - gap;
+      }
+      if (top + rect.height > window.innerHeight - 8) {
+        top = event.clientY - rect.height - gap;
+      }
+
+      ui.tooltip.style.left = Math.max(8, left) + "px";
+      ui.tooltip.style.top = Math.max(8, top) + "px";
+    }
+
+    function moveTooltipAboveBelow(clientX, clientY) {
+      if (ui.tooltip.style.display !== "block") {
+        return;
+      }
+
+      const gap = 12;
+      const rect = ui.tooltip.getBoundingClientRect();
+      const maxLeft = Math.max(8, window.innerWidth - rect.width - 8);
+      const left = clamp(clientX - rect.width / 2, 8, maxLeft);
+
+      const topAbove = clientY - rect.height - gap;
+      const topBelow = clientY + gap;
+      let top;
+      if (topAbove >= 8) {
+        top = topAbove;
+      } else if (topBelow + rect.height <= window.innerHeight - 8) {
+        top = topBelow;
+      } else {
+        top = clamp(clientY - rect.height / 2, 8, Math.max(8, window.innerHeight - rect.height - 8));
+      }
+
+      ui.tooltip.style.left = left + "px";
+      ui.tooltip.style.top = top + "px";
+    }
+
+    function tooltipAnchorPointForUnion(union) {
+      const shellRect = ui.map.parentElement.getBoundingClientRect();
+      const box = appState.currentViewBox || appState.baseViewBox;
+      const bounds = union && union.screenBounds;
+
+      let clientX = shellRect.left + shellRect.width * 0.5;
+      let clientY = shellRect.top + shellRect.height * 0.5;
+
+      if (box && bounds && shellRect.width > 0) {
+        const s = shellRect.width / Math.max(1, box.width);
+        const cx = (bounds.minX + bounds.maxX) / 2;
+        const cy = (bounds.minY + bounds.maxY) / 2;
+        clientX = shellRect.left + (cx - box.x) * s;
+        clientY = shellRect.top + (cy - box.y) * s;
+      }
+
+      return { clientX, clientY };
+    }
+
+    function hideTooltip() {
+      ui.tooltip.style.display = "none";
+      if (tooltipMoveRafId) {
+        cancelAnimationFrame(tooltipMoveRafId);
+        tooltipMoveRafId = null;
+      }
+      queuedTooltipPoint = null;
+      if (activePath) {
+        activePath.classList.remove("active");
+        activePath = null;
+      }
+    }
+
+    function showMobileTooltip(union) {
+      if (!ui.mobileTooltip || !isNarrowScreen() || !union) {
+        return;
+      }
+
+      const rows = PARTY_KEYS.map((party) => ({
+        party,
+        votes: union.totals[party] || 0
+      })).sort((a, b) => b.votes - a.votes);
+      const rowsHtml = rows
+        .map((row) => {
+          const dotColor = PARTY_PALETTES[row.party].dark;
+          return (
+            '<div class="mtt-row">' +
+              '<div class="mtt-cand">' +
+                '<span class="mtt-dot" style="background:' + dotColor + ';"></span>' +
+                '<span class="mtt-name">' + escapeHtml(PARTY_LABELS[row.party]) + "</span>" +
+              "</div>" +
+              '<span class="mtt-votes">' + formatNumber(row.votes) + "</span>" +
+            "</div>"
+          );
+        })
+        .join("");
+
+      const winnerColor = (PARTY_PALETTES[union.winner] && PARTY_PALETTES[union.winner].dark) || "#1e140a";
+      const marginPp = union.marginPp || 0;
+      const marginText = (marginPp >= 0 ? "+" : "") + marginPp.toFixed(1) + "pp";
+      const registeredVoters = toNumber(union.totalVoters);
+      const validVotes = toNumber(union.validVotes);
+      const turnoutPct = registeredVoters > 0 ? (validVotes / registeredVoters) * 100 : 0;
+      const turnoutText = registeredVoters > 0 ? turnoutPct.toFixed(1) + "%" : "N/A";
+      const turnoutBucketLabel = labelForValue(turnoutPct, appState.turnoutScale);
+      const constituencyText = union.constituencyLabel || "N/A";
+      const unionText = union.union || "N/A";
+      const upazilaText = union.upazila || "N/A";
+      const locationText = VIEW_LEVEL === "constituency"
+        ? ((union.constituencyLabel || unionText) + " | " + (((union.districtNames || []).join(", ")) || union.district || "N/A"))
+        : (unionText + ", " + upazilaText + ", " + constituencyText);
+      const supplementNote = union.supplementNote
+        ? '<p class="mtt-note">' + escapeHtml(union.supplementNote) + "</p>"
+        : "";
+      let rightColumnHtml =
+        '<div class="mtt-margin-title">Margin</div>' +
+        '<div class="mtt-margin-value" style="color:' + winnerColor + ';">' + marginText + "</div>" +
+        (registeredVoters > 0
+          ? '<div class="mtt-margin-title" style="margin-top:4px;">Turnout</div>' +
+            '<div class="mtt-margin-value" style="color:' + winnerColor + ';font-size:1.1rem;">' + turnoutText + "</div>"
+          : "");
+      if (appState.mapMode === "turnout") {
+        rightColumnHtml =
+          '<div class="mtt-margin-title">Turnout</div>' +
+          '<div class="mtt-margin-value" style="color:' + winnerColor + ';">' + turnoutText + "</div>" +
+          '<div class="mtt-margin-title" style="margin-top:4px;">Bucket</div>' +
+          '<div class="mtt-margin-value" style="color:' + winnerColor + ';font-size:1.05rem;">' + escapeHtml(turnoutBucketLabel) + "</div>";
+      }
+
+      ui.mobileTooltip.innerHTML =
+        '<p class="mtt-loc">' + escapeHtml(locationText) + "</p>" +
+        supplementNote +
+        '<div class="mtt-wrap">' +
+          '<div class="mtt-left">' +
+            '<div class="mtt-head"><span>Alliance/Party</span><span>Votes</span></div>' +
+            rowsHtml +
+          "</div>" +
+          '<div class="mtt-margin">' +
+            rightColumnHtml +
+          "</div>" +
+        "</div>";
+
+      ui.mobileTooltip.hidden = false;
+      document.body.classList.add("mobile-tooltip-visible");
+    }
+
+    function hideMobileTooltip() {
+      if (!ui.mobileTooltip) {
+        return;
+      }
+      ui.mobileTooltip.hidden = true;
+      ui.mobileTooltip.innerHTML = "";
+      document.body.classList.remove("mobile-tooltip-visible");
+    }
+
+    async function sharePage() {
+      const payload = {
+        title: MAP_TITLE,
+        text: MAP_TITLE,
+        url: window.location.href
+      };
+
+      if (navigator.share) {
+        try {
+          await navigator.share(payload);
+          return;
+        } catch (error) {
+          if (error && error.name === "AbortError") {
+            return;
+          }
+        }
+      }
+
+      try {
+        await navigator.clipboard.writeText(payload.url);
+        ui.shareBtn.classList.add("copied");
+        ui.shareBtn.setAttribute("aria-label", "Link copied");
+        ui.shareBtn.setAttribute("title", "Link copied");
+        setTimeout(() => {
+          ui.shareBtn.classList.remove("copied");
+          ui.shareBtn.setAttribute("aria-label", "Copy or share link");
+          ui.shareBtn.setAttribute("title", "Copy or share link");
+        }, 1300);
+      } catch (_error) {
+        window.prompt("Copy this link:", payload.url);
+      }
+    }
+
+    function shareToFacebook() {
+      const shareUrl =
+        "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(window.location.href);
+      openSharePopup(shareUrl);
+    }
+
+    function shareToX() {
+      const shareUrl =
+        "https://x.com/intent/tweet?text=" +
+        encodeURIComponent(MAP_TITLE) +
+        "&url=" +
+        encodeURIComponent(window.location.href);
+      openSharePopup(shareUrl);
+    }
+
+    function shareToWhatsApp() {
+      const shareUrl =
+        "https://wa.me/?text=" +
+        encodeURIComponent(MAP_TITLE + " — " + window.location.href);
+      openSharePopup(shareUrl);
+    }
+
+    function openSharePopup(url) {
+      const popup = window.open(url, "_blank", "noopener,noreferrer,width=620,height=560");
+      if (!popup) {
+        window.location.href = url;
+      }
+    }
+
+    function isNarrowScreen() {
+      return window.matchMedia("(max-width: 1030px)").matches;
+    }
+
+    function isPhoneScreen() {
+      return window.matchMedia("(max-width: 760px)").matches && isTouchLikeDevice();
+    }
+
+    function isTouchLikeDevice() {
+      return window.matchMedia("(hover: none), (pointer: coarse)").matches;
+    }
+
+    function setMobileBottomHidden(hidden) {
+      if (!isNarrowScreen()) {
+        document.body.classList.remove("mobile-bottom-hidden");
+        return;
+      }
+      document.body.classList.toggle("mobile-bottom-hidden", Boolean(hidden));
+    }
+
+    function hideMobileBottomUntilReset() {
+      if (!isNarrowScreen()) {
+        return;
+      }
+      setMobileNotesPopupOpen(false);
+      appState.mobileBottomLocked = true;
+      setMobileBottomHidden(true);
+    }
+
+    function syncMobileBottomVisibility() {
+      const tooltipVisible = Boolean(
+        ui.mobileTooltip &&
+        !ui.mobileTooltip.hidden &&
+        isNarrowScreen()
+      );
+      document.body.classList.toggle("mobile-tooltip-visible", tooltipVisible);
+
+      if (!isNarrowScreen()) {
+        setMobileNotesPopupOpen(false);
+        document.body.classList.remove("mobile-bottom-hidden");
+        return;
+      }
+      if (appState.mobileBottomLocked) {
+        setMobileBottomHidden(true);
+        return;
+      }
+      const hasSearch = Boolean(normalizeSearch(ui.searchInput.value));
+      const hasSelection = Boolean(appState.currentSelection);
+      setMobileBottomHidden(hasSearch || hasSelection);
+    }
+
+    function winnerFor(totals) {
+      let best = PARTY_KEYS[0];
+      let max = -Infinity;
+      for (const party of PARTY_KEYS) {
+        const value = totals[party] || 0;
+        if (value > max) {
+          max = value;
+          best = party;
+        }
+      }
+      return best;
+    }
+
+    function leadInfoFor(totals, winner) {
+      const winnerVotes = totals[winner] || 0;
+      let runnerUpVotes = -Infinity;
+      let runnerUp = "N/A";
+      let totalVotes = 0;
+
+      for (const party of PARTY_KEYS) {
+        totalVotes += totals[party] || 0;
+        if (party === winner) {
+          continue;
+        }
+        const value = totals[party] || 0;
+        if (value > runnerUpVotes) {
+          runnerUpVotes = value;
+          runnerUp = party;
+        }
+      }
+
+      if (!Number.isFinite(runnerUpVotes)) {
+        runnerUpVotes = 0;
+      }
+
+      const leadVotes = Math.max(0, winnerVotes - runnerUpVotes);
+      const marginPp = totalVotes > 0 ? (leadVotes / totalVotes) * 100 : 0;
+      return { runnerUp, leadVotes, marginPp };
+    }
+
+    function computeGeoBounds(unions) {
+      let minLon = Infinity;
+      let maxLon = -Infinity;
+      let minLat = Infinity;
+      let maxLat = -Infinity;
+
+      for (const union of unions) {
+        walkGeometry(union.geometry, (lon, lat) => {
+          if (lon < minLon) minLon = lon;
+          if (lon > maxLon) maxLon = lon;
+          if (lat < minLat) minLat = lat;
+          if (lat > maxLat) maxLat = lat;
+        });
+      }
+
+      if (!Number.isFinite(minLon)) {
+        return null;
+      }
+      return { minLon, maxLon, minLat, maxLat };
+    }
+
+    function createProjector(bounds, width, height, padding) {
+      const spanLat = Math.max(bounds.maxLat - bounds.minLat, 0.0000001);
+      const midLat = (bounds.maxLat + bounds.minLat) / 2;
+      const cosLat = Math.cos((midLat * Math.PI) / 180);
+      const spanLon = Math.max((bounds.maxLon - bounds.minLon) * cosLat, 0.0000001);
+
+      const drawW = width - padding * 2;
+      const drawH = height - padding * 2;
+      const scale = Math.min(drawW / spanLon, drawH / spanLat);
+
+      const projectedW = spanLon * scale;
+      const projectedH = spanLat * scale;
+      const horizontalNudge = width >= 960 ? 60 : (width >= 720 ? 32 : 0);
+      const offX = (width - projectedW) / 2 - horizontalNudge;
+      const offY = (height - projectedH) / 2;
+
+      return (lon, lat) => {
+        const x = offX + (lon - bounds.minLon) * cosLat * scale;
+        const y = height - (offY + (lat - bounds.minLat) * scale);
+        return [x, y];
+      };
+    }
+
+    function geometryToBounds(geometry, project) {
+      if (!geometry || !geometry.type || !geometry.coordinates) {
+        return null;
+      }
+
+      let minX = Infinity;
+      let maxX = -Infinity;
+      let minY = Infinity;
+      let maxY = -Infinity;
+
+      walkGeometry(geometry, (lon, lat) => {
+        const projected = project(lon, lat);
+        const x = projected[0];
+        const y = projected[1];
+        if (x < minX) minX = x;
+        if (x > maxX) maxX = x;
+        if (y < minY) minY = y;
+        if (y > maxY) maxY = y;
+      });
+
+      if (!Number.isFinite(minX)) {
+        return null;
+      }
+      return { minX, maxX, minY, maxY };
+    }
+
+    function geometryToPathWithBounds(geometry, project, touchModeOverride) {
+      if (!geometry || !geometry.type || !geometry.coordinates) {
+        return { d: "", bounds: null };
+      }
+      const touchMode = Boolean(touchModeOverride);
+      const pathDecimals = touchMode
+        ? (appState.touchDataSimplified ? 1 : 0)
+        : 2;
+
+      let path = "";
+      let minX = Infinity;
+      let maxX = -Infinity;
+      let minY = Infinity;
+      let maxY = -Infinity;
+
+      const appendRing = (ring) => {
+        if (!Array.isArray(ring) || ring.length === 0) {
+          return;
+        }
+        let ringPath = "";
+        const pointStep = touchMode
+          ? (appState.touchDataSimplified ? 1 : touchPointStepForRingLength(ring.length))
+          : 1;
+        for (let i = 0; i < ring.length; i += pointStep) {
+          const point = ring[i];
+          const lon = Number(point && point[0]);
+          const lat = Number(point && point[1]);
+          if (!Number.isFinite(lon) || !Number.isFinite(lat)) {
+            continue;
+          }
+
+          const projected = project(lon, lat);
+          const x = projected[0];
+          const y = projected[1];
+
+          if (x < minX) minX = x;
+          if (x > maxX) maxX = x;
+          if (y < minY) minY = y;
+          if (y > maxY) maxY = y;
+
+          ringPath += (ringPath ? "L" : "M") + x.toFixed(pathDecimals) + "," + y.toFixed(pathDecimals);
+        }
+
+        if (pointStep > 1) {
+          const last = ring[ring.length - 1];
+          const lonLast = Number(last && last[0]);
+          const latLast = Number(last && last[1]);
+          if (Number.isFinite(lonLast) && Number.isFinite(latLast)) {
+            const projectedLast = project(lonLast, latLast);
+            const xLast = projectedLast[0];
+            const yLast = projectedLast[1];
+            if (xLast < minX) minX = xLast;
+            if (xLast > maxX) maxX = xLast;
+            if (yLast < minY) minY = yLast;
+            if (yLast > maxY) maxY = yLast;
+            ringPath += (ringPath ? "L" : "M") + xLast.toFixed(pathDecimals) + "," + yLast.toFixed(pathDecimals);
+          }
+        }
+
+        if (ringPath) {
+          path += ringPath + "Z";
+        }
+      };
+
+      const appendPolygon = (polygonRings) => {
+        for (let ringIndex = 0; ringIndex < polygonRings.length; ringIndex += 1) {
+          // Mobile fast path: keep the outer ring only.
+          if (touchMode && ringIndex > 0) {
+            continue;
+          }
+          const ring = polygonRings[ringIndex];
+          appendRing(ring);
+        }
+      };
+
+      if (geometry.type === "Polygon") {
+        appendPolygon(geometry.coordinates);
+      } else if (geometry.type === "MultiPolygon") {
+        for (const polygon of geometry.coordinates) {
+          appendPolygon(polygon);
+        }
+      }
+
+      if (!Number.isFinite(minX)) {
+        return { d: "", bounds: null };
+      }
+
+      return {
+        d: path,
+        bounds: { minX, maxX, minY, maxY }
+      };
+    }
+
+    // Pre-computes touch path strings for all unions during browser idle time.
+    // When ensureTouchPath() is later called, it reuses union.touchPathD (already computed)
+    // and only does the cheap DOM insertion — eliminating geometry-computation jank during panning.
+    function schedulePrewarmTouchPathStrings() {
+      if (!isTouchLikeDevice() || !appState.projector || !appState.unions.length) {
+        return;
+      }
+      const unions = appState.unions;
+      const projector = appState.projector;
+      let idx = 0;
+
+      function doChunk(deadline) {
+        while (idx < unions.length) {
+          if (deadline && deadline.timeRemaining() < 4) {
+            break;
+          }
+          const union = unions[idx++];
+          if (!union.touchPathD && !appState.pathByKey.has(union.key)) {
+            const built = geometryToPathWithBounds(union.geometry, projector, true);
+            if (built && built.d) {
+              union.touchPathD = built.d;
+              if (built.bounds && !union.screenBounds) {
+                union.screenBounds = built.bounds;
+              }
+            }
+          }
+          // Without a deadline, process in chunks of 40 to stay off the critical path
+          if (!deadline && idx % 40 === 0) {
+            break;
+          }
+        }
+        if (idx < unions.length) {
+          if (window.requestIdleCallback) {
+            requestIdleCallback(doChunk, { timeout: 6000 });
+          } else {
+            setTimeout(() => doChunk(null), 50);
+          }
+        }
+      }
+
+      if (window.requestIdleCallback) {
+        requestIdleCallback(doChunk, { timeout: 1500 });
+      } else {
+        setTimeout(() => doChunk(null), 700);
+      }
+    }
+
+    function touchPointStepForRingLength(length) {
+      const n = Number(length) || 0;
+      // Phone screens get ~50% more decimation — fine geometry detail is invisible at that size
+      const p = isPhoneScreen();
+      if (n > 900) return p ? 18 : 12;
+      if (n > 520) return p ? 13 :  9;
+      if (n > 300) return p ? 10 :  7;
+      if (n > 180) return p ?  9 :  6;
+      if (n >  90) return p ?  6 :  4;
+      if (n >  44) return p ?  4 :  3;
+      return p ? 3 : 2;
+    }
+
+    function walkGeometry(geometry, onPoint) {
+      if (!geometry || !geometry.type || !geometry.coordinates) {
+        return;
+      }
+      if (geometry.type === "Polygon") {
+        walkPolygon(geometry.coordinates, onPoint);
+        return;
+      }
+      if (geometry.type === "MultiPolygon") {
+        for (const polygon of geometry.coordinates) {
+          walkPolygon(polygon, onPoint);
+        }
+      }
+    }
+
+    function walkPolygon(rings, onPoint) {
+      for (const ring of rings) {
+        if (!Array.isArray(ring)) {
+          continue;
+        }
+        for (const point of ring) {
+          const lon = Number(point && point[0]);
+          const lat = Number(point && point[1]);
+          if (Number.isFinite(lon) && Number.isFinite(lat)) {
+            onPoint(lon, lat);
+          }
+        }
+      }
+    }
+
+    function parseGeometry(rawGeometry) {
+      if (!rawGeometry) {
+        return null;
+      }
+
+      const text = rawGeometry.trim();
+      if (!text) {
+        return null;
+      }
+
+      const attempts = [
+        text,
+        text
+          .replace(/'/g, '"')
+          .replace(/\bNone\b/g, "null")
+          .replace(/\bTrue\b/g, "true")
+          .replace(/\bFalse\b/g, "false")
+      ];
+
+      for (const candidate of attempts) {
+        try {
+          const parsed = JSON.parse(candidate);
+          if (parsed && (parsed.type === "Polygon" || parsed.type === "MultiPolygon")) {
+            return parsed;
+          }
+        } catch (_error) {}
+      }
+
+      return null;
+    }
+
+    async function parseCsvAsync(csvText, onRow, onProgress) {
+      let row = [];
+      let field = "";
+      let inQuotes = false;
+      const totalLength = csvText.length;
+      const chunkLength = 380000;
+      let index = 0;
+
+      const pushField = () => {
+        row.push(field);
+        field = "";
+      };
+
+      const emitRow = () => {
+        onRow(row);
+        row = [];
+      };
+
+      while (index < totalLength) {
+        const end = Math.min(index + chunkLength, totalLength);
+
+        for (; index < end; index += 1) {
+          const char = csvText[index];
+
+          if (inQuotes) {
+            if (char === '"') {
+              if (csvText[index + 1] === '"') {
+                field += '"';
+                index += 1;
+              } else {
+                inQuotes = false;
+              }
+            } else {
+              field += char;
+            }
+            continue;
+          }
+
+          if (char === '"') {
+            inQuotes = true;
+            continue;
+          }
+
+          if (char === ",") {
+            pushField();
+            continue;
+          }
+
+          if (char === "\n") {
+            pushField();
+            emitRow();
+            continue;
+          }
+
+          if (char !== "\r") {
+            field += char;
+          }
+        }
+
+        if (onProgress) {
+          onProgress({ index, total: totalLength, done: false });
+        }
+
+        await pause();
+      }
+
+      if (field.length > 0 || row.length > 0) {
+        pushField();
+        emitRow();
+      }
+
+      if (onProgress) {
+        onProgress({ index: totalLength, total: totalLength, done: true });
+      }
+    }
+
+    function rowToRecord(row, headers) {
+      const record = {};
+      for (let i = 0; i < headers.length; i += 1) {
+        record[headers[i]] = row[i] !== undefined ? row[i] : "";
+      }
+      return record;
+    }
+
+    function normalizeHeader(header, index) {
+      const value = safeTrim(header);
+      return value || "_col_" + index;
+    }
+
+    function blankTotals() {
+      const totals = {};
+      for (const key of PARTY_KEYS) {
+        totals[key] = 0;
+      }
+      return totals;
+    }
+
+    function normalizeSearch(value) {
+      return safeTrim(value)
+        .toLowerCase()
+        .normalize("NFKD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9\s]/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function setStatus(text) {
+      if (ui && ui.status) {
+        ui.status.textContent = text;
+      }
+    }
+
+    function toNumber(value) {
+      if (value == null || value === "") {
+        return 0;
+      }
+      const numeric = Number(
+        String(value)
+          .replace(/[০-৯]/g, function(digit) {
+            return String("০১২৩৪৫৬৭৮৯".indexOf(digit));
+          })
+          .replace(/,/g, "")
+          .trim()
+      );
+      return Number.isFinite(numeric) ? numeric : 0;
+    }
+
+    function safeTrim(value) {
+      return value == null ? "" : String(value).trim();
+    }
+
+    function ensureSuffix(text, suffix) {
+      const value = safeTrim(text);
+      const normalizedSuffix = safeTrim(suffix).toLowerCase();
+      if (!value || !normalizedSuffix) {
+        return value;
+      }
+      return value.toLowerCase().endsWith(" " + normalizedSuffix) ? value : value + " " + suffix;
+    }
+
+    function formatNumber(value) {
+      return Number(value || 0).toLocaleString("en-US");
+    }
+
+    function formatRangeValue(value, digits) {
+      const fixed = Number(value || 0).toFixed(digits);
+      return fixed
+        .replace(/\.0+$/, "")
+        .replace(/(\.\d*?)0+$/, "$1");
+    }
+
+    function clamp(value, min, max) {
+      return Math.min(max, Math.max(min, value));
+    }
+
+    function lerp(from, to, t) {
+      return from + (to - from) * t;
+    }
+
+    function interpolateHex(fromHex, toHex, t) {
+      const from = hexToRgb(fromHex);
+      const to = hexToRgb(toHex);
+      if (!from || !to) {
+        return fromHex || toHex || "#999999";
+      }
+      const blend = clamp(t, 0, 1);
+      const r = Math.round(from.r + (to.r - from.r) * blend);
+      const g = Math.round(from.g + (to.g - from.g) * blend);
+      const b = Math.round(from.b + (to.b - from.b) * blend);
+      return rgbToHex(r, g, b);
+    }
+
+    function hexToRgb(hex) {
+      const normalized = safeTrim(hex).replace("#", "");
+      if (!/^[0-9a-fA-F]{6}$/.test(normalized)) {
+        return null;
+      }
+      return {
+        r: parseInt(normalized.slice(0, 2), 16),
+        g: parseInt(normalized.slice(2, 4), 16),
+        b: parseInt(normalized.slice(4, 6), 16)
+      };
+    }
+
+    function rgbToHex(r, g, b) {
+      const toHex = (value) => clamp(Math.round(value), 0, 255).toString(16).padStart(2, "0");
+      return "#" + toHex(r) + toHex(g) + toHex(b);
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function pause() {
+      return new Promise((resolve) => setTimeout(resolve, 0));
+    }
+
+    function nextFrame() {
+      return new Promise((resolve) => requestAnimationFrame(resolve));
+    }
+
+    function debounce(fn, waitMs) {
+      let timer = null;
+      return () => {
+        if (timer) {
+          clearTimeout(timer);
+        }
+        timer = setTimeout(fn, waitMs);
+      };
+    }
+
+    function getCss(name) {
+      return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    }
+
+  </script>
+
+</body></html>

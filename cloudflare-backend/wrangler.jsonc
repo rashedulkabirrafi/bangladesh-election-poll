@@ -1,0 +1,35 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "bangladesh-election-poll-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-04-26",
+  "workers_dev": true,
+  "routes": [
+    { "pattern": "api.vote4bd.com", "custom_domain": true }
+  ],
+  "observability": {
+    "enabled": true
+  },
+  "vars": {
+    "ALLOWED_ORIGIN": "https://vote4bd.com,https://www.vote4bd.com,http://localhost:5173",
+    "REQUIRE_ORIGIN": "1",
+    "VOTE_TOKEN_TTL_MS": "300000",
+    "VOTE_IP_COOLDOWN_MS": "0",
+    "VOTE_POW_DIFFICULTY": "0",
+    "VOTE_POW_TTL_MS": "300000",
+    "ADMIN_AUTH_ENABLED": "1"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "vote4bd",
+      "database_id": "f74bc1b8-dc20-44d0-b498-c1b73184b5e8"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "ASSETS",
+      "bucket_name": "bd-election-assets"
+    }
+  ]
+}

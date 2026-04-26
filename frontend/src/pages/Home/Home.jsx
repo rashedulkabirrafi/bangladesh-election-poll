@@ -6,6 +6,7 @@ import candidatesData from '../../assets/candidates_new.json';
 import PartiesAndCoalitions from '../PartiesAndCoalitions/PartiesAndCoalitions';
 import Navbar from '../../components/Navbar/Navbar';
 import Result from '../result/Result';
+import ResultList from '../result/ResultList';
 import Vote from '../vote/Vote';
 import VoterGuide from '../VoterGuide/VoterGuide';
 import Admin from '../Admin/Admin';
@@ -23,7 +24,10 @@ import {
   generateFingerprint,
   hashFingerprint,
   getOrCreateDeviceId,
+  solvePow,
   getApiBase,
+  getAdminAuthHeaders,
+  getAdminToken,
   toBengaliNumber,
   sortCandidatesByBengali
 } from '../../utils/helpers';
@@ -63,6 +67,9 @@ const Home = () => {
   const [fingerprintHash, setFingerprintHash] = useState('');
   const [deviceId, setDeviceId] = useState('');
   const [voteToken, setVoteToken] = useState('');
+  const [powChallenge, setPowChallenge] = useState('');
+  const [powDifficulty, setPowDifficulty] = useState(0);
+  const [powNonce, setPowNonce] = useState('');
   const [blocked, setBlocked] = useState(false);
   const [votedCandidate, setVotedCandidate] = useState(null);
   const [referendumVote, setReferendumVote] = useState(null); // 'yes' or 'no'
@@ -232,6 +239,18 @@ const Home = () => {
         }
 
         setVoteToken(data.token || '');
+        if (data?.pow?.challenge && Number(data?.pow?.difficulty) > 0) {
+          setPowChallenge(data.pow.challenge);
+          setPowDifficulty(Number(data.pow.difficulty));
+          try {
+            const solution = await solvePow(data.pow.challenge, Number(data.pow.difficulty));
+            if (!active) return;
+            setPowNonce(solution);
+          } catch (error) {
+            if (!active) return;
+            setError('ডিভাইস যাচাই করা যায়নি।');
+          }
+        }
         if (data.deviceId && data.deviceId !== devId) {
           localStorage.setItem('device_id', data.deviceId);
           setDeviceId(data.deviceId);
@@ -253,6 +272,7 @@ const Home = () => {
     const checkAdmin = async () => {
       try {
         const response = await fetch(`${getApiBase()}/api/admin/me`, {
+          headers: getAdminAuthHeaders(),
           credentials: 'include'
         });
         setIsAdmin(response.ok);
@@ -291,6 +311,10 @@ const Home = () => {
       setError('ডিভাইস যাচাই সম্পন্ন হয়নি। পরে আবার চেষ্টা করুন।');
       return;
     }
+    if (powDifficulty > 0 && !powNonce) {
+      setError('ডিভাইস যাচাই সম্পন্ন হয়নি। পরে আবার চেষ্টা করুন।');
+      return;
+    }
 
     try {
       const response = await fetch(`${getApiBase()}/api/vote/submit`, {
@@ -301,6 +325,8 @@ const Home = () => {
           fingerprintHash, 
           deviceId,
           token: voteToken,
+          powChallenge: powDifficulty > 0 ? powChallenge : undefined,
+          powNonce: powDifficulty > 0 ? powNonce : undefined,
           constituencyKey: selectedConstituency.key,
           candidateName: selectedCandidate.name,
           party: selectedCandidate.party || 'স্বতন্ত্র'
@@ -356,6 +382,8 @@ const Home = () => {
         body: JSON.stringify({
           fingerprintHash,
           deviceId,
+          powChallenge: powDifficulty > 0 ? powChallenge : undefined,
+          powNonce: powDifficulty > 0 ? powNonce : undefined,
           vote,
           constituencyKey: selectedConstituency?.key || null
         })
@@ -894,9 +922,18 @@ const Home = () => {
     );
   }
 
-  if (step === 'all-results') {
+  if (step === 'result') {
     return (
       <Result
+        step={step}
+        setStep={setStep}
+      />
+    );
+  }
+
+  if (step === 'all-results') {
+    return (
+      <ResultList
         step={step}
         setStep={setStep}
         setShowThankYou={setShowThankYou}
@@ -1137,11 +1174,18 @@ const Home = () => {
               <button
                 className="btn btn-primary"
                 onClick={() => {
-                  const returnTo = `${window.location.origin}/?admin=1`;
-                  window.location.href = `${getApiBase()}/auth/google?state=${encodeURIComponent(returnTo)}`;
+                  const existing = getAdminToken();
+                  const entered = window.prompt('অ্যাডমিন টোকেন দিন', existing);
+                  const token = (entered || '').trim();
+                  if (!token) {
+                    setError('অ্যাডমিন টোকেন প্রয়োজন।');
+                    return;
+                  }
+                  localStorage.setItem('admin_token', token);
+                  window.location.reload();
                 }}
               >
-                গুগল দিয়ে লগইন করুন
+                অ্যাডমিন টোকেন দিন
               </button>
             </div>
           </div>

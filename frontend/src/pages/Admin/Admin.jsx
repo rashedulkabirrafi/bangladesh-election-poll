@@ -6,6 +6,7 @@ import {
   makeKey,
   normalizeConstituencyName,
   getApiBase,
+  getAdminAuthHeaders,
   getCoalitionLabel
 } from '../../utils/helpers';
 
@@ -123,7 +124,7 @@ const Admin = ({ onBack }) => {
         `${getApiBase()}/api/admin/constituency?constituencyKey=${encodeURIComponent(
           constituencyKey
         )}`,
-        { credentials: 'include' }
+        { headers: getAdminAuthHeaders(), credentials: 'include' }
       );
       if (!response.ok) {
         const data = await response.json().catch(() => ({}));
@@ -209,7 +210,7 @@ const Admin = ({ onBack }) => {
       };
       const response = await fetch(`${getApiBase()}/api/admin/constituency-batch`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...getAdminAuthHeaders() },
         credentials: 'include',
         body: JSON.stringify(payload)
       });

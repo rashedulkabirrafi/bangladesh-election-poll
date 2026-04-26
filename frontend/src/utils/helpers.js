@@ -88,6 +88,16 @@ export const getApiBase = () => {
   return '';
 };
 
+export const getAdminToken = () => {
+  if (typeof window === 'undefined') return '';
+  return localStorage.getItem('admin_token') || '';
+};
+
+export const getAdminAuthHeaders = () => {
+  const token = getAdminToken();
+  return token ? { Authorization: `Bearer ${token}` } : {};
+};
+
 export const buildAssetUrl = (value = '', candidateName = '', docType = '') => {
   if (!value) return '';
   if (value.startsWith('/candidatess/')) {
@@ -340,6 +350,34 @@ export const hashFingerprint = async (value) => {
     // Fallback below
   }
   return btoa(value).replace(/=+$/, '');
+};
+
+const sha256Hex = async (value) => {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(value);
+  if (window.crypto && window.crypto.subtle) {
+    const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+  }
+  return btoa(value).replace(/=+$/, '');
+};
+
+export const solvePow = async (challenge, difficulty) => {
+  if (!challenge || !difficulty || difficulty <= 0) return '';
+  const prefix = '0'.repeat(difficulty);
+  let nonce = 0;
+  while (true) {
+    const candidate = `${nonce}`;
+    const hash = await sha256Hex(`${challenge}.${candidate}`);
+    if (hash.startsWith(prefix)) {
+      return candidate;
+    }
+    nonce += 1;
+    if (nonce % 200 === 0) {
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    }
+  }
 };
 
 // Senate (Upper House) seat layout - 105 seats

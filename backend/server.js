@@ -36,6 +36,9 @@ const {
   VOTE_TOKEN_SECRET,
   VOTE_TOKEN_TTL_MS = "300000",
   VOTE_REQUIRE_AUTH = "0",
+  VOTE_IP_COOLDOWN_MS = "0",
+  VOTE_POW_DIFFICULTY = "0",
+  VOTE_POW_TTL_MS = "",
   DATABASE_URL,
   DATABASE_SSL = "1",
   ADMIN_EMAILS = "",
@@ -181,6 +184,9 @@ const voteLimiter = rateLimit({
 const voteTokenSecret = VOTE_TOKEN_SECRET || SESSION_SECRET;
 const voteTokenTtlMs = Math.max(60_000, Number(VOTE_TOKEN_TTL_MS) || 300_000);
 const GLOBAL_REFERENDUM_KEY = "__GLOBAL__";
+const voteCooldownMs = Math.max(0, Number(VOTE_IP_COOLDOWN_MS) || 0);
+const powDifficulty = Math.max(0, Number(VOTE_POW_DIFFICULTY) || 0);
+const powTtlMs = Math.max(60_000, Number(VOTE_POW_TTL_MS) || 0, voteTokenTtlMs);
 const DEVICE_COOKIE_NAME = "device_id";
 const deviceCookieOptions = {
   httpOnly: true,
@@ -377,6 +383,13 @@ const ensureVoteTable = async () => {
       ua_hash TEXT
     );
     CREATE INDEX IF NOT EXISTS idx_device_locks_voted_at ON device_locks(voted_at);
+
+    CREATE TABLE IF NOT EXISTS vote_cooldowns (
+      ip_hash TEXT NOT NULL,
+      ua_hash TEXT NOT NULL,
+      last_vote_at BIGINT NOT NULL,
+      PRIMARY KEY (ip_hash, ua_hash)
+    );
     
     CREATE TABLE IF NOT EXISTS constituency_votes (
       id SERIAL PRIMARY KEY,
@@ -555,6 +568,51 @@ const verifyVoteToken = (token, fingerprintHash, ipHash, uaHash) => {
   }
 };
 
+const createPowChallenge = () => {
+  const expiresAt = Date.now() + powTtlMs;
+  const nonce = crypto.randomBytes(8).toString("hex");
+  const payload = `${expiresAt}.${nonce}`;
+  const signature = crypto
+    .createHmac("sha256", voteTokenSecret)
+    .update(payload)
+    .digest("hex");
+  return Buffer.from(`${payload}.${signature}`).toString("base64url");
+};
+
+const verifyPow = (challenge, nonce, difficulty) => {
+  if (!difficulty || difficulty <= 0) return { ok: true };
+  if (!challenge || !nonce) return { ok: false, reason: "missing_pow" };
+  try {
+    const decoded = Buffer.from(challenge, "base64url").toString("utf-8");
+    const [expiresAt, seed, signature] = decoded.split(".");
+    if (!expiresAt || !seed || !signature) {
+      return { ok: false, reason: "invalid_pow" };
+    }
+    if (Number(expiresAt) < Date.now()) {
+      return { ok: false, reason: "pow_expired" };
+    }
+    const payload = `${expiresAt}.${seed}`;
+    const expected = crypto
+      .createHmac("sha256", voteTokenSecret)
+      .update(payload)
+      .digest("hex");
+    if (!crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(signature))) {
+      return { ok: false, reason: "invalid_pow" };
+    }
+    const hash = crypto
+      .createHash("sha256")
+      .update(`${payload}.${nonce}`)
+      .digest("hex");
+    const prefix = "0".repeat(difficulty);
+    if (!hash.startsWith(prefix)) {
+      return { ok: false, reason: "invalid_pow" };
+    }
+    return { ok: true };
+  } catch (error) {
+    return { ok: false, reason: "invalid_pow" };
+  }
+};
+
 app.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 
 app.get(
@@ -600,6 +658,26 @@ app.post("/api/vote/init", ensureOrigin, ensureVoteAuth, voteLimiter, async (req
     return res.status(400).json({ error: "Invalid device" });
   }
   try {
+    const ipHash = hashValue(getClientIp(req));
+    const uaHash = hashValue(req.get("user-agent") || "");
+    if (voteCooldownMs > 0) {
+      const cooldownRow = await votePool.query(
+        "SELECT last_vote_at FROM vote_cooldowns WHERE ip_hash = $1 AND ua_hash = $2",
+        [ipHash, uaHash]
+      );
+      if (cooldownRow.rowCount > 0) {
+        const lastVoteAt = Number(cooldownRow.rows[0]?.last_vote_at || 0);
+        const elapsed = Date.now() - lastVoteAt;
+        if (elapsed < voteCooldownMs) {
+          return res.status(429).json({
+            error: "cooldown",
+            retryAfterMs: voteCooldownMs - elapsed,
+            deviceId,
+          });
+        }
+      }
+    }
+
     const result = await votePool.query(
       "SELECT fingerprint_hash FROM vote_locks WHERE fingerprint_hash = $1",
       [fingerprintHash]
@@ -614,10 +692,11 @@ app.post("/api/vote/init", ensureOrigin, ensureVoteAuth, voteLimiter, async (req
     if (deviceResult.rowCount > 0) {
       return res.json({ allowed: false, reason: "already_voted", deviceId });
     }
-    const ipHash = hashValue(getClientIp(req));
-    const uaHash = hashValue(req.get("user-agent") || "");
     const token = createVoteToken(fingerprintHash, ipHash, uaHash);
-    return res.json({ allowed: true, token, expiresInMs: voteTokenTtlMs, deviceId });
+    const pow = powDifficulty > 0
+      ? { challenge: createPowChallenge(), difficulty: powDifficulty }
+      : null;
+    return res.json({ allowed: true, token, expiresInMs: voteTokenTtlMs, deviceId, pow });
   } catch (error) {
     console.error("Vote init error:", error);
     return res.status(500).json({ error: "vote_init_failed" });
@@ -625,7 +704,7 @@ app.post("/api/vote/init", ensureOrigin, ensureVoteAuth, voteLimiter, async (req
 });
 
 app.post("/api/vote/submit", ensureOrigin, ensureVoteAuth, voteLimiter, async (req, res) => {
-  const { fingerprintHash, token, constituencyKey, candidateName, party } = req.body || {};
+  const { fingerprintHash, token, constituencyKey, candidateName, party, powChallenge, powNonce } = req.body || {};
   const deviceId = resolveDeviceId(req, res);
   if (!fingerprintHash || typeof fingerprintHash !== "string" || !token) {
     return res.status(400).json({ error: "Invalid request" });
@@ -654,6 +733,28 @@ app.post("/api/vote/submit", ensureOrigin, ensureVoteAuth, voteLimiter, async (r
 
     const ipHash = hashValue(getClientIp(req));
     const uaHash = hashValue(req.get("user-agent") || "");
+    if (voteCooldownMs > 0) {
+      const cooldownRow = await votePool.query(
+        "SELECT last_vote_at FROM vote_cooldowns WHERE ip_hash = $1 AND ua_hash = $2",
+        [ipHash, uaHash]
+      );
+      if (cooldownRow.rowCount > 0) {
+        const lastVoteAt = Number(cooldownRow.rows[0]?.last_vote_at || 0);
+        const elapsed = Date.now() - lastVoteAt;
+        if (elapsed < voteCooldownMs) {
+          return res.status(429).json({
+            error: "cooldown",
+            retryAfterMs: voteCooldownMs - elapsed,
+          });
+        }
+      }
+    }
+    if (powDifficulty > 0) {
+      const powCheck = verifyPow(powChallenge, powNonce, powDifficulty);
+      if (!powCheck.ok) {
+        return res.status(401).json({ error: powCheck.reason || "invalid_pow" });
+      }
+    }
     const verified = verifyVoteToken(token, fingerprintHash, ipHash, uaHash);
     if (!verified.ok) {
       return res.status(401).json({ error: verified.reason || "invalid_token" });
@@ -678,6 +779,16 @@ app.post("/api/vote/submit", ensureOrigin, ensureVoteAuth, voteLimiter, async (r
         [deviceId, votedAt, fingerprintHash, ipHash, uaHash]
       );
       console.log('Device lock inserted successfully');
+
+      if (voteCooldownMs > 0) {
+        await client.query(
+          `INSERT INTO vote_cooldowns (ip_hash, ua_hash, last_vote_at)
+           VALUES ($1, $2, $3)
+           ON CONFLICT (ip_hash, ua_hash)
+           DO UPDATE SET last_vote_at = EXCLUDED.last_vote_at`,
+          [ipHash, uaHash, votedAt]
+        );
+      }
       
       const normalizedParty = normalizePartyName(party || "");
       const coalition = getCoalitionLabel(normalizedParty);
@@ -769,7 +880,7 @@ app.get("/api/votes/all", ensureOrigin, async (req, res) => {
 
 // Submit referendum vote
 app.post("/api/referendum/submit", ensureOrigin, ensureVoteAuth, voteLimiter, async (req, res) => {
-  const { fingerprintHash, vote } = req.body || {};
+  const { fingerprintHash, vote, powChallenge, powNonce } = req.body || {};
   const deviceId = resolveDeviceId(req, res);
   if (!fingerprintHash || !vote || !['yes', 'no'].includes(vote)) {
     return res.status(400).json({ error: "Invalid request" });
@@ -779,6 +890,30 @@ app.post("/api/referendum/submit", ensureOrigin, ensureVoteAuth, voteLimiter, as
   }
   
   try {
+    const ipHash = hashValue(getClientIp(req));
+    const uaHash = hashValue(req.get("user-agent") || "");
+    if (voteCooldownMs > 0) {
+      const cooldownRow = await votePool.query(
+        "SELECT last_vote_at FROM vote_cooldowns WHERE ip_hash = $1 AND ua_hash = $2",
+        [ipHash, uaHash]
+      );
+      if (cooldownRow.rowCount > 0) {
+        const lastVoteAt = Number(cooldownRow.rows[0]?.last_vote_at || 0);
+        const elapsed = Date.now() - lastVoteAt;
+        if (elapsed < voteCooldownMs) {
+          return res.status(429).json({
+            error: "cooldown",
+            retryAfterMs: voteCooldownMs - elapsed,
+          });
+        }
+      }
+    }
+    if (powDifficulty > 0) {
+      const powCheck = verifyPow(powChallenge, powNonce, powDifficulty);
+      if (!powCheck.ok) {
+        return res.status(401).json({ error: powCheck.reason || "invalid_pow" });
+      }
+    }
     // Check if already voted
     const existing = await votePool.query(
       "SELECT id FROM referendum_votes WHERE fingerprint_hash = $1",
@@ -801,6 +936,16 @@ app.post("/api/referendum/submit", ensureOrigin, ensureVoteAuth, voteLimiter, as
       "INSERT INTO referendum_votes (vote, voted_at, fingerprint_hash, constituency_key, device_id) VALUES ($1, $2, $3, $4, $5)",
       [vote, votedAt, fingerprintHash, constituencyKey, deviceId]
     );
+
+    if (voteCooldownMs > 0) {
+      await votePool.query(
+        `INSERT INTO vote_cooldowns (ip_hash, ua_hash, last_vote_at)
+         VALUES ($1, $2, $3)
+         ON CONFLICT (ip_hash, ua_hash)
+         DO UPDATE SET last_vote_at = EXCLUDED.last_vote_at`,
+        [ipHash, uaHash, votedAt]
+      );
+    }
 
     await votePool.query(
       `INSERT INTO constituency_referendum_counts (constituency_key, vote, vote_count)

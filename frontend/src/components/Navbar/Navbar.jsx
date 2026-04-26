@@ -32,10 +32,16 @@ const Navbar = ({ step, setStep }) => {
             ভোট দিন
           </button>
           <button 
+            className={`nav-link ${step === 'result' ? 'active' : ''}`}
+            onClick={() => handleNavClick('result')}
+          >
+            ফলাফল (ম্যাপ)
+          </button>
+          <button 
             className={`nav-link ${step === 'all-results' ? 'active' : ''}`}
             onClick={() => handleNavClick('all-results')}
           >
-            সকল আসনের ফলাফল
+            সকল ফলাফল
           </button>
           <button 
             className={`nav-link ${step === 'alliances' ? 'active' : ''}`}
@@ -72,10 +78,16 @@ const Navbar = ({ step, setStep }) => {
               ভোট দিন
             </button>
             <button 
+              className={`mobile-nav-link ${step === 'result' ? 'active' : ''}`}
+              onClick={() => handleNavClick('result')}
+            >
+              ফলাফল (ম্যাপ)
+            </button>
+            <button 
               className={`mobile-nav-link ${step === 'all-results' ? 'active' : ''}`}
               onClick={() => handleNavClick('all-results')}
             >
-              সকল আসনের ফলাফল
+              সকল ফলাফল
             </button>
             <button 
               className={`mobile-nav-link ${step === 'alliances' ? 'active' : ''}`}
