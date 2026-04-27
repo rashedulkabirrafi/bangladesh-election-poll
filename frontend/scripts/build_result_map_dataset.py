@@ -2,6 +2,7 @@ import csv
 import json
 import base64
 import math
+import os
 from pathlib import Path
 
 
@@ -10,11 +11,16 @@ CONSTITUENCIES_PATH = ROOT / "src" / "assets" / "constituencies.json"
 ALLIANCE_INPUT_PATH = ROOT / "public" / "result_assets" / "dict" / "alliance_level_data.csv"
 CENTERS_INPUT_PATH = ROOT.parent / "all_center_wise_results.csv"
 SHERPUR3_INPUT_PATH = ROOT.parent / "sherpur 3.csv"
-GIS_INPUT_PATH = Path("/home/rafi/cap/geoBoundaries-BGD-ADM4-all/geoBoundaries-BGD-ADM4_simplified.geojson")
 OUTPUT_PATH = ROOT / "public" / "result_assets" / "dict" / "alliance_level_data_merged.csv"
 INLINE_OUTPUT_PATH = ROOT / "public" / "result_assets" / "dict" / "inline-data.b64"
 INLINE_TOUCH_OUTPUT_PATH = ROOT / "public" / "result_assets" / "dict" / "inline-data-touch.b64"
 INLINE_CONSTITUENCY_OUTPUT_PATH = ROOT / "public" / "result_assets" / "dict" / "inline-constituency-data.b64"
+GIS_INPUT_CANDIDATES = [
+    ROOT / "scripts" / "data" / "geoBoundaries-BGD-ADM4_simplified.geojson",
+    ROOT / "public" / "result_assets" / "dict" / "geoBoundaries-BGD-ADM4_simplified.geojson",
+    ROOT.parent / "geoBoundaries-BGD-ADM4_simplified.geojson",
+    Path("/home/rafi/cap/geoBoundaries-BGD-ADM4-all/geoBoundaries-BGD-ADM4_simplified.geojson"),
+]
 
 BANGLA_DIGITS = str.maketrans("০১২৩৪৫৬৭৮৯", "0123456789")
 PARTY_KEYS = [
@@ -298,8 +304,22 @@ def centroid_distance(a, b):
     return math.hypot(a[0] - b[0], a[1] - b[1])
 
 
+def resolve_gis_input_path():
+    env_path = str(os.environ.get("GIS_INPUT_PATH", "")).strip()
+    if env_path:
+        return Path(env_path)
+    for path in GIS_INPUT_CANDIDATES:
+        if path.exists():
+            return path
+    return GIS_INPUT_CANDIDATES[0]
+
+
 def load_gis_features():
-    with GIS_INPUT_PATH.open(encoding="utf-8") as handle:
+    gis_path = resolve_gis_input_path()
+    if not gis_path.exists():
+        return {}
+
+    with gis_path.open(encoding="utf-8") as handle:
         data = json.load(handle)
 
     grouped = {}
@@ -636,11 +656,17 @@ def main():
     write_inline_payload(INLINE_OUTPUT_PATH, union_inline_rows)
     write_inline_payload(INLINE_TOUCH_OUTPUT_PATH, union_inline_rows)
     write_inline_payload(INLINE_CONSTITUENCY_OUTPUT_PATH, constituency_inline_rows)
+    gis_input_path = resolve_gis_input_path()
+    gis_source = (
+        gis_input_path.name
+        if gis_input_path.exists()
+        else "embedded alliance CSV geometry (external GIS file missing)"
+    )
 
     print(
         f"Wrote {len(all_rows)} rows to {OUTPUT_PATH} "
         f"(updated {matched} center rows from {CENTERS_INPUT_PATH.name}, "
-        f"left {unmatched} unmatched; mapped {gis_matched} unions to {GIS_INPUT_PATH.name}, "
+        f"left {unmatched} unmatched; mapped {gis_matched} unions to {gis_source}, "
         f"kept {gis_fallback} original geometries; added {len(sherpur3_rows)} Sherpur-3 supplement unions; "
         f"wrote {len(union_inline_rows)} unions to {INLINE_OUTPUT_PATH.name}; "
         f"wrote {len(constituency_inline_rows)} constituencies to {INLINE_CONSTITUENCY_OUTPUT_PATH.name})"
