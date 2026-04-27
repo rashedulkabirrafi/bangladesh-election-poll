@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "../../.."
+		},
+		{
+			"path": "../../../../../cap/geoBoundaries-BGD-ADM4-all"
+		}
+	],
+	"settings": {}
+}
