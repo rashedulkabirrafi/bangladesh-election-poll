@@ -8,10 +8,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CONSTITUENCIES_PATH = ROOT / "src" / "assets" / "constituencies.json"
-ALLIANCE_INPUT_PATH = ROOT / "public" / "result_assets" / "dict" / "alliance_level_data.csv"
+ALLIANCE_INPUT_PATH = ROOT / "scripts" / "data" / "alliance_level_data.csv"
 CENTERS_INPUT_PATH = ROOT.parent / "all_center_wise_results.csv"
 SHERPUR3_INPUT_PATH = ROOT.parent / "sherpur 3.csv"
-OUTPUT_PATH = ROOT / "public" / "result_assets" / "dict" / "alliance_level_data_merged.csv"
+OUTPUT_PATH = ROOT / "scripts" / "data" / "alliance_level_data_merged.csv"
 INLINE_OUTPUT_PATH = ROOT / "public" / "result_assets" / "dict" / "inline-data.b64"
 INLINE_TOUCH_OUTPUT_PATH = ROOT / "public" / "result_assets" / "dict" / "inline-data-touch.b64"
 INLINE_CONSTITUENCY_OUTPUT_PATH = ROOT / "public" / "result_assets" / "dict" / "inline-constituency-data.b64"
@@ -553,8 +553,11 @@ def build_inline_constituency_rows(rows, constituency_meta):
         entry = constituency_map.get(constituency_name)
         if entry is None:
             meta = constituency_meta.get(constituency_name, {})
+            raw_constituency_id = str(row.get("constituency_id", "")).strip()
+            constituency_id = int(raw_constituency_id) if raw_constituency_id.isdigit() else 0
             entry = {
                 "key": constituency_name,
+                "constituency_id": constituency_id,
                 "constituency": constituency_name,
                 "division": meta.get("division", ""),
                 "districts": set(),
@@ -603,6 +606,7 @@ def build_inline_constituency_rows(rows, constituency_meta):
         inline_rows.append(
             {
                 "key": entry["key"],
+                "constituency_id": entry["constituency_id"],
                 "constituency": entry["constituency"],
                 "division": entry["division"],
                 "districts": sorted(entry["districts"]),

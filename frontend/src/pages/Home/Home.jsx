@@ -36,7 +36,6 @@ import { referendumData } from '../../assets/referendum_data';
 const otherPartyColor = '#9aa5b1';
 const reservedSeatColor = '#34495e'; // Color for reserved seats
 const RESULT_MAP_INLINE_CONSTITUENCY_FILE = '/result_assets/dict/inline-constituency-data.b64';
-const RESULT_MAP_ALLIANCE_CSV_FILE = '/result_assets/dict/alliance_level_data_merged.csv';
 const RESULT_MAP_PARTY_KEYS = ['BNP-led alliance', 'Independent', 'Jamaat-led alliance', 'Other party'];
 const RESULT_MAP_PARTY_META = {
   'BNP-led alliance': {
@@ -168,28 +167,10 @@ const Home = () => {
       return JSON.parse(new TextDecoder('utf-8').decode(bytes));
     };
 
-    const parseConstituencyNameToIdMap = (csvText) => {
-      const nameToId = new Map();
-      const lines = String(csvText || '').split(/\r?\n/);
-      for (let i = 1; i < lines.length; i += 1) {
-        const line = lines[i];
-        if (!line) continue;
-        const columns = line.split(',');
-        const constituencyId = Number(columns[6]);
-        const constituencyNameEn = (columns[7] || '').trim();
-        if (!constituencyNameEn || !Number.isFinite(constituencyId)) continue;
-        if (!nameToId.has(constituencyNameEn)) {
-          nameToId.set(constituencyNameEn, constituencyId);
-        }
-      }
-      return nameToId;
-    };
-
-    const buildVotesFromResultMap = (constituencyResultRows, nameToId) => {
+    const buildVotesFromResultMap = (constituencyResultRows) => {
       const nextVotes = {};
       constituencyResultRows.forEach((entry) => {
-        const constituencyNameEn = String(entry?.constituency || entry?.key || '').trim();
-        const constituencyId = nameToId.get(constituencyNameEn);
+        const constituencyId = Number(entry?.constituency_id);
         if (!constituencyId || constituencyId < 1 || constituencyId > constituencyRows.length) return;
         const seat = constituencyRows[constituencyId - 1];
         if (!seat) return;
@@ -211,20 +192,13 @@ const Home = () => {
 
     const loadVotes = async () => {
       try {
-        const [inlineResponse, mappingResponse] = await Promise.all([
-          fetch(RESULT_MAP_INLINE_CONSTITUENCY_FILE),
-          fetch(RESULT_MAP_ALLIANCE_CSV_FILE)
-        ]);
-        if (!inlineResponse.ok || !mappingResponse.ok) {
+        const inlineResponse = await fetch(RESULT_MAP_INLINE_CONSTITUENCY_FILE);
+        if (!inlineResponse.ok) {
           throw new Error('result_map_fetch_failed');
         }
-        const [inlineBase64, mappingCsv] = await Promise.all([
-          inlineResponse.text(),
-          mappingResponse.text()
-        ]);
+        const inlineBase64 = await inlineResponse.text();
         const constituencyResultRows = decodeBase64Json(inlineBase64);
-        const nameToId = parseConstituencyNameToIdMap(mappingCsv);
-        setVotes(buildVotesFromResultMap(constituencyResultRows, nameToId));
+        setVotes(buildVotesFromResultMap(constituencyResultRows));
       } catch (error) {
         console.error('Failed to load result map data on homepage:', error);
       }
