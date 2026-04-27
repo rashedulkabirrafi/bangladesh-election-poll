@@ -186,26 +186,90 @@
 }
 
 @media (max-width: 768px) {
-  .navbar-menu-desktop {
+  .navbar {
+    top: auto;
+    bottom: 0;
+    height: auto;
+    border-top: none;
+    background: transparent;
+    box-shadow: none;
+    z-index: 1200;
+  }
+
+  .navbar-container {
+    max-width: none;
+    margin: 0 8px 8px;
+    padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
+    justify-content: center;
+    border: 2px solid rgba(18, 34, 46, 0.28);
+    border-radius: 16px;
+    background: rgba(249, 252, 254, 0.99);
+    box-shadow:
+      0 -14px 36px rgba(8, 18, 28, 0.34),
+      0 0 0 1px rgba(255, 255, 255, 0.7) inset;
+  }
+
+  .navbar-logo {
     display: none;
   }
-  
-  .navbar-menu-mobile-toggle {
-    display: block;
+
+  .navbar-menu-desktop {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    width: 100%;
+    gap: 6px;
+  }
+
+  .nav-link {
+    min-height: 50px;
+    padding: 8px 4px;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+    border-radius: 10px;
+    border: 1px solid rgba(29, 43, 54, 0.2);
+    background: rgba(235, 241, 245, 0.98);
+    color: #243844;
+  }
+
+  .nav-link:first-child,
+  .nav-link:nth-child(2),
+  .nav-link:nth-child(3),
+  .nav-link:nth-child(4),
+  .nav-link:nth-child(5),
+  .nav-link:last-child {
+    border: none;
+    animation: none;
+  }
+
+  .nav-link.active {
+    background: linear-gradient(180deg, #1f8f4f, #18763f);
+    color: #ffffff;
+    border-color: #0f5d31;
+    box-shadow: 0 6px 16px rgba(23, 108, 60, 0.45);
+  }
+
+  .navbar-menu-mobile-toggle,
+  .navbar-mobile-overlay {
+    display: none !important;
   }
 }
 
 @media (max-width: 480px) {
   .navbar-container {
-    padding: 0 14px;
+    margin: 0 6px 6px;
+    padding: 8px 6px calc(8px + env(safe-area-inset-bottom));
+    border-radius: 14px;
   }
 
-  .navbar-logo {
-    font-size: 18px;
-    gap: 8px;
+  .navbar-menu-desktop {
+    gap: 4px;
   }
 
-  .logo-icon {
-    font-size: clamp(16px, 5vw, 20px);
+  .nav-link {
+    min-height: 46px;
+    padding: 7px 3px;
+    font-size: 10px;
   }
 }

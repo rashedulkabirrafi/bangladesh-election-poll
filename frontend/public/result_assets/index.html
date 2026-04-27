@@ -1260,18 +1260,49 @@
       }
 
       .drilldown-panel {
-        position: absolute;
-        left: 10px;
-        right: 10px;
-        top: 126px;
+        position: fixed;
+        left: 4px;
+        right: auto;
+        width: min(175px, calc(100% - 16px));
+        top: auto;
+        bottom: calc(8px + env(safe-area-inset-bottom));
         pointer-events: auto;
-        padding: 12px;
+        padding: 6px;
+        gap: 4px;
+        z-index: 16;
       }
 
       .drilldown-grid {
         grid-template-columns: 1fr;
-        max-height: min(32vh, 320px);
+        max-height: min(12vh, 86px);
         overflow: auto;
+      }
+
+      .drilldown-panel-head {
+        margin-bottom: 2px !important;
+      }
+
+      .drilldown-path {
+        font-size: 0.66rem;
+        line-height: 1.2;
+      }
+
+      .drilldown-title {
+        font-size: 0.76rem !important;
+      }
+
+      .drilldown-item {
+        padding: 7px 8px;
+        border-radius: 8px;
+      }
+
+      .drilldown-item-label {
+        font-size: 0.74rem;
+        margin-bottom: 2px;
+      }
+
+      .drilldown-item-meta {
+        font-size: 0.62rem;
       }
 
       .search-label {
@@ -1530,7 +1561,7 @@
       }
 
       .legend {
-        top: 104px;
+        top: 16px;
         right: 10px;
         width: auto;
         max-width: 155px;
@@ -1566,12 +1597,18 @@
       }
 
       .map-toggle {
-        top: 62px;
-        left: 10px;
-        transform: none;
+        top: 8px;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
         border-radius: 6px;
         backdrop-filter: none;
         -webkit-backdrop-filter: none;
+      }
+
+      #map {
+        top: 8px;
+        height: calc(100% - 8px);
       }
 
       .map-toggle-btn {
@@ -1877,8 +1914,8 @@
     const ZOOM_BUTTON_FACTOR_OUT = 1.16;
     const ZOOM_BUTTON_DURATION = 240;
     const ZOOM_FOCUS_DURATION = 260;
-    const PHONE_DEFAULT_ZOOM_FACTOR = 0.34;
-    const TOUCH_DEFAULT_ZOOM_FACTOR = 0.34;
+    const PHONE_DEFAULT_ZOOM_FACTOR = 0.38;
+    const TOUCH_DEFAULT_ZOOM_FACTOR = 0.38;
     const DRAG_THRESHOLD_PX = 3;
     const ui = {
       map: document.getElementById("map"),

@@ -68,7 +68,7 @@ const Result = ({ step, setStep }) => {
           </div>
         </section>
 
-        <section className="result-map-panel" style={{ marginTop: '20px' }}>
+        <section className="result-map-panel">
           {isLoading && (
             <div className="result-map-loading" role="status" aria-live="polite">
               <div className="result-map-loading-card">

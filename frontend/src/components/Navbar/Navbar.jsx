@@ -1,17 +1,9 @@
-import React, { useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import React from 'react';
 import './Navbar.css';
 
 const Navbar = ({ step, setStep }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
   const handleNavClick = (newStep) => {
     setStep(newStep);
-    setIsMenuOpen(false);
   };
 
 
@@ -26,7 +18,7 @@ const Navbar = ({ step, setStep }) => {
 
         <div className="navbar-menu-desktop">
           <button 
-            className={`nav-link ${step === 'select' ? 'active' : ''}`}
+            className={`nav-link ${step === 'select' || step === 'vote' ? 'active' : ''}`}
             onClick={() => handleNavClick('select')}
           >
             ভোট দিন
@@ -38,7 +30,7 @@ const Navbar = ({ step, setStep }) => {
             ফলাফল (ম্যাপ)
           </button>
           <button 
-            className={`nav-link ${step === 'all-results' ? 'active' : ''}`}
+            className={`nav-link ${step === 'all-results' || step === 'results' ? 'active' : ''}`}
             onClick={() => handleNavClick('all-results')}
           >
             সকল ফলাফল
@@ -56,60 +48,14 @@ const Navbar = ({ step, setStep }) => {
             ভোট নির্দেশিকা
           </button>
           <button 
-            className={`nav-link ${step === 'home' || step === 'select' || step === 'vote' ? 'active' : ''}`}
+            className={`nav-link ${step === 'home' ? 'active' : ''}`}
             onClick={() => handleNavClick('home')}
           >
             হোম
           </button>
         </div>
 
-        <div className="navbar-menu-mobile-toggle" onClick={toggleMenu}>
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </div>
       </div>
-
-      {isMenuOpen && (
-        <div className="navbar-mobile-overlay">
-          <div className="navbar-mobile-menu">
-            <button 
-              className={`mobile-nav-link ${step === 'select' ? 'active' : ''}`}
-              onClick={() => handleNavClick('select')}
-            >
-              ভোট দিন
-            </button>
-            <button 
-              className={`mobile-nav-link ${step === 'result' ? 'active' : ''}`}
-              onClick={() => handleNavClick('result')}
-            >
-              ফলাফল (ম্যাপ)
-            </button>
-            <button 
-              className={`mobile-nav-link ${step === 'all-results' ? 'active' : ''}`}
-              onClick={() => handleNavClick('all-results')}
-            >
-              সকল ফলাফল
-            </button>
-            <button 
-              className={`mobile-nav-link ${step === 'alliances' ? 'active' : ''}`}
-              onClick={() => handleNavClick('alliances')}
-            >
-              দল ও জোট
-            </button>
-            <button
-              className={`mobile-nav-link ${step === 'guide' ? 'active' : ''}`}
-              onClick={() => handleNavClick('guide')}
-            >
-              ভোট নির্দেশিকা
-            </button>
-            <button 
-              className={`mobile-nav-link ${step === 'home' ? 'active' : ''}`}
-              onClick={() => handleNavClick('home')}
-            >
-              হোম
-            </button>
-          </div>
-        </div>
-      )}
     </nav>
   );
 };

@@ -1120,6 +1120,10 @@ body {
 }
 
 @media (max-width: 720px) {
+  .page {
+    padding: 16px 14px calc(96px + env(safe-area-inset-bottom));
+  }
+
   .card {
     padding: 18px;
   }
@@ -1148,7 +1152,7 @@ body {
 
 @media (max-width: 480px) {
   .page {
-    padding: 84px 12px 36px;
+    padding: 14px 12px calc(92px + env(safe-area-inset-bottom));
   }
 
   .headline {
