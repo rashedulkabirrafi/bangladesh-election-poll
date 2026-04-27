@@ -1,6 +1,9 @@
 {
   "name": "bangladesh-election-poll",
   "private": true,
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "workspaces": [
     "frontend",
     "shared"

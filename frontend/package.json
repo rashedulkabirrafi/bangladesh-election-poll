@@ -3,6 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "scripts": {
     "predev": "npm run constituencies:build && npm run results-map:build",
     "dev": "vite",
@@ -11,9 +14,9 @@
     "lint": "eslint .",
     "prepreview": "npm run constituencies:build && npm run results-map:build",
     "preview": "vite preview",
-    "constituencies:build": "../.venv/bin/python scripts/generate_constituencies.py",
-    "results-map:build": "../.venv/bin/python scripts/build_result_map_dataset.py",
-    "candidates:build": "../.venv/bin/python scripts/fetch_candidates.py"
+    "constituencies:build": "python3 scripts/generate_constituencies.py",
+    "results-map:build": "python3 scripts/build_result_map_dataset.py",
+    "candidates:build": "python3 scripts/fetch_candidates.py"
   },
   "dependencies": {
     "lucide-react": "^0.563.0",

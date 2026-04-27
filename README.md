@@ -16,6 +16,9 @@ shared/    # Shared files (future)
 npm install
 ```
 
+Node.js requirement: `20.19.0+` (Vite 7 / rolldown-vite does not support Node 18).
+Use `.nvmrc` / `.node-version` in this repo to match deploy/runtime versions.
+
 > If you prefer installing per workspace:
 > - `npm install -w frontend`
 
