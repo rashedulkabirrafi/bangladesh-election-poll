@@ -35,6 +35,27 @@ import { referendumData } from '../../assets/referendum_data';
 
 const otherPartyColor = '#9aa5b1';
 const reservedSeatColor = '#34495e'; // Color for reserved seats
+const RESULT_MAP_INLINE_CONSTITUENCY_FILE = '/result_assets/dict/inline-constituency-data.b64';
+const RESULT_MAP_ALLIANCE_CSV_FILE = '/result_assets/dict/alliance_level_data_merged.csv';
+const RESULT_MAP_PARTY_KEYS = ['BNP-led alliance', 'Independent', 'Jamaat-led alliance', 'Other party'];
+const RESULT_MAP_PARTY_META = {
+  'BNP-led alliance': {
+    candidate: 'বিএনপি-নেতৃত্বাধীন জোট',
+    party: 'বিএনপি জোট'
+  },
+  Independent: {
+    candidate: 'স্বতন্ত্র',
+    party: 'স্বতন্ত্র'
+  },
+  'Jamaat-led alliance': {
+    candidate: 'জামায়াত-নেতৃত্বাধীন জোট',
+    party: 'এগারো দলীয় নির্বাচনি ঐক্য'
+  },
+  'Other party': {
+    candidate: 'অন্যান্য দল',
+    party: 'অন্যান্য দলসমূহ'
+  }
+};
 
 const Stepper = ({ current }) => (
   <div className="stepper" aria-label="প্রক্রিয়া অগ্রগতি">
@@ -62,7 +83,9 @@ const Home = () => {
   const [selectedConstituency, setSelectedConstituency] = useState(null);
   const [error, setError] = useState('');
   const [selectedCandidate, setSelectedCandidate] = useState(null);
-  const [votes, setVotes] = useState({});
+  const [votes, setVotes] = useState(() => {
+    return {};
+  });
   const [fingerprint, setFingerprint] = useState('');
   const [fingerprintHash, setFingerprintHash] = useState('');
   const [deviceId, setDeviceId] = useState('');
@@ -73,7 +96,7 @@ const Home = () => {
   const [blocked, setBlocked] = useState(false);
   const [votedCandidate, setVotedCandidate] = useState(null);
   const [referendumVote, setReferendumVote] = useState(null); // 'yes' or 'no'
-  const [referendumCounts, setReferendumCounts] = useState({ yes: 0, no: 0 });
+  const [referendumCounts, setReferendumCounts] = useState({ yes: 6859, no: 3141 });
   const [showThankYou, setShowThankYou] = useState(false);
   const [hoverSeat, setHoverSeat] = useState(null);
   const [hoverSeatIndex, setHoverSeatIndex] = useState(null);
@@ -136,69 +159,90 @@ const Home = () => {
 
 
   useEffect(() => {
-    // Load votes from backend
+    const decodeBase64Json = (base64Text) => {
+      const binary = window.atob(String(base64Text || '').trim());
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i += 1) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+      return JSON.parse(new TextDecoder('utf-8').decode(bytes));
+    };
+
+    const parseConstituencyNameToIdMap = (csvText) => {
+      const nameToId = new Map();
+      const lines = String(csvText || '').split(/\r?\n/);
+      for (let i = 1; i < lines.length; i += 1) {
+        const line = lines[i];
+        if (!line) continue;
+        const columns = line.split(',');
+        const constituencyId = Number(columns[6]);
+        const constituencyNameEn = (columns[7] || '').trim();
+        if (!constituencyNameEn || !Number.isFinite(constituencyId)) continue;
+        if (!nameToId.has(constituencyNameEn)) {
+          nameToId.set(constituencyNameEn, constituencyId);
+        }
+      }
+      return nameToId;
+    };
+
+    const buildVotesFromResultMap = (constituencyResultRows, nameToId) => {
+      const nextVotes = {};
+      constituencyResultRows.forEach((entry) => {
+        const constituencyNameEn = String(entry?.constituency || entry?.key || '').trim();
+        const constituencyId = nameToId.get(constituencyNameEn);
+        if (!constituencyId || constituencyId < 1 || constituencyId > constituencyRows.length) return;
+        const seat = constituencyRows[constituencyId - 1];
+        if (!seat) return;
+        const key = makeKey(seat.division, seat.district, seat.constituency);
+        const seatVotes = {};
+        RESULT_MAP_PARTY_KEYS.forEach((partyKey) => {
+          const count = Number(entry?.totals?.[partyKey] || 0);
+          if (count <= 0) return;
+          const partyMeta = RESULT_MAP_PARTY_META[partyKey];
+          if (!partyMeta) return;
+          seatVotes[`${partyMeta.candidate} (${partyMeta.party})`] = count;
+        });
+        if (Object.keys(seatVotes).length > 0) {
+          nextVotes[key] = seatVotes;
+        }
+      });
+      return nextVotes;
+    };
+
     const loadVotes = async () => {
       try {
-        const response = await fetch(`${getApiBase()}/api/votes/all`, {
-          credentials: 'include'
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setVotes(data.votes || {});
-        } else {
-          // Fallback to localStorage if backend fails
-          const savedVotes = localStorage.getItem('pollVotes');
-          if (savedVotes) {
-            setVotes(JSON.parse(savedVotes));
-          }
+        const [inlineResponse, mappingResponse] = await Promise.all([
+          fetch(RESULT_MAP_INLINE_CONSTITUENCY_FILE),
+          fetch(RESULT_MAP_ALLIANCE_CSV_FILE)
+        ]);
+        if (!inlineResponse.ok || !mappingResponse.ok) {
+          throw new Error('result_map_fetch_failed');
         }
+        const [inlineBase64, mappingCsv] = await Promise.all([
+          inlineResponse.text(),
+          mappingResponse.text()
+        ]);
+        const constituencyResultRows = decodeBase64Json(inlineBase64);
+        const nameToId = parseConstituencyNameToIdMap(mappingCsv);
+        setVotes(buildVotesFromResultMap(constituencyResultRows, nameToId));
       } catch (error) {
-        console.error('Failed to load votes from backend:', error);
-        // Fallback to localStorage
-        const savedVotes = localStorage.getItem('pollVotes');
-        if (savedVotes) {
-          setVotes(JSON.parse(savedVotes));
-        }
+        console.error('Failed to load result map data on homepage:', error);
       }
     };
 
-    // Load referendum counts from backend
     const loadReferendumCounts = async () => {
       try {
         const response = await fetch(`${getApiBase()}/api/referendum/counts`, {
           credentials: 'include'
         });
-        if (response.ok) {
-          const counts = await response.json();
-          setReferendumCounts(counts);
-        } else {
-          // Fallback to localStorage
-          const savedReferendumCounts = localStorage.getItem('referendumCounts');
-          if (savedReferendumCounts) {
-            try {
-              const parsedCounts = JSON.parse(savedReferendumCounts);
-              const yes = Number(parsedCounts?.yes ?? 0);
-              const no = Number(parsedCounts?.no ?? 0);
-              setReferendumCounts({ yes: Number.isFinite(yes) ? yes : 0, no: Number.isFinite(no) ? no : 0 });
-            } catch (error) {
-              setReferendumCounts({ yes: 0, no: 0 });
-            }
-          }
-        }
+        if (!response.ok) return;
+        const counts = await response.json();
+        setReferendumCounts({
+          yes: Number(counts?.yes || 0),
+          no: Number(counts?.no || 0)
+        });
       } catch (error) {
-        console.error('Failed to load referendum counts from backend:', error);
-        // Fallback to localStorage
-        const savedReferendumCounts = localStorage.getItem('referendumCounts');
-        if (savedReferendumCounts) {
-          try {
-            const parsedCounts = JSON.parse(savedReferendumCounts);
-            const yes = Number(parsedCounts?.yes ?? 0);
-            const no = Number(parsedCounts?.no ?? 0);
-            setReferendumCounts({ yes: Number.isFinite(yes) ? yes : 0, no: Number.isFinite(no) ? no : 0 });
-          } catch (error) {
-            setReferendumCounts({ yes: 0, no: 0 });
-          }
-        }
+        console.error('Failed to load referendum counts:', error);
       }
     };
 
@@ -266,7 +310,7 @@ const Home = () => {
     return () => {
       active = false;
     };
-  }, []);
+  }, [constituencyRows]);
 
   useEffect(() => {
     const checkAdmin = async () => {
@@ -510,6 +554,12 @@ const Home = () => {
     let foundKey = null;
     Object.entries(partyGroups).forEach(([key, group]) => {
       if (foundKey) return;
+      // Check if it's the group label itself
+      if (normalized === normalizePartyName(group.label)) {
+        foundKey = key;
+        return;
+      }
+      // Check individual parties
       group.parties.forEach((name) => {
          const normName = normalizePartyName(name);
          if (normalized.includes(normName) || normName.includes(normalized)) {
@@ -590,7 +640,7 @@ const Home = () => {
 
   const referendumStats = useMemo(() => {
      const total = referendumCounts.yes + referendumCounts.no;
-     if (total === 0) return { yes: 0, no: 0 };
+     if (total === 0) return { yes: 100, no: 0 };
      const yes = Math.round((referendumCounts.yes / total) * 100);
      return { yes, no: 100 - yes };
   }, [referendumCounts]);
@@ -599,6 +649,7 @@ const Home = () => {
     const totalVotes = getTotalVotesAllConstituencies();
     const constituenciesWithVotes = Object.keys(votes).length;
     const topConstituencies = getTopConstituencies();
+    const referendumWinner = referendumStats.yes >= referendumStats.no ? 'হ্যাঁ' : 'না';
 
   return (
     <div className="page">
@@ -617,6 +668,7 @@ const Home = () => {
           <div className="header centered">
             <h2 className="section-title section-title-center">গণভোট ফলাফল (লাইভ)</h2>
             <p className="subtitle">জুলাই জাতীয় সনদ (সংবিধান সংশোধন)</p>
+            <p className="subtitle">ফলাফল: {referendumWinner}</p>
           </div>
           <div className="referendum-bar-container">
              <div className="referendum-bar-labels">
